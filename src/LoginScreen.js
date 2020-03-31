@@ -6,11 +6,12 @@ import {
     Dimensions,
     TextInput,
 } from 'react-native';
-
 import Svg, {Image, Circle, ClipPath} from 'react-native-svg';
-
 import Animated, { Easing } from 'react-native-reanimated';
 import { State, TapGestureHandler } from 'react-native-gesture-handler';
+
+// importing common styles
+import Styles from './Styles';
 
 const { width, height } = Dimensions.get('window');
 const {
@@ -60,7 +61,7 @@ function runTiming(clock, value, dest) {
     ]);
   }
 
-class MusicApp extends Component {
+class LoginScreen extends Component {
     constructor() {
         super()
         this.buttonOpacity = new Value(1)
@@ -121,6 +122,8 @@ class MusicApp extends Component {
     render() {
         return (
             <View style={styles.container}>
+
+                {/* Animated background View */}
                 <Animated.View
                     style={[styles.innerContainer, {
                         transform: [{ translateY: this.bgY }]
@@ -139,12 +142,14 @@ class MusicApp extends Component {
                         />
                     </Svg>
                 </Animated.View>
+                
+                {/* Different Login Options */}
                 <View style={styles.buttonContainer}>
                     <TapGestureHandler
                         onHandlerStateChange={this.onStateChange}
                     >
                         <Animated.View
-                            style={[styles.btnContainer, {
+                            style={[Styles.buttonLogin, {
                                 opacity: this.buttonOpacity,
                                 transform: [{ translateY: this.buttonY }]
                             }]}
@@ -154,10 +159,10 @@ class MusicApp extends Component {
                         </Animated.View>
                     </TapGestureHandler>
                     <TapGestureHandler
-                        onHandlerStateChange={this.onStateChange}
+                        // onHandlerStateChange={this.onStateChange}
                     >
                         <Animated.View
-                            style={[styles.btnContainer, {
+                            style={[Styles.buttonLogin, {
                                 backgroundColor: '#2e71dc',
                                 opacity: this.buttonOpacity,
                                 transform: [{ translateY: this.buttonY }]
@@ -167,49 +172,49 @@ class MusicApp extends Component {
                             <Text style={[styles.btnText, { color: 'white' }]}>SIGN IN WITH FACEBOOK</Text>
                         </Animated.View>
                     </TapGestureHandler>
-                    <Animated.View
-                        style={[ styles.hiddenContainer, {
-                            zIndex: this.textInputZIndex,
-                            opacity: this.textInputOpacity,
-                            transform: [{ translateY: this.textInputY }]
-                        } ]}
-                    >
-                        <TapGestureHandler
-                            onHandlerStateChange={this.onCloseState}
-                        >
-                            <Animated.View
-                                style={[
-                                    styles.closeBtn
-                                ]}
-                            >
-                                <Animated.Text
-                                    style={{
-                                        fontSize: 15,
-                                        transform: [{
-                                            rotate: concat(this.rotateCross, 'deg'),
-                                        }]
-                                    }}
-                                >
-                                    X
-                                </Animated.Text>
-                            </Animated.View>
-                        </TapGestureHandler>   
-                        <TextInput 
-                            placeholder="Email"
-                            style={styles.textInput}
-                            placeholderTextColor="black"
-                        />
-                        <TextInput 
-                            placeholder="PASSWORD"
-                            style={styles.textInput}
-                            placeholderTextColor="black"
-                        />
-
-                        <Animated.View style={[ styles.signInBtn ]}>
-                            <Text style={[ styles.signInBtnText ]}>SIGN IN</Text>
-                        </Animated.View>
-                    </Animated.View>
                 </View>
+
+                {/* Sign In Hidden Component */}
+                <Animated.View
+                    style={[ styles.hiddenContainer, {
+                        zIndex: this.textInputZIndex,
+                        opacity: this.textInputOpacity,
+                        transform: [{ translateY: this.textInputY }]
+                    } ]}
+                >
+                    <TapGestureHandler
+                        onHandlerStateChange={this.onCloseState}
+                    >
+                        <Animated.View
+                            style={[ styles.closeBtn, Styles.buttonShadow ]}
+                        >
+                            <Animated.Text
+                                style={{
+                                    fontSize: 15,
+                                    transform: [{
+                                        rotate: concat(this.rotateCross, 'deg'),
+                                    }]
+                                }}
+                            >
+                                X
+                            </Animated.Text>
+                        </Animated.View>
+                    </TapGestureHandler>   
+                    <TextInput 
+                        placeholder="Email"
+                        style={styles.textInput}
+                        placeholderTextColor="black"
+                    />
+                    <TextInput 
+                        placeholder="PASSWORD"
+                        style={styles.textInput}
+                        placeholderTextColor="black"
+                    />
+
+                    <Animated.View style={[ Styles.buttonLogin, Styles.buttonShadow ]}>
+                        <Text style={[ Styles.textSmallBold ]}>SIGN IN</Text>
+                    </Animated.View>
+                </Animated.View>
             </View>
         );
     }
@@ -233,15 +238,6 @@ const styles = StyleSheet.create({
         height: height/3,
         justifyContent: 'center'
     },
-    btnContainer: {
-        backgroundColor: 'white',
-        height: 70,
-        marginHorizontal: 20,
-        marginVertical: 5,
-        borderRadius: 35,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     btnText: {
         fontSize: 20,
         fontWeight: 'bold'
@@ -263,43 +259,17 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: -20,
         left: width/2 - 20,
-        shadowOffset: { width: 2, height: 2 },
-        shadowColor: 'black',
-        shadowOpacity: 0.2,
-
-        borderColor: 'black',
-        borderWidth: 2
     },
     textInput: {
         height: 50,
         borderRadius: 25,
         borderWidth: 0.5,
         marginHorizontal: 20,
-        paddingLeft: 10,
+        paddingHorizontal: 20,
         marginHorizontal: 20,
-        paddingLeft: 10,
         marginVertical: 5,
         borderColor: 'rgba(0,0,0,0.2)'
     },
-    signInBtn: {
-        backgroundColor: 'white',
-        height: 70,
-        marginHorizontal: 20,
-        borderRadius: 35,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginVertical: 5,
-        shadowOffset: { width: 2, height: 2},
-        shadowColor: 'black',
-        shadowOpacity: 0.2,
-
-        borderColor: 'black',
-        borderWidth: 2,
-    },
-    signInBtnText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    }
 })
 
-export default MusicApp;
+export default LoginScreen;

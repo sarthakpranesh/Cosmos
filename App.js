@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Asset } from 'expo-asset';
-import { AppLoading } from 'expo';
+import { Asset } from 'expo-asset'; // for preloading assets
+import { AppLoading } from 'expo'; // till the time assets and other things are being loaded show the loading indicator
 
-import MusicApp from './src/index';
+
+import LoginScreen from './src/LoginScreen';
 
 function cacheImages(images) {
   return images.map(image => {
@@ -15,7 +15,7 @@ function cacheImages(images) {
   });
 }
 
-export default class App extends React.Component {
+export default class App extends Component {
   constructor() {
     super();
     this.state={
@@ -41,25 +41,6 @@ export default class App extends React.Component {
       );
     }
 
-    return <MusicApp />
+    return <LoginScreen />
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
