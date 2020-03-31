@@ -1,3 +1,4 @@
 node_modules
 yarn*
 .expo
+google-services.json
