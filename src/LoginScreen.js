@@ -7,6 +7,7 @@ import {
     TextInput,
     TouchableOpacity,
     Alert,
+    KeyboardAvoidingView
 } from 'react-native';
 import Svg, {Image, Circle, ClipPath} from 'react-native-svg';
 import Animated, { Easing } from 'react-native-reanimated';
@@ -125,11 +126,13 @@ class LoginScreen extends Component {
 
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            name: '',
         }
 
         this.emailInput = null
         this.passwordInput = null
+        this.nameInput = null
 
         this.user = null
     }
@@ -146,6 +149,13 @@ class LoginScreen extends Component {
             this.setState({ password: '' });
         }
         this.setState({ password: userPassword });
+    }
+
+    setName = (username) => {
+        if(username === '') {
+            this.setState({ name: '' });
+        }
+        this.setState({ name: username });
     }
 
     onSubmitLogin = () => {
@@ -181,9 +191,54 @@ class LoginScreen extends Component {
         })
     }
 
+    onSubmitSignUp = () => {
+        const { email, password, name } = this.state;
+        if (!email) {
+            Alert.alert(
+                'Invalid Credentials',
+                'Please Provide an Email!',
+                [
+                    { text: 'ok', onPress: () => this.emailInput.focus() }
+                ]
+            )
+            return;
+        }
+
+        if (!password || password.length > 40 || password.length < 6) {
+            Alert.alert(
+                'Invalid Credentials',
+                'Please make sure your password is in the range of 6 to 40 characters!',
+                [
+                    { text: 'ok', onPress: () => this.passwordInput.focus() }
+                ]
+            )
+            return;
+        }
+
+        if (!name || name.length > 40 || name.length < 6) {
+            Alert.alert(
+                'Invalid Credentials',
+                'Please make sure your username is in the range of 6 to 40 characters!',
+                [
+                    { text: 'ok', onPress: () => this.nameInput.focus() }
+                ]
+            )
+            return;
+        }
+
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then((userObject) => {
+                this.user = userObject;
+                console.log(userObject);
+            })
+            .catch(function(error) {
+                console.log(error)
+            })
+    }
+
     render() {
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} behavior={"height"}>
 
                 {/* Animated background View */}
                 <Animated.View
@@ -207,33 +262,37 @@ class LoginScreen extends Component {
                 
                 {/* Different Login Options */}
                 <View style={styles.buttonContainer}>
-                    <TapGestureHandler
-                        onHandlerStateChange={this.onStateChange}
-                    >
-                        <Animated.View
-                            style={[Styles.buttonLogin, {
-                                opacity: this.buttonOpacity,
-                                transform: [{ translateY: this.buttonY }]
-                            }]}
-                            
+                    <TouchableOpacity>
+                        <TapGestureHandler
+                            onHandlerStateChange={this.onStateChange}
                         >
-                            <Text style={styles.btnText}>SIGN IN</Text>
-                        </Animated.View>
-                    </TapGestureHandler>
-                    <TapGestureHandler
-                        // onHandlerStateChange={this.onStateChange}
-                    >
-                        <Animated.View
-                            style={[Styles.buttonLogin, {
-                                backgroundColor: '#2e71dc',
-                                opacity: this.buttonOpacity,
-                                transform: [{ translateY: this.buttonY }]
-                            }]}
-                            
+                            <Animated.View
+                                style={[Styles.buttonLogin, {
+                                    opacity: this.buttonOpacity,
+                                    transform: [{ translateY: this.buttonY }]
+                                }]}
+                                
+                            >
+                                <Text style={styles.btnText}>SIGN IN</Text>
+                            </Animated.View>
+                        </TapGestureHandler>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <TapGestureHandler
+                            onHandlerStateChange={this.onStateChange}
                         >
-                            <Text style={[styles.btnText, { color: 'white' }]}>SIGN IN WITH FACEBOOK</Text>
-                        </Animated.View>
-                    </TapGestureHandler>
+                            <Animated.View
+                                style={[Styles.buttonLogin, {
+                                    backgroundColor: '#2e71dc',
+                                    opacity: this.buttonOpacity,
+                                    transform: [{ translateY: this.buttonY }]
+                                }]}
+                                
+                            >
+                                <Text style={[styles.btnText, { color: 'white' }]}>SIGN UP</Text>
+                            </Animated.View>
+                        </TapGestureHandler>
+                    </TouchableOpacity>
                 </View>
 
                 {/* Sign In Hidden Component */}
@@ -261,7 +320,7 @@ class LoginScreen extends Component {
                                 X
                             </Animated.Text>
                         </Animated.View>
-                    </TapGestureHandler>   
+                    </TapGestureHandler>
                     <TextInput
                         ref={(input) => { this.emailInput = input; }}
                         placeholder="Email"
@@ -287,7 +346,7 @@ class LoginScreen extends Component {
                         </Animated.View>
                     </TouchableOpacity>
                 </Animated.View>
-            </View>
+            </KeyboardAvoidingView>
         );
     }
 }
@@ -319,6 +378,7 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFill,
         top: null,
         justifyContent: 'flex-end',
+        backgroundColor: 'white'
     },
     closeBtn: {
         height: 40,
