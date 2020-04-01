@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { Asset } from 'expo-asset'; // for preloading assets
 import { AppLoading } from 'expo'; // till the time assets and other things are being loaded show the loading indicator
 
 // importing Firebase
 import * as firebase from './src/configs/firebase';
 
+// importing Screens
 import LoginScreen from './src/LoginScreen';
+
+// importing different context
+import { Provider } from './src/context/UserContext';
 
 function cacheImages(images) {
   return images.map(image => {
@@ -17,7 +22,7 @@ function cacheImages(images) {
   });
 }
 
-export default class App extends Component {
+class UserStarting extends Component {
   constructor() {
     super();
     this.state={
@@ -44,4 +49,20 @@ export default class App extends Component {
     }
     return <LoginScreen />
   }
+}
+
+const defaultApp = createSwitchNavigator({
+  UserStarting,
+}, {
+  initialRouteName: 'UserStarting'
+})
+
+const App = createAppContainer(defaultApp);
+
+export default () => {
+  return (
+    <Provider>
+      <App />
+    </Provider>
+  );
 }

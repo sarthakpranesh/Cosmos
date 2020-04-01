@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import {
     View,
     Text,
@@ -18,6 +18,9 @@ import Styles from './Styles';
 
 // importing firebase
 import * as firebase from 'firebase';
+
+// importing Context
+import { Context as UserContext } from './context/UserContext';
 
 const { width, height } = Dimensions.get('window');
 const {
@@ -66,6 +69,12 @@ function runTiming(clock, value, dest) {
       state.position
     ]);
   }
+
+const loadUserContext = () => {
+    const { state, saveUserDetails } = useContext(UserContext);
+    console.log("User Context: ", state);
+    return { state, saveUserDetails};
+}
 
 class LoginScreen extends Component {
     constructor() {
@@ -136,7 +145,15 @@ class LoginScreen extends Component {
         this.nameInput = null
 
         this.user = null
+
+        this.context = null
     }
+
+    // componentDidMount() {
+    //     const context = loadUserContext();
+    //     this.setState({ context })
+        
+    // }
 
     setEmail = (userEmail) => {
         if (userEmail === '') {
