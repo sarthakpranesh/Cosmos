@@ -128,6 +128,7 @@ class LoginScreen extends Component {
             email: '',
             password: '',
             name: '',
+            authMethod: '',
         }
 
         this.emailInput = null
@@ -158,7 +159,17 @@ class LoginScreen extends Component {
         this.setState({ name: username });
     }
 
-    onSubmitLogin = () => {
+    onSubmit = () => {
+        if (this.state.authMethod === 'sign_up') {
+            this.onSubmitSignUp()
+        }
+
+        if (this.state.authMethod === 'sign_in') {
+            this.onSubmitSignIn()
+        }   
+    }
+
+    onSubmitSignIn = () => {
         const { email, password } = this.state;
         if (!email) {
             Alert.alert(
@@ -184,10 +195,11 @@ class LoginScreen extends Component {
 
         firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userObject) => {
-            this.user = userObject;
+            this.user = userObject.user;
+            console.log(this.user);
         })
         .catch(function(error) {
-            console.log(error)
+            console.log(error);
         })
     }
 
@@ -228,8 +240,8 @@ class LoginScreen extends Component {
 
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((userObject) => {
-                this.user = userObject;
-                console.log(userObject);
+                this.user = userObject.user;
+                console.log(this.user);
             })
             .catch(function(error) {
                 console.log(error)
@@ -262,7 +274,9 @@ class LoginScreen extends Component {
                 
                 {/* Different Login Options */}
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPressIn={() => this.setState({ authMethod: 'sign_in' })}
+                    >
                         <TapGestureHandler
                             onHandlerStateChange={this.onStateChange}
                         >
@@ -277,7 +291,9 @@ class LoginScreen extends Component {
                             </Animated.View>
                         </TapGestureHandler>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPressIn={() => this.setState({ authMethod: 'sign_up' })}
+                    >
                         <TapGestureHandler
                             onHandlerStateChange={this.onStateChange}
                         >
@@ -301,7 +317,9 @@ class LoginScreen extends Component {
                         zIndex: this.textInputZIndex,
                         opacity: this.textInputOpacity,
                         transform: [{ translateY: this.textInputY }]
-                    } ]}
+                    },
+                    this.state.authMethod === 'sign_up' ? { height: height/3 + 60 } : null,
+                    ]}
                 >
                     <TapGestureHandler
                         onHandlerStateChange={this.onCloseState}
@@ -321,6 +339,20 @@ class LoginScreen extends Component {
                             </Animated.Text>
                         </Animated.View>
                     </TapGestureHandler>
+                    {
+                        this.state.authMethod === 'sign_up'
+                        ?
+                        <TextInput
+                            ref={(input) => { this.nameInput = input; }}
+                            placeholder="Name"
+                            style={styles.textInput}
+                            placeholderTextColor="black"
+                            onChangeText={(name) => this.setName(name)}
+                            value={this.state.name}
+                        />
+                        :
+                        null
+                    }
                     <TextInput
                         ref={(input) => { this.emailInput = input; }}
                         placeholder="Email"
@@ -339,10 +371,18 @@ class LoginScreen extends Component {
                     />
 
                     <TouchableOpacity 
-                        onPress={this.onSubmitLogin}
+                        onPress={this.onSubmit}
                     >
                         <Animated.View style={[ Styles.buttonLogin, Styles.buttonShadow ]}>
-                            <Text style={[ Styles.textSmallBold ]}>SIGN IN</Text>
+                            <Text style={[ Styles.textSmallBold ]}>
+                                {
+                                    this.state.authMethod === 'sign_up'
+                                    ?
+                                    "Sign Up"
+                                    :
+                                    "Sign In"
+                                }
+                            </Text>
                         </Animated.View>
                     </TouchableOpacity>
                 </Animated.View>
