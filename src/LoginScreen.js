@@ -5,6 +5,8 @@ import {
     StyleSheet,
     Dimensions,
     TextInput,
+    TouchableOpacity,
+    Alert,
 } from 'react-native';
 import Svg, {Image, Circle, ClipPath} from 'react-native-svg';
 import Animated, { Easing } from 'react-native-reanimated';
@@ -12,6 +14,9 @@ import { State, TapGestureHandler } from 'react-native-gesture-handler';
 
 // importing common styles
 import Styles from './Styles';
+
+// importing firebase
+import * as firebase from 'firebase';
 
 const { width, height } = Dimensions.get('window');
 const {
@@ -117,6 +122,63 @@ class LoginScreen extends Component {
             outputRange: [180, 360],
             extrapolate: Extrapolate.CLAMP
         })
+
+        this.state = {
+            email: '',
+            password: ''
+        }
+
+        this.emailInput = null
+        this.passwordInput = null
+
+        this.user = null
+    }
+
+    setEmail = (userEmail) => {
+        if (userEmail === '') {
+            this.setState({ email: '' });
+        }
+        this.setState({ email: userEmail });
+    }
+
+    setPassword = (userPassword) => {
+        if (userPassword === '') {
+            this.setState({ password: '' });
+        }
+        this.setState({ password: userPassword });
+    }
+
+    onSubmitLogin = () => {
+        const { email, password } = this.state;
+        if (!email) {
+            Alert.alert(
+                'Invalid Credentials',
+                'Please Provide an Email!',
+                [
+                    { text: 'ok', onPress: () => this.emailInput.focus() }
+                ]
+            )
+            return;
+        }
+
+        if (!password || password.length > 40 || password.length <6) {
+            Alert.alert(
+                'Invalid Credentials',
+                'Please make sure your password is in the range of 6 to 40 characters!',
+                [
+                    { text: 'ok', onPress: () => this.passwordInput.focus() }
+                ]
+            )
+            return;
+        }
+
+        firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userObject) => {
+            this.user = userObject;
+        })
+        .catch(function(error) {
+            console.log(error)
+        })
     }
 
     render() {
@@ -200,20 +262,30 @@ class LoginScreen extends Component {
                             </Animated.Text>
                         </Animated.View>
                     </TapGestureHandler>   
-                    <TextInput 
+                    <TextInput
+                        ref={(input) => { this.emailInput = input; }}
                         placeholder="Email"
                         style={styles.textInput}
                         placeholderTextColor="black"
+                        onChangeText={(email) => this.setEmail(email)}
+                        value={this.state.email}
                     />
-                    <TextInput 
+                    <TextInput
+                        ref={(input) => { this.passwordInput = input; }}
                         placeholder="PASSWORD"
                         style={styles.textInput}
                         placeholderTextColor="black"
+                        onChangeText={(password) => this.setPassword(password)}
+                        value={this.state.password}
                     />
 
-                    <Animated.View style={[ Styles.buttonLogin, Styles.buttonShadow ]}>
-                        <Text style={[ Styles.textSmallBold ]}>SIGN IN</Text>
-                    </Animated.View>
+                    <TouchableOpacity 
+                        onPress={this.onSubmitLogin}
+                    >
+                        <Animated.View style={[ Styles.buttonLogin, Styles.buttonShadow ]}>
+                            <Text style={[ Styles.textSmallBold ]}>SIGN IN</Text>
+                        </Animated.View>
+                    </TouchableOpacity>
                 </Animated.View>
             </View>
         );

@@ -43,4 +43,6 @@ target 'loginScreen' do
 
   # react-native-cli autolinking
   use_native_modules!
+  pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
+
 end

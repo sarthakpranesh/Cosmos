@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Asset } from 'expo-asset'; // for preloading assets
 import { AppLoading } from 'expo'; // till the time assets and other things are being loaded show the loading indicator
 
+// importing Firebase
+import * as firebase from './src/configs/firebase';
 
 import LoginScreen from './src/LoginScreen';
 
@@ -40,7 +42,6 @@ export default class App extends Component {
         />
       );
     }
-
     return <LoginScreen />
   }
 }
