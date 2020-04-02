@@ -6,11 +6,15 @@ import { AppLoading } from 'expo'; // till the time assets and other things are 
 // importing Firebase
 import * as firebase from './src/configs/firebase';
 
+// importing local db
+import { getUserDataAsync } from './src/utils/localDb';
+
+// import local database
+import * as LocalAsyncStorage from './src/utils/localDb';
+
 // importing Screens
 import LoginScreen from './src/LoginScreen';
-
-// importing different context
-import { Provider } from './src/context/UserContext';
+import Main from './src/Main';
 
 function cacheImages(images) {
   return images.map(image => {
@@ -23,11 +27,26 @@ function cacheImages(images) {
 }
 
 class UserStarting extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state={
       isReady: false,
     }
+  }
+
+  isUserLoggedIn = async () => {
+    const user = await getUserDataAsync();
+    console.log(user);
+    return user;
+  }
+
+  componentDidMount() {
+    this.isUserLoggedIn()
+      .then((user) => {
+        if(!!user.uid) {
+          this.props.navigation.navigate("Main", { user })
+        }
+      })
   }
 
   async _loadAssetsAsync() {
@@ -47,22 +66,17 @@ class UserStarting extends Component {
         />
       );
     }
-    return <LoginScreen />
+    return (
+      <LoginScreen {...this.props} />
+    );
   }
 }
 
 const defaultApp = createSwitchNavigator({
   UserStarting,
+  Main,
 }, {
-  initialRouteName: 'UserStarting'
+  initialRouteName: "UserStarting",
 })
 
-const App = createAppContainer(defaultApp);
-
-export default () => {
-  return (
-    <Provider>
-      <App />
-    </Provider>
-  );
-}
+export default createAppContainer(defaultApp);

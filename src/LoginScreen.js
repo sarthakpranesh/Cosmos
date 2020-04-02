@@ -19,6 +19,9 @@ import Styles from './Styles';
 // importing firebase
 import * as firebase from 'firebase';
 
+// importing Local Db
+import { storeUserDataAsync, getUserDataAsync } from './utils/localDb';
+
 // importing firebase functions
 import { addUserToDB, getUserObject } from "./utils/firebase";
 
@@ -71,8 +74,8 @@ function runTiming(clock, value, dest) {
   }
 
 class LoginScreen extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.buttonOpacity = new Value(1)
 
         this.onStateChange = event([
@@ -201,7 +204,8 @@ class LoginScreen extends Component {
         firebase.auth().signInWithEmailAndPassword(email, password)
         .then(async (userObject) => {
             const user = await getUserObject(userObject.user.uid);
-            console.log(user);
+            await storeUserDataAsync(user);
+            this.props.navigation.navigate("Main", { user });
         })
         .catch(function(error) {
             console.log(error);
@@ -262,8 +266,9 @@ class LoginScreen extends Component {
                     photoUrl: userObject.user.photoUrl ? userObject.user.photoURL : false,
                     uid: userObject.user.uid
                 }
-                const tmp = await addUserToDB(user);
-                console.log(tmp);
+                await addUserToDB(user);
+                await storeUserDataAsync(user);
+                this.props.navigation.navigate("Main", { user });
             })
             .catch(function(error) {
                 console.log(error.message)
