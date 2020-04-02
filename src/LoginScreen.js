@@ -1,4 +1,4 @@
-import React, { Component, useContext } from 'react';
+import React, { Component } from 'react';
 import {
     View,
     Text,
@@ -19,8 +19,8 @@ import Styles from './Styles';
 // importing firebase
 import * as firebase from 'firebase';
 
-// importing Context
-import { Context as UserContext } from './context/UserContext';
+// importing firebase functions
+import { addUserToDB, getUserObject } from "./utils/firebase";
 
 const { width, height } = Dimensions.get('window');
 const {
@@ -69,12 +69,6 @@ function runTiming(clock, value, dest) {
       state.position
     ]);
   }
-
-const loadUserContext = () => {
-    const { state, saveUserDetails } = useContext(UserContext);
-    console.log("User Context: ", state);
-    return { state, saveUserDetails};
-}
 
 class LoginScreen extends Component {
     constructor() {
@@ -149,12 +143,6 @@ class LoginScreen extends Component {
         this.context = null
     }
 
-    // componentDidMount() {
-    //     const context = loadUserContext();
-    //     this.setState({ context })
-        
-    // }
-
     setEmail = (userEmail) => {
         if (userEmail === '') {
             this.setState({ email: '' });
@@ -211,12 +199,20 @@ class LoginScreen extends Component {
         }
 
         firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((userObject) => {
-            this.user = userObject.user;
-            console.log(this.user);
+        .then(async (userObject) => {
+            const user = await getUserObject(userObject.user.uid);
+            console.log(user);
         })
         .catch(function(error) {
             console.log(error);
+            Alert.alert(
+                'Problem logging In',
+                error.message,
+                [
+                    { text: 'ok' }
+                ]
+            )
+            return;
         })
     }
 
@@ -256,12 +252,28 @@ class LoginScreen extends Component {
         }
 
         firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then((userObject) => {
-                this.user = userObject.user;
-                console.log(this.user);
+            .then(async (userObject) => {
+                var user = {
+                    username: userObject.user.displayName ? userObject.user.displayName : name,
+                    name: name,
+                    email: userObject.user.email,
+                    isEmailVerified: userObject.user.emailVerified,
+                    phoneNumber: userObject.user.phoneNumber ? userObject.user.phoneNumber : false,
+                    photoUrl: userObject.user.photoUrl ? userObject.user.photoURL : false,
+                    uid: userObject.user.uid
+                }
+                const tmp = await addUserToDB(user);
+                console.log(tmp);
             })
             .catch(function(error) {
-                console.log(error)
+                console.log(error.message)
+                Alert.alert(
+                    'User Exists',
+                    'User with that Email already exists! Try Login instead',
+                    [
+                        { text: 'ok' }
+                    ]
+                )
             })
     }
 
