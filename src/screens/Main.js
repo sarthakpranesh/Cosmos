@@ -54,10 +54,12 @@ class Main extends Component {
 
     render() {
         const { user } = this.state;
-
         return (
             <>
-            <Header />
+            <Header
+                // username={user.username}
+                // uid={user.uid}
+            />
             <View style={styles.mainContainer}>
                 <Swiper 
                     cards={Users}

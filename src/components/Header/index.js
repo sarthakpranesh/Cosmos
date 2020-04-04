@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    StatusBar
+    StatusBar,
+    TouchableOpacity
 } from 'react-native';
 import { Feather } from '@expo/vector-icons'
 
@@ -13,11 +14,18 @@ class Header extends Component {
     constructor(props) {
         super(props)
         this.state={
-            
+            username: props.username ? props.username : 'User1234',
+            uid: props.uid ? props.uid : '0AUB8r2qpePGrPRmAtscb54Y27b2',
         }
     }
 
+    goToScreen = (screen) => {
+        const { navigation } = this.props
+        navigation.navigate(screen, { uid })
+    }
+
     render() {
+        const { username, uid } = this.state;
         return (
             <>
                 <StatusBar
@@ -29,10 +37,18 @@ class Header extends Component {
                 />
                 <View style={styles.headerWrapper}>
                     <View style={styles.innerContainer}>
-                        <Feather name="user" size={24} style={styles.headerIcon}/>
-                        <Text>Username</Text>
+                        <TouchableOpacity
+                            onPress={() => this.goToScreen("ProfileScreen", uid)}
+                        >
+                            <Feather name="user" size={24} style={styles.headerIcon}/>
+                        </TouchableOpacity>
+                        <Text>{ username }</Text>
                     </View>
-                    <Feather name="inbox" size={24} style={styles.headerIcon}/>
+                    <TouchableOpacity
+                        onPress={() => this.goToScreen("NotificationScreen", uid)}
+                    >
+                        <Feather name="inbox" size={24} style={styles.headerIcon}/>
+                    </TouchableOpacity>
                 </View>
             </>
         );
