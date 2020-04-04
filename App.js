@@ -12,6 +12,7 @@ import { getUserDataAsync } from './src/utils/localDb';
 // importing Screens
 import LoginScreen from './src/screens/LoginScreen';
 import Main from './src/screens/Main';
+import ProfileScreen from './src/screens/ProfileScreen';
 
 function cacheImages(images) {
   return images.map(image => {
@@ -68,6 +69,13 @@ class UserStarting extends Component {
     );
   }
 }
+
+const Stack = createStackNavigator({
+  Main,
+  ProfileScreen,
+}, {
+  initialRouteName: "Main",
+});
 
 const defaultApp = createSwitchNavigator({
   UserStarting,
