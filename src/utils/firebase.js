@@ -18,7 +18,7 @@ export const getUserObject = (uid) => {
         const userDB = firebase.database().ref('users/').child(uid)
         userDB.once("value")
             .then((user) => {
-                resolve(user);
+                resolve(user.val());
             })
             .catch((err) => {
                 reject(err);

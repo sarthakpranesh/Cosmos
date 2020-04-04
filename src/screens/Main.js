@@ -35,15 +35,11 @@ class Main extends Component {
         }
     }
 
-    componentWillMount() {
-        const user = this.props.navigation.getParam('user');
+    UNSAFE_componentWillMount() {
+        const user = this.props.navigation.getParam('user')
         this.setState({
             user
         })
-    }
-
-    componentDidMount() {
-        
     }
 
     onSwiped = () => {
@@ -55,12 +51,12 @@ class Main extends Component {
 
     render() {
         const { user } = this.state;
-        console.log(user);
+
         return (
             <>
                 <Header
-                    username={user ? user.username : undefined}
-                    uid={user ? user.uid : undefined}
+                    username={user.username}
+                    uid={user.uid}
                 />
                 <View style={styles.mainContainer}>
                     <Swiper 
