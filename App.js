@@ -9,12 +9,9 @@ import * as firebase from './src/configs/firebase';
 // importing local db
 import { getUserDataAsync } from './src/utils/localDb';
 
-// import local database
-import * as LocalAsyncStorage from './src/utils/localDb';
-
 // importing Screens
-import LoginScreen from './src/LoginScreen';
-import Main from './src/Main';
+import LoginScreen from './src/screens/LoginScreen';
+import Main from './src/screens/Main';
 
 function cacheImages(images) {
   return images.map(image => {

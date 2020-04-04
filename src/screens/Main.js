@@ -5,46 +5,25 @@ import {
     Button,
     StyleSheet,
     Dimensions,
-    Image
 } from 'react-native';
-import Animated from 'react-native-reanimated';
 import Swiper from 'react-native-deck-swiper';
 
+// importing components
+import Card from '../components/Cards';
+
 const Users = [
-    {id: '1', Image: require("../assets/bg.jpg"), price: '32432', name: 'sefeife'},
-    {id: '2', Image: require("../assets/bg.jpg"), price: '23432', name: 'sefeife'},
-    {id: '3', Image: require("../assets/bg.jpg"), price: '23432', name: 'sefeife'},
-    {id: '4', Image: require("../assets/bg.jpg"), price: '23432', name: 'sefeife'},
-    {id: '5', Image: require("../assets/bg.jpg"), price: '23432', name: 'sefeife'}
+    {id: '1', Image: require("../../assets/bg.jpg"), price: '32432', name: 'sefeife'},
+    {id: '2', Image: require("../../assets/bg.jpg"), price: '23432', name: 'sefeife'},
+    {id: '3', Image: require("../../assets/bg.jpg"), price: '23432', name: 'sefeife'},
+    {id: '4', Image: require("../../assets/bg.jpg"), price: '23432', name: 'sefeife'},
+    {id: '5', Image: require("../../assets/bg.jpg"), price: '23432', name: 'sefeife'}
 ]
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 // importing local db
-import { delUserDataAsync, getUserDataAsync } from './utils/localDb';
-
-class Card extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            card: props.card
-        }
-    }
-
-    render() {
-        const { card } = this.state;
-
-        return (
-            <View style={styles.card}>
-                <Image
-                    source={card.Image}
-                    style={styles.cardImage}
-                />
-            </View>
-        );
-    }
-}
+import { delUserDataAsync, getUserDataAsync } from '../utils/localDb';
 
 class Main extends Component {
     constructor(props) {
@@ -80,6 +59,7 @@ class Main extends Component {
                 <Swiper 
                     cards={Users}
                     cardIndex={this.state.index}
+                    keyExtractor={(card) => card.id}
                     renderCard={(card) => <Card card={card} />}
                     onSwiped={this.onSwiped}
                     stackSize={4}
@@ -126,6 +106,10 @@ class Main extends Component {
                     animateOverlayLabelsOpacity
                     animateCardOpacity
                     infinite
+                    onTapCard={(cardIndex) => console.log("Card Was Taped")}
+                    onSwipedRight={(cardIndex) => console.log(cardIndex)}
+                    onSwipedLeft={(cardIndex) => console.log(cardIndex)}
+                    onSwipedAll={() => console.log("All cards swiped")}
                 />
             </View>
         );
@@ -139,22 +123,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    card: {
-        flex: 0.8,
-        borderRadius: 8,
-        shadowRadius: 25,
-        shadowColor: '#000',
-        shadowOpacity: 0.08,
-        shadowOffset: { width: 0, height: 0 },
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-    },
-    cardImage: {
-        width: 200,
-        flex: 1,
-        resizeMode: 'contain'
-    }
 })
 
 export default Main;

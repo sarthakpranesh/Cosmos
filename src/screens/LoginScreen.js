@@ -14,16 +14,16 @@ import Animated, { Easing } from 'react-native-reanimated';
 import { State, TapGestureHandler } from 'react-native-gesture-handler';
 
 // importing common styles
-import Styles from './Styles';
+import Styles from '../Styles';
 
 // importing firebase
 import * as firebase from 'firebase';
 
 // importing Local Db
-import { storeUserDataAsync, getUserDataAsync } from './utils/localDb';
+import { storeUserDataAsync, getUserDataAsync } from '../utils/localDb';
 
 // importing firebase functions
-import { addUserToDB, getUserObject } from "./utils/firebase";
+import { addUserToDB, getUserObject } from "../utils/firebase";
 
 const { width, height } = Dimensions.get('window');
 const {
@@ -297,7 +297,7 @@ class LoginScreen extends Component {
                             <Circle r={height} cx={width/2} />
                         </ClipPath>
                         <Image
-                            href={require("../assets/bg.jpg")}
+                            href={require("../../assets/bg.jpg")}
                             width={width}
                             height={height}
                             preserveAspectRatio='xMidyMid slice'
