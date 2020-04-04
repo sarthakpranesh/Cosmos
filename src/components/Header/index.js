@@ -19,9 +19,9 @@ class Header extends Component {
         }
     }
 
-    goToScreen = (screen) => {
-        const { navigation } = this.props
-        navigation.navigate(screen, { uid })
+    goToScreen = (screen, uid) => {
+        console.log(this.props)
+        navigate(screen, { uid })
     }
 
     render() {

@@ -57,6 +57,7 @@ class Main extends Component {
                 <Header
                     username={user.username}
                     uid={user.uid}
+                    navigate={this.props.navigation.navigate}
                 />
                 <View style={styles.mainContainer}>
                     <Swiper 

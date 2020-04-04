@@ -70,7 +70,7 @@ class UserStarting extends Component {
   }
 }
 
-const Stack = createStackNavigator({
+const mainAppStack = createSwitchNavigator({
   Main,
   ProfileScreen,
 }, {
@@ -79,7 +79,7 @@ const Stack = createStackNavigator({
 
 const defaultApp = createSwitchNavigator({
   UserStarting,
-  Main,
+  mainAppStack,
 }, {
   initialRouteName: "UserStarting",
 })
