@@ -15,7 +15,7 @@ class Header extends Component {
         super(props)
         this.state={
             username: props.username ? props.username : 'User1234',
-            uid: props.uid ? props.uid : '0AUB8r2qpePGrPRmAtscb54Y27b2',
+            uid: props.uid ? props.uid : 'gfVVMvXZ3DQgHOZ4cc6coD50Pys1',
         }
     }
 

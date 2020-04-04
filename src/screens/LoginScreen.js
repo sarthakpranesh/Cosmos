@@ -202,24 +202,22 @@ class LoginScreen extends Component {
         }
 
         firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(async (userObject) => {
-            const user = await getUserObject(userObject.user.uid);
-            const tmp = await storeUserDataAsync(user);
-            console.log(tmp)
-            console.log(user);
-            this.props.navigation.navigate("Main", { user });
-        })
-        .catch(function(error) {
-            console.log(error);
-            Alert.alert(
-                'Problem logging In',
-                error.message,
-                [
-                    { text: 'ok' }
-                ]
-            )
-            return;
-        })
+            .then(async (userObject) => {
+                const user = await getUserObject(userObject.user.uid);
+                const tmp = await storeUserDataAsync(user);
+                this.props.navigation.navigate("Main", { user });
+            })
+            .catch(function(error) {
+                console.log(error);
+                Alert.alert(
+                    'Problem logging In',
+                    error.message,
+                    [
+                        { text: 'ok' }
+                    ]
+                )
+                return;
+            })
     }
 
     onSubmitSignUp = () => {

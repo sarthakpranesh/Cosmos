@@ -29,20 +29,21 @@ import { delUserDataAsync, getUserDataAsync } from '../utils/localDb';
 class Main extends Component {
     constructor(props) {
         super(props)
-        this.state ={
-            user: null,
+        this.state={
             index: 0,
+            user: null,
         }
     }
 
-    loadUser = async () => {
-        const user = await getUserDataAsync();
-        this.setState({ user })
+    componentWillMount() {
+        const user = this.props.navigation.getParam('user');
+        this.setState({
+            user
+        })
     }
 
     componentDidMount() {
-        const user = this.props.navigation.getParam('user');
-        this.setState({ user })
+        
     }
 
     onSwiped = () => {
@@ -54,69 +55,70 @@ class Main extends Component {
 
     render() {
         const { user } = this.state;
+        console.log(user);
         return (
             <>
-            <Header
-                // username={user.username}
-                // uid={user.uid}
-            />
-            <View style={styles.mainContainer}>
-                <Swiper 
-                    cards={Users}
-                    cardIndex={this.state.index}
-                    keyExtractor={(card) => card.id}
-                    renderCard={(card) => <Card card={card} />}
-                    onSwiped={this.onSwiped}
-                    stackSize={4}
-                    stackScale={10}
-                    stackSeparation={25}
-                    disableTopSwipe
-                    disableBottomSwipe
-                    overlayLabels={{
-                        left: {
-                            title: "Nope",
-                            style: {
-                                label:{
-                                    backgroundColor: 'red',
-                                    color: "white",
-                                    fontSize: 18,
-                                },
-                                wrapper: {
-                                    flexDirection: 'column',
-                                    alignItems: 'flex-end',
-                                    justifyContent: 'flex-start',
-                                    marginTop: 20,
-                                    paddingRight: 20,
-                                }
-                            }
-                        },
-                        right: {
-                            title: "Like",
-                            style: {
-                                label:{
-                                    backgroundColor: 'green',
-                                    color: "white",
-                                    fontSize: 18,
-                                },
-                                wrapper: {
-                                    flexDirection: 'column',
-                                    alignItems: 'flex-start',
-                                    justifyContent: 'flex-start',
-                                    marginTop: 20,
-                                    paddingLeft: 20,
-                                }
-                            }
-                        },
-                    }}
-                    animateOverlayLabelsOpacity
-                    animateCardOpacity
-                    infinite
-                    onTapCard={(cardIndex) => console.log("Card Was Taped")}
-                    onSwipedRight={(cardIndex) => console.log(cardIndex)}
-                    onSwipedLeft={(cardIndex) => console.log(cardIndex)}
-                    onSwipedAll={() => console.log("All cards swiped")}
+                <Header
+                    username={user ? user.username : undefined}
+                    uid={user ? user.uid : undefined}
                 />
-            </View>
+                <View style={styles.mainContainer}>
+                    <Swiper 
+                        cards={Users}
+                        cardIndex={this.state.index}
+                        keyExtractor={(card) => card.id}
+                        renderCard={(card) => <Card card={card} />}
+                        onSwiped={this.onSwiped}
+                        stackSize={4}
+                        stackScale={10}
+                        stackSeparation={25}
+                        disableTopSwipe
+                        disableBottomSwipe
+                        overlayLabels={{
+                            left: {
+                                title: "Nope",
+                                style: {
+                                    label:{
+                                        backgroundColor: 'red',
+                                        color: "white",
+                                        fontSize: 18,
+                                    },
+                                    wrapper: {
+                                        flexDirection: 'column',
+                                        alignItems: 'flex-end',
+                                        justifyContent: 'flex-start',
+                                        marginTop: 20,
+                                        paddingRight: 20,
+                                    }
+                                }
+                            },
+                            right: {
+                                title: "Like",
+                                style: {
+                                    label:{
+                                        backgroundColor: 'green',
+                                        color: "white",
+                                        fontSize: 18,
+                                    },
+                                    wrapper: {
+                                        flexDirection: 'column',
+                                        alignItems: 'flex-start',
+                                        justifyContent: 'flex-start',
+                                        marginTop: 20,
+                                        paddingLeft: 20,
+                                    }
+                                }
+                            },
+                        }}
+                        animateOverlayLabelsOpacity
+                        animateCardOpacity
+                        infinite
+                        onTapCard={(cardIndex) => console.log("Card Was Taped")}
+                        onSwipedRight={(cardIndex) => console.log(cardIndex)}
+                        onSwipedLeft={(cardIndex) => console.log(cardIndex)}
+                        onSwipedAll={() => console.log("All cards swiped")}
+                    />
+                </View>
             </>
         );
     }
