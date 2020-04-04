@@ -10,6 +10,7 @@ import Swiper from 'react-native-deck-swiper';
 
 // importing components
 import Card from '../components/Cards';
+import Header from '../components/Header'
 
 const Users = [
     {id: '1', Image: require("../../assets/bg.jpg"), price: '32432', name: 'sefeife'},
@@ -55,6 +56,8 @@ class Main extends Component {
         const { user } = this.state;
 
         return (
+            <>
+            <Header />
             <View style={styles.mainContainer}>
                 <Swiper 
                     cards={Users}
@@ -112,6 +115,7 @@ class Main extends Component {
                     onSwipedAll={() => console.log("All cards swiped")}
                 />
             </View>
+            </>
         );
     }
 }
