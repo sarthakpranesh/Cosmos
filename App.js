@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { Asset } from 'expo-asset'; // for preloading assets
 import { AppLoading } from 'expo'; // till the time assets and other things are being loaded show the loading indicator
 
@@ -13,6 +14,8 @@ import { getUserDataAsync } from './src/utils/localDb';
 import LoginScreen from './src/screens/LoginScreen';
 import Main from './src/screens/Main';
 import ProfileScreen from './src/screens/ProfileScreen';
+
+import Header from './src/components/Header'
 
 function cacheImages(images) {
   return images.map(image => {
@@ -70,11 +73,13 @@ class UserStarting extends Component {
   }
 }
 
-const mainAppStack = createSwitchNavigator({
+const mainAppStack = createStackNavigator({
   Main,
   ProfileScreen,
 }, {
-  initialRouteName: "Main",
+  initialRouteName: 'Main',
+  backBehavior: 'initialRoute',
+  headerMode: 'none',
 });
 
 const defaultApp = createSwitchNavigator({
