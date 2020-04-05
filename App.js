@@ -14,8 +14,7 @@ import { getUserDataAsync } from './src/utils/localDb';
 import LoginScreen from './src/screens/LoginScreen';
 import Main from './src/screens/Main';
 import ProfileScreen from './src/screens/ProfileScreen';
-
-import Header from './src/components/Header'
+import MainSettingsScreen from './src/screens/MainSettingsScreen';
 
 function cacheImages(images) {
   return images.map(image => {
@@ -73,9 +72,18 @@ class UserStarting extends Component {
   }
 }
 
+const settingsStack = createStackNavigator({
+  ProfileScreen,
+  MainSettingsScreen,
+}, {
+  initialRouteName: 'ProfileScreen',
+  backBehavior: 'initialRoute',
+  headerMode: 'none',
+})
+
 const mainAppStack = createStackNavigator({
   Main,
-  ProfileScreen,
+  settingsStack,
 }, {
   initialRouteName: 'Main',
   backBehavior: 'initialRoute',
