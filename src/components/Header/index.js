@@ -19,9 +19,9 @@ class Header extends Component {
         }
     }
 
-    goToScreen = (screen, uid) => {
+    goToScreen = (screen) => {
         const { navigate } = this.props;
-        const { username } = this.state;
+        const { username, uid } = this.state;
         if (username === 'Profile') {
             navigate("Main");
             return
@@ -61,7 +61,7 @@ class Header extends Component {
                         null
                         :
                         <TouchableOpacity
-                            onPress={() => this.goToScreen("NotificationScreen", uid)}
+                            onPress={() => this.goToScreen("NotificationScreen")}
                         >
                             <Feather name="inbox" size={24} style={styles.headerIcon}/>
                         </TouchableOpacity>
