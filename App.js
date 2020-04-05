@@ -35,18 +35,20 @@ class UserStarting extends Component {
   }
 
   isUserLoggedIn = async () => {
-    const user = await getUserDataAsync();
+    
     console.log(user);
     return user;
   }
 
-  componentDidMount() {
-    this.isUserLoggedIn()
-      .then((user) => {
-        if(!!user.uid) {
-          this.props.navigation.navigate("Main", { user })
-        }
-      })
+  async componentDidMount() {
+    try {
+      const user = await getUserDataAsync();
+      if(user) {
+        this.props.navigation.navigate("Main", { user })
+      }
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   async _loadAssetsAsync() {

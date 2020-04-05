@@ -4,7 +4,8 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "build-test": "expo build:android -t apk --release-channel test"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.5",
