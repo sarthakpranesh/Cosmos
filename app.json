@@ -12,6 +12,10 @@
       "ios",
       "android",
       "web"
-    ]
+    ],
+    "android": {
+      "package": "com.MonsoonVibe.cosmos",
+      "versionCode": 1
+    }
   }
 }
