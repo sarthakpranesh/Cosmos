@@ -5,7 +5,7 @@ import {
     StatusBar,
     TouchableOpacity
 } from 'react-native';
-import { Feather } from '@expo/vector-icons'
+import { Feather, Ionicons } from '@expo/vector-icons'
 
 // importing styles
 import styles from './styles';
@@ -20,8 +20,13 @@ class Header extends Component {
     }
 
     goToScreen = (screen) => {
-        const { navigation } = this.props
-        navigation.navigate(screen, { uid })
+        const { navigate } = this.props;
+        const { username, uid } = this.state;
+        if (username === 'Profile') {
+            navigate("Main");
+            return
+        }
+        navigate(screen, { uid })
     }
 
     render() {
@@ -38,17 +43,29 @@ class Header extends Component {
                 <View style={styles.headerWrapper}>
                     <View style={styles.innerContainer}>
                         <TouchableOpacity
-                            onPress={() => this.goToScreen("ProfileScreen", uid)}
+                            onPress={() => this.goToScreen("ProfileScreen")}
                         >
-                            <Feather name="user" size={24} style={styles.headerIcon}/>
+                            {
+                                this.state.username === 'Profile'
+                                ?
+                                <Ionicons name='ios-arrow-back' size={24} style={styles.headerIcon}/>
+                                :
+                                <Feather name='user' size={24} style={styles.headerIcon}/>
+                            }
                         </TouchableOpacity>
                         <Text>{ username }</Text>
                     </View>
-                    <TouchableOpacity
-                        onPress={() => this.goToScreen("NotificationScreen", uid)}
-                    >
-                        <Feather name="inbox" size={24} style={styles.headerIcon}/>
-                    </TouchableOpacity>
+                    {
+                        this.state.username === 'Profile'
+                        ?
+                        null
+                        :
+                        <TouchableOpacity
+                            onPress={() => this.goToScreen("NotificationScreen")}
+                        >
+                            <Feather name="inbox" size={24} style={styles.headerIcon}/>
+                        </TouchableOpacity>
+                    }
                 </View>
             </>
         );

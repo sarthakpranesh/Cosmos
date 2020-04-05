@@ -24,6 +24,6 @@ export default StyleSheet.create({
         justifyContent: 'center',
     },
     headerIcon: {
-        paddingHorizontal: 16,
+        padding: 16, 
     }
 });

@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/masked-view": "0.1.5",
     "expo": "~36.0.0",
     "expo-asset": "8.0.0",
     "expo-sqlite": "8.0.0",
@@ -17,12 +18,14 @@
     "react-native-deck-swiper": "1.5.25",
     "react-native-gesture-handler": "1.5.0",
     "react-native-reanimated": "1.4.0",
+    "react-native-safe-area-context": "0.6.0",
     "react-native-screens": "2.0.0-alpha.12",
     "react-native-svg": "9.13.3",
     "react-native-unimodules": "~0.7.0",
     "react-native-view-overflow": "^0.0.5",
     "react-native-web": "~0.11.7",
-    "react-navigation": "^4.3.6"
+    "react-navigation": "^4.3.6",
+    "react-navigation-stack": "^2.3.11"
   },
   "devDependencies": {
     "@babel/core": "~7.6.0",
