@@ -5,12 +5,12 @@ export const storeUserDataAsync = async (user) => {
         const db = SQLite.openDatabase('userDb');
         db.transaction( tx => {
             tx.executeSql(
-                "create table if not exists userDb (userJson text);",
+                "create table if not exists user (userJson text);",
                 []
             );
     
             tx.executeSql(
-                "insert into userDb (userJson) values (?)",
+                "insert into user (userJson) values (?)",
                 [ JSON.stringify(user) ],
                 () => resolve(),
                 () => reject("Can't store locally")
@@ -24,10 +24,11 @@ export const getUserDataAsync = async () => {
         const db = SQLite.openDatabase('userDb');
         db.transaction( tx => {
             tx.executeSql(
-                "select * from userDb",
+                "select * from user",
                 [],
                 (_, { rows: { _array } }) => {
                     if (_array[0]) {
+                        console.log(_array)
                         resolve(JSON.parse(_array[0].userJson));
                     }
                 },
@@ -42,11 +43,13 @@ export const delUserDataAsync = async (user) => {
         const db = SQLite.openDatabase('userDb');
         db.transaction( tx => {
             tx.executeSql(
-                "DELETE FROM userDb WHERE userJson = ?",
-                [JSON.stringify(user)],
+                "delete from user",
+                [],
                 () => resolve(),
-                (err) => console.log(err)
+                (err) => resolve()
               );
-          });
+        });
+
+        resolve();
   })
 }

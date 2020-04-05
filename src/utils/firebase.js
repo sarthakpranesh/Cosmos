@@ -25,3 +25,16 @@ export const getUserObject = (uid) => {
             })
     })
 }
+
+export const updateUserObject = (uid, updates) => {
+    return new Promise((resolve, reject) => {
+        const userDB = firebase.database().ref('users/').child(uid)
+        userDB.update(updates)
+            .then((resp) => {
+                resolve();
+            })
+            .catch((err) => {
+                reject();
+            })
+    })
+}
