@@ -1,9 +1,9 @@
 {
-  "name": "loginScreen",
-  "displayName": "loginScreen",
+  "name": "Cosmos",
+  "displayName": "Cosmos",
   "expo": {
-    "name": "loginScreen",
-    "slug": "loginScreen",
+    "name": "cosmos",
+    "slug": "cosmos",
     "privacy": "unlisted",
     "sdkVersion": "36.0.0",
     "version": "1.0.0",
@@ -14,7 +14,7 @@
       "web"
     ],
     "android": {
-      "package": "com.MonsoonVibe.cosmos",
+      "package": "com.monsoonvibe.cosmos",
       "versionCode": 1
     }
   }
