@@ -1,5 +1,6 @@
 import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
 
 // importing Firebase
 import * as firebase from './src/configs/firebase';
@@ -15,7 +16,7 @@ import Main from './src/screens/Main';
 import ProfileScreen from './src/screens/ProfileScreen';
 import MainSettingsScreen from './src/screens/MainSettingsScreen';
 
-const settingsStack = createStackNavigator(
+const profileStack = createStackNavigator(
   {
     ProfileScreen,
     MainSettingsScreen,
@@ -27,13 +28,17 @@ const settingsStack = createStackNavigator(
   },
 );
 
-const mainAppStack = createStackNavigator(
+const mainAppStack = createBottomTabNavigator(
   {
-    Main,
-    settingsStack,
+    ' Home ': {
+      screen: Main,
+    },
+    ' Profile ': {
+      screen: profileStack,
+    },
   },
   {
-    initialRouteName: 'Main',
+    initialRouteName: ' Home ',
     backBehavior: 'initialRoute',
     headerMode: 'none',
   },

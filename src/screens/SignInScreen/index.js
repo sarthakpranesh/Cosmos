@@ -70,7 +70,7 @@ class SignInScreen extends Component {
       .signInWithEmailAndPassword(email, password)
       .then(async (userObject) => {
         const user = await getUserObject(userObject.user.uid);
-        this.props.navigation.navigate('Main', {user});
+        this.props.navigation.navigate(' Home ', {user});
       })
       .catch(function (error) {
         console.log(error);
