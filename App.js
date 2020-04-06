@@ -8,7 +8,9 @@ import * as firebase from './src/configs/firebase';
 // import {getUserDataAsync} from './src/utils/localDb';
 
 // importing Screens
-import LoginScreen from './src/screens/LoginScreen';
+import LandingScreen from './src/screens/LandingScreen';
+import SignUpScreen from './src/screens/SignUpScreen';
+import SignInScreen from './src/screens/SignInScreen';
 import Main from './src/screens/Main';
 import ProfileScreen from './src/screens/ProfileScreen';
 import MainSettingsScreen from './src/screens/MainSettingsScreen';
@@ -37,13 +39,24 @@ const mainAppStack = createStackNavigator(
   },
 );
 
+const userStartingStack = createSwitchNavigator(
+  {
+    LandingScreen,
+    SignUpScreen,
+    SignInScreen,
+  },
+  {
+    initialRouteName: 'LandingScreen',
+  },
+);
+
 const defaultApp = createSwitchNavigator(
   {
-    LoginScreen,
+    userStartingStack,
     mainAppStack,
   },
   {
-    initialRouteName: 'LoginScreen',
+    initialRouteName: 'userStartingStack',
   },
 );
 
