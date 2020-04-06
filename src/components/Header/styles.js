@@ -20,6 +20,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 16,
   },
   headerIcon: {
     padding: 16,

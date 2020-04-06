@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {View, Text, StatusBar, TouchableOpacity} from 'react-native';
+import Svg, {Image} from 'react-native-svg';
 
 // importing styles
 import styles from './styles';
+import Styles from '../../Styles';
 
 class Header extends Component {
   constructor(props) {
@@ -13,33 +15,6 @@ class Header extends Component {
     };
   }
 
-  renderLeftButton = () => {
-    const {username, uid} = this.state;
-    const {navigate} = this.props;
-    if (username === 'Profile') {
-      return (
-        <TouchableOpacity onPress={() => navigate('Main')}>
-          <Text>Back</Text>
-        </TouchableOpacity>
-      );
-    }
-
-    if (username === 'Settings') {
-      return (
-        <TouchableOpacity
-          onPress={() => navigate('ProfileScreen', {username, uid})}>
-          <Text>Back</Text>
-        </TouchableOpacity>
-      );
-    }
-    return (
-      <TouchableOpacity
-        onPress={() => navigate('ProfileScreen', {username, uid})}>
-        <Text>Profile</Text>
-      </TouchableOpacity>
-    );
-  };
-
   renderRightButton = () => {
     const {username, uid} = this.state;
     const {navigate} = this.props;
@@ -47,18 +22,40 @@ class Header extends Component {
     if (username === 'Profile') {
       return (
         <TouchableOpacity onPress={() => navigate('MainSettingsScreen', {uid})}>
-          <Text>Settings</Text>
+          <Svg height={24} width={24} style={styles.headerIcon}>
+            <Image
+              height={24}
+              width={24}
+              href={require('../../../assets/icons/settings.png')}
+            />
+          </Svg>
         </TouchableOpacity>
       );
     }
 
     if (username === 'Settings') {
-      return;
+      return (
+        <TouchableOpacity onPress={() => navigate('ProfileScreen', {uid})}>
+          <Svg height={24} width={24} style={styles.headerIcon}>
+            <Image
+              height={24}
+              width={24}
+              href={require('../../../assets/icons/back.png')}
+            />
+          </Svg>
+        </TouchableOpacity>
+      );
     }
 
     return (
       <TouchableOpacity onPress={() => navigate('NotificationScreen', {uid})}>
-        <Text>Inbox</Text>
+        <Svg height={24} width={24} style={styles.headerIcon}>
+          <Image
+            height={24}
+            width={24}
+            href={require('../../../assets/icons/home.png')}
+          />
+        </Svg>
       </TouchableOpacity>
     );
   };
@@ -75,11 +72,21 @@ class Header extends Component {
           translucent={false}
         />
         <View style={styles.headerWrapper}>
-          <View style={styles.innerContainer}>
-            {this.renderLeftButton()}
-            <Text>{username}</Text>
-          </View>
-          {this.renderRightButton()}
+          {username === 'Settings' ? (
+            <>
+              <View style={styles.innerContainer}>
+                {this.renderRightButton()}
+                <Text styles={Styles.textSmallBold}>{username}</Text>
+              </View>
+            </>
+          ) : (
+            <>
+              <View style={styles.innerContainer}>
+                <Text styles={Styles.textSmallBold}>{username}</Text>
+              </View>
+              {this.renderRightButton()}
+            </>
+          )}
         </View>
       </>
     );
