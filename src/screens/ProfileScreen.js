@@ -17,6 +17,10 @@ import Styles from '../Styles';
 // importing components
 import Header from '../components/Header';
 import CacheImage from './CacheImage';
+import LoadingIndicator from '../components/LoadingIndicator';
+
+// importing firebase
+import * as firebase from 'firebase';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -41,21 +45,28 @@ class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {},
-      uid: this.props.navigation.getParam('uid'),
+      user: null,
+      isLoading: true,
     };
   }
 
   async UNSAFE_componentWillMount() {
-    const {uid} = this.state;
+    const uid = firebase.auth().currentUser.uid;
     const user = await getUserObject(uid);
     this.setState({
-      user,
+      user: user,
+    });
+    this.setState({
+      isLoading: false,
     });
   }
 
   render() {
     const {user} = this.state;
+
+    if (this.state.isLoading) {
+      return <LoadingIndicator />;
+    }
 
     return (
       <>

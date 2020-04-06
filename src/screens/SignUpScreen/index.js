@@ -100,7 +100,7 @@ class SignUpScreen extends Component {
           uid: userObject.user.uid,
         };
         await addUserToDB(user);
-        this.props.navigation.navigate(' Home ', {user});
+        this.props.navigation.navigate(' Home ');
       })
       .catch(function (error) {
         console.log(error.message);
