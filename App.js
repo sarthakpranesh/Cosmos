@@ -2,6 +2,9 @@ import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 
+import React from 'react';
+import Svg, {Image} from 'react-native-svg';
+
 // importing Firebase
 import * as firebase from './src/configs/firebase';
 
@@ -40,7 +43,43 @@ const mainAppStack = createBottomTabNavigator(
   {
     initialRouteName: ' Home ',
     backBehavior: 'initialRoute',
-    headerMode: 'none',
+    activeTintColor: 'green',
+    defaultNavigationOptions: ({navigation}) => ({
+      tabBarIcon: ({focused, horizontal, tintColor}) => {
+        const {routeName} = navigation.state;
+        if (routeName === ' Home ') {
+          return (
+            <Svg height={24} width={24}>
+              <Image
+                height={24}
+                width={24}
+                href={require('./assets/icons/home.png')}
+              />
+            </Svg>
+          );
+        }
+
+        return (
+          <Svg height={24} width={24}>
+            <Image
+              height={24}
+              width={24}
+              href={require('./assets/icons/profile.png')}
+            />
+          </Svg>
+        );
+      },
+    }),
+    tabBarOptions: {
+      showLabel: false,
+      showIcon: true,
+      activeBackgroundColor: 'rgba(0,0,0, 0.1)',
+      activeTintColor: 'red',
+      inactiveTintColor: 'gray',
+      keyboardHidesTabBar: true,
+    },
+    animationEnabled: true,
+    swipeEnabled: false,
   },
 );
 
