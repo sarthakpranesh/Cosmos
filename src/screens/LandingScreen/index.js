@@ -16,8 +16,8 @@ import Styles from '../../Styles';
 // importing firebase
 import * as firebase from 'firebase';
 
-// importing firebase functions
-import {addUserToDB, getUserObject} from '../../utils/firebase';
+// importing components
+import ButtonLarge from '../../components/ButtonLarge';
 
 const {width, height} = Dimensions.get('window');
 
@@ -46,25 +46,15 @@ class LandingScreen extends Component {
 
         {/* Different Login Options */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('SignInScreen')}>
-            <View style={[Styles.buttonLogin, Styles.buttonShadow]}>
-              <Text style={Styles.btnText}>SIGN IN</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('SignUpScreen')}>
-            <View
-              style={[
-                Styles.buttonLogin,
-                Styles.buttonShadow,
-                {
-                  backgroundColor: '#2e71dc',
-                },
-              ]}>
-              <Text style={[Styles.btnText, {color: 'white'}]}>SIGN UP</Text>
-            </View>
-          </TouchableOpacity>
+          <ButtonLarge
+            onPress={() => this.props.navigation.navigate('SignInScreen')}
+            title="Sign In"
+          />
+          <ButtonLarge
+            onPress={() => this.props.navigation.navigate('SignUpScreen')}
+            bigUglyBlue
+            title="Sign Up"
+          />
         </View>
       </View>
     );

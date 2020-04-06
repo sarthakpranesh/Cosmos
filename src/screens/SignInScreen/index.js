@@ -17,6 +17,9 @@ import Styles from '../../Styles';
 // importing firebase
 import * as firebase from 'firebase';
 
+// importing components
+import ButtonLogin from '../../components/ButtonLarge';
+
 class SignInScreen extends Component {
   constructor(props) {
     super(props);
@@ -109,18 +112,7 @@ class SignInScreen extends Component {
               onChangeText={(password) => this.setPassword(password)}
               value={this.state.password}
             />
-            <TouchableOpacity onPress={() => this.onSubmitSignIn()}>
-              <View
-                style={[
-                  Styles.buttonLogin,
-                  Styles.buttonShadow,
-                  {
-                    backgroundColor: '#2e71dc',
-                  },
-                ]}>
-                <Text style={[Styles.btnText, {color: 'white'}]}>LOGIN</Text>
-              </View>
-            </TouchableOpacity>
+            <ButtonLogin onPress={this.onSubmitSignIn} title="Login" />
           </View>
         </View>
       </>

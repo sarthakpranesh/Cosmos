@@ -15,47 +15,44 @@ import {
 import styles from './styles';
 import Styles from '../../Styles';
 
+// importing firebase
+import * as firebase from 'firebase';
+
 // importing firebase utils
 import {updateUserObject, getUserObject} from '../../utils/firebase';
 
 // importing components
 import Header from '../../components/Header';
+import ButtonLarge from '../../components/ButtonLarge';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 class MainSettingsScreen extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      uid: this.props.navigation.getParam('uid'),
-      username: '',
-      name: '',
-      phoneNumber: '',
-      photoUrl: '',
-      email: '',
+      uid: null,
+      username: null,
+      name: null,
+      email: null,
+      isLoading: true,
+      opacity: 0.2,
     };
 
-    this.user = {};
+    this.user = null;
   }
 
   async UNSAFE_componentWillMount() {
-    var user = {
-      username: 'fsdfs',
-      name: 'ddc',
-      phoneNumber: '234567',
-      photoUrl: 'qwertyu',
-      email: 'sarthakpdvf',
-      uid: 'sfsdfsd',
-    };
+    var uid = firebase.auth().currentUser.uid;
+    const user = await getUserObject(uid);
     this.user = user;
     this.setState({
+      uid: uid,
       username: user.username,
       name: user.name,
-      phoneNumber: user.phoneNumber,
-      photoUrl: user.photoUrl,
       email: user.email,
-      uid: user.uid,
-
       opacity: 1,
+      isLoading: false,
     });
   }
 
@@ -97,7 +94,6 @@ class MainSettingsScreen extends Component {
   onSubmit = async () => {
     const {username, name, uid} = this.state;
     if (this.user.username === username && this.user.name === name) {
-      console.log('sdkfdsbfudb');
       return;
     }
 
@@ -111,7 +107,6 @@ class MainSettingsScreen extends Component {
       return;
     }
 
-    console.log(uid);
     updateUserObject(uid, {username, name})
       .then(async () => {
         const user = await getUserObject(uid);
@@ -137,64 +132,72 @@ class MainSettingsScreen extends Component {
       });
   };
 
+  onSignOut = async () => {
+    const user = firebase.auth().currentUser;
+    user
+      .delete()
+      .then(() => {
+        this.props.navigation.navigate('LandingScreen');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   render() {
     const {navigation} = this.props;
+
+    if (this.state.isLoading) {
+      return <LoadingIndicator />;
+    }
 
     return (
       <>
         <Header username="Settings" navigate={navigation.navigate} />
-        <ScrollView>
-          <View style={styles.mainContainer}>
+        <ScrollView style={{backgroundColor: 'white'}}>
+          <View style={[Styles.container, styles.inputWrapper]}>
             <Image
               source={require('../../../assets/bg.jpg')}
               style={styles.userImage}
             />
-            <View style={styles.userValueInput}>
-              <View style={{marginVertical: 10}}>
-                <Text>Username:</Text>
-                <TextInput
-                  value={this.state.username}
-                  style={styles.textInput}
-                  onChangeText={(username) => this.setUsername(username)}
-                  onKeyPress={() => this.checkForChange()}
-                  placeholder="Username"
-                />
-              </View>
-              <View style={{marginVertical: 10}}>
-                <Text>Name:</Text>
-                <TextInput
-                  value={this.state.name}
-                  style={styles.textInput}
-                  onChangeText={(name) => this.setName(name)}
-                  onKeyPress={() => this.checkForChange()}
-                  placeholder="Name"
-                />
-              </View>
-              <View style={{marginVertical: 10}}>
-                <Text>Email:</Text>
-                <TextInput
-                  value={this.state.email}
-                  style={[
-                    styles.textInput,
-                    {backgroundColor: 'rgba(0,0,0, 0.1)'},
-                  ]}
-                  editable={false}
-                />
-              </View>
-              <TouchableOpacity
-                onPress={() => this.onSubmit()}
-                style={[Styles.buttonLogin, Styles.buttonShadow, styles.btn]}
-                activeOpacity={this.state.opacity}>
-                <Text style={Styles.textSmallBold}>Save</Text>
-              </TouchableOpacity>
-              <Button
-                title="Sign out"
-                onPress={async () => {
-                  navigation.navigate('LoginScreenTemp');
-                  return;
-                }}
+            <View style={{marginVertical: 2}}>
+              <Text style={styles.label}>Username</Text>
+              <TextInput
+                value={this.state.username}
+                style={Styles.textInput}
+                onChangeText={(username) => this.setUsername(username)}
+                onKeyPress={() => this.checkForChange()}
+                placeholder="Username"
               />
             </View>
+            <View style={{marginVertical: 2}}>
+              <Text style={styles.label}>Name</Text>
+              <TextInput
+                value={this.state.name}
+                style={Styles.textInput}
+                onChangeText={(name) => this.setName(name)}
+                onKeyPress={() => this.checkForChange()}
+                placeholder="Name"
+              />
+            </View>
+            <View style={{marginVertical: 2}}>
+              <Text style={styles.label}>Email</Text>
+              <TextInput
+                value={this.state.email}
+                style={[
+                  Styles.textInput,
+                  {backgroundColor: 'rgba(0,0,0, 0.1)'},
+                ]}
+                editable={false}
+              />
+            </View>
+
+            <ButtonLarge
+              onPress={this.onSubmit}
+              title="Update Account"
+              opacity={this.state.opacity}
+            />
+            <ButtonLarge onPress={this.onSignOut} title="Sign Out" />
           </View>
         </ScrollView>
       </>

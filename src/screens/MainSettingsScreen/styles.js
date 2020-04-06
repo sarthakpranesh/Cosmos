@@ -19,28 +19,15 @@ export default StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 10,
     shadowColor: '#000',
-  },
-  userValueInput: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
 
     alignSelf: 'center',
-    paddingTop: 40,
+    marginVertical: 20,
   },
-  textInput: {
-    height: 40,
-    width: Dimensions.get('window').width - 50,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 6,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+  inputWrapper: {
+    justifyContent: 'center',
+  },
+  label: {
+    textAlign: 'center',
+  },
 
-    fontSize: 16,
-  },
-  btn: {
-    width: Dimensions.get('window').width - 50,
-    marginTop: 20,
-  },
 });
