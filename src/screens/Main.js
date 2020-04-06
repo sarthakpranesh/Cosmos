@@ -1,10 +1,24 @@
 import React, {Component} from 'react';
-import {View, Text, Button, StyleSheet, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Dimensions,
+  ActivityIndicator,
+} from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 
 // importing components
 import Card from '../components/Cards';
 import Header from '../components/Header';
+import LoadingIndicator from '../components/LoadingIndicator';
+
+// importing firebase
+import * as firebase from 'firebase';
+
+// importing firebase utils
+import {getUserObject} from '../utils/firebase';
 
 const Users = [
   {
@@ -48,13 +62,22 @@ class Main extends Component {
     this.state = {
       index: 0,
       user: null,
+      isLoading: true,
     };
   }
 
-  UNSAFE_componentWillMount() {
-    const user = this.props.navigation.getParam('user');
+  async UNSAFE_componentWillMount() {
+    const uid = firebase.auth().currentUser.uid;
+    if (!uid) {
+      this.props.navigation.navigate('userStartingStack');
+      return;
+    }
+    const user = await getUserObject(uid);
     this.setState({
-      user,
+      user: user,
+    });
+    this.setState({
+      isLoading: false,
     });
   }
 
@@ -67,6 +90,10 @@ class Main extends Component {
 
   render() {
     const {user} = this.state;
+
+    if (this.state.isLoading) {
+      return <LoadingIndicator />;
+    }
 
     return (
       <>

@@ -26,6 +26,16 @@ class LandingScreen extends Component {
     super(props);
   }
 
+  async UNSAFE_componentWillMount() {
+    const user = await firebase.auth().currentUser;
+    if (user) {
+      console.log(user.uid);
+      this.props.navigation.navigate('mainAppStack');
+    } else {
+      console.log('User not logged');
+    }
+  }
+
   render() {
     return (
       <View style={Styles.container} behavior={'height'}>

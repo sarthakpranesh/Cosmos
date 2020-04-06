@@ -17,9 +17,6 @@ import Styles from '../../Styles';
 // importing firebase
 import * as firebase from 'firebase';
 
-// importing firebase functions
-import {getUserObject} from '../../utils/firebase';
-
 class SignInScreen extends Component {
   constructor(props) {
     super(props);
@@ -69,8 +66,7 @@ class SignInScreen extends Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(async (userObject) => {
-        const user = await getUserObject(userObject.user.uid);
-        this.props.navigation.navigate(' Home ', {user});
+        this.props.navigation.navigate(' Home ');
       })
       .catch(function (error) {
         console.log(error);
