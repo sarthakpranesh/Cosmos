@@ -7,6 +7,7 @@ import {
     Image,
     TouchableOpacity,
     Alert,
+    Button
 } from 'react-native';
 
 // importing styles
@@ -187,6 +188,14 @@ class MainSettingsScreen extends Component {
                                 Save
                             </Text>
                         </TouchableOpacity>
+                        <Button
+                            title="Sign out"
+                            onPress={async () => {
+                                delUserDataAsync()
+                                navigation.navigate("LoginScreenTemp");
+                                return;
+                            }}
+                        />
                     </View>                    
                 </View>
             </ScrollView>

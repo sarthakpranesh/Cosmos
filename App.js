@@ -16,6 +16,8 @@ import Main from './src/screens/Main';
 import ProfileScreen from './src/screens/ProfileScreen';
 import MainSettingsScreen from './src/screens/MainSettingsScreen';
 
+import LoginScreenTemp from './src/screens/LoginScreenTemp';
+
 function cacheImages(images) {
   return images.map(image => {
     if (typeof image === 'string') {
@@ -69,7 +71,7 @@ class UserStarting extends Component {
       );
     }
     return (
-      <LoginScreen {...this.props} />
+      <LoginScreenTemp {...this.props} />
     );
   }
 }
