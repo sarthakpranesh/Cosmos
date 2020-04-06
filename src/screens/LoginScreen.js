@@ -309,7 +309,7 @@ class LoginScreen extends Component {
                 {/* Different Login Options */}
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
-                        onPressIn={() => this.setState({ authMethod: 'sign_in' })}
+                        // onPressIn={() => this.setState({ authMethod: 'sign_in' })}
                     >
                         <TapGestureHandler
                             onHandlerStateChange={this.onStateChange}
@@ -326,7 +326,7 @@ class LoginScreen extends Component {
                         </TapGestureHandler>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPressIn={() => this.setState({ authMethod: 'sign_up' })}
+                        // onPressIn={() => this.setState({ authMethod: 'sign_up' })}
                     >
                         <TapGestureHandler
                             onHandlerStateChange={this.onStateChange}
