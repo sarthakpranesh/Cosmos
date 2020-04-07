@@ -56,6 +56,13 @@ const Styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
   },
+  textMedium: {
+    fontFamily: '',
+    fontSize: 20,
+    textAlign: 'center',
+    color: 'black',
+    fontWeight: '900',
+  },
 });
 
 export default Styles;

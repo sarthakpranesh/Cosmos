@@ -9,74 +9,34 @@ import Styles from '../../Styles';
 class Header extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      username: props.username ? props.username : 'User1234',
-      uid: props.uid ? props.uid : 'gfVVMvXZ3DQgHOZ4cc6coD50Pys1',
-    };
   }
 
-  renderRightButton = () => {
-    const {username, uid} = this.state;
-    const {navigate} = this.props;
-    var screen = 'NotificationScreen';
+  renderHeaderText = () => {
+    const {username} = this.props;
+
     if (username === 'Profile') {
-      return (
-        <TouchableOpacity onPress={() => navigate('MainSettingsScreen', {uid})}>
-          <Svg height={24} width={24} style={styles.headerIcon}>
-            <Image
-              height={24}
-              width={24}
-              href={require('../../../assets/icons/settings.png')}
-            />
-          </Svg>
-        </TouchableOpacity>
-      );
+      return <Text style={Styles.textMedium}>{'Profile'}</Text>;
     }
 
-    if (username === 'Settings') {
-      return (
-        <TouchableOpacity onPress={() => navigate('ProfileScreen', {uid})}>
-          <Svg height={24} width={24} style={styles.headerIcon}>
-            <Image
-              height={24}
-              width={24}
-              href={require('../../../assets/icons/back.png')}
-            />
-          </Svg>
-        </TouchableOpacity>
-      );
+    if (username === 'SETTINGS') {
+      return <Text style={Styles.textMedium}>{'Setting'}</Text>;
     }
 
-    return;
+    return <Text style={Styles.textMedium}>{`Welcome, ${username}`}</Text>;
   };
 
   render() {
-    const {username} = this.state;
     return (
       <>
         <StatusBar
           animated={true}
-          backgroundColor={'green'}
-          barStyle={'light-content'}
+          backgroundColor={'white'}
+          barStyle={'dark-content'}
           networkActivityIndicatorVisible={false}
           translucent={false}
         />
         <View style={styles.headerWrapper}>
-          {username === 'Settings' ? (
-            <>
-              <View style={styles.innerContainer}>
-                {this.renderRightButton()}
-                <Text styles={Styles.textSmallBold}>{username}</Text>
-              </View>
-            </>
-          ) : (
-            <>
-              <View style={styles.innerContainer}>
-                <Text styles={Styles.textSmallBold}>{username}</Text>
-              </View>
-              {this.renderRightButton()}
-            </>
-          )}
+          <Text style={Styles.textMedium}>{this.renderHeaderText()}</Text>
         </View>
       </>
     );

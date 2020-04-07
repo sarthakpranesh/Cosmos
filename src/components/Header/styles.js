@@ -4,25 +4,16 @@ export default StyleSheet.create({
   headerWrapper: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    paddingBottom: 2,
 
-    height: 60,
-    backgroundColor: 'transparent',
-    shadowColor: '#000',
-    shadowOffset: {width: 1, height: 6},
+    height: 30,
+    backgroundColor: 'white',
+    shadowColor: 'black',
+    shadowOffset: {width: 1, height: 8},
     shadowOpacity: 0.8,
     shadowRadius: 8,
-    elevation: 5,
-  },
-  innerContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 16,
-  },
-  headerIcon: {
-    padding: 16,
+    elevation: 10,
   },
 });
