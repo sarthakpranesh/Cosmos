@@ -74,7 +74,8 @@ class LandingScreen extends Component {
 const styles = StyleSheet.create({
   buttonContainer: {
     height: height / 3,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
+    marginBottom: 10,
   },
 });
 

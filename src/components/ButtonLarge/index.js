@@ -15,7 +15,7 @@ class ButtonLarge extends Component {
       <>
         <TouchableOpacity
           onPress={() => this.props.onPress()}
-          activeOpacity={this.props.opacity ? this.props.opacity : 0.2}>
+          activeOpacity={this.props.opacity ? this.props.opacity : 0.8}>
           <View
             style={[
               Styles.buttonLogin,
