@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {
   View,
@@ -7,7 +6,6 @@ import {
   Alert,
   Image,
   TouchableOpacity,
-  Dimensions,
 } from 'react-native';
 
 // importing styles
