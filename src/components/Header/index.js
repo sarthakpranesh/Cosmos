@@ -18,7 +18,7 @@ class Header extends Component {
       return <Text style={Styles.textMedium}>{'Profile'}</Text>;
     }
 
-    if (username === 'SETTINGS') {
+    if (username === 'Settings') {
       return <Text style={Styles.textMedium}>{'Setting'}</Text>;
     }
 

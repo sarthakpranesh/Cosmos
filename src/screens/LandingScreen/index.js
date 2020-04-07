@@ -58,12 +58,12 @@ class LandingScreen extends Component {
         <View style={styles.buttonContainer}>
           <ButtonLarge
             onPress={() => this.props.navigation.navigate('SignInScreen')}
-            title="Sign In"
+            title="SIGN IN"
           />
           <ButtonLarge
             onPress={() => this.props.navigation.navigate('SignUpScreen')}
             bigUglyBlue
-            title="Sign Up"
+            title="SIGN UP"
           />
         </View>
       </View>
@@ -73,9 +73,9 @@ class LandingScreen extends Component {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    height: height / 3,
-    justifyContent: 'flex-end',
-    marginBottom: 10,
+    height: height / 3 - 20,
+    justifyContent: 'flex-start',
+    marginTop: 40,
   },
 });
 

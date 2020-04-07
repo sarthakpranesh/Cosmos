@@ -21,7 +21,7 @@ class ButtonLarge extends Component {
               Styles.buttonLogin,
               Styles.buttonShadow,
               {
-                backgroundColor: this.props.bigUglyBlue ? 'blue' : 'white',
+                backgroundColor: this.props.bigUglyBlue ? '#865f34' : 'white',
               },
             ]}>
             <Text
