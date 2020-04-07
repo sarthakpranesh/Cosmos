@@ -133,10 +133,16 @@ class MainSettingsScreen extends Component {
   };
 
   onSignOut = async () => {
-    const user = firebase.auth().currentUser;
-    user
-      .delete()
+    firebase
+      .auth()
+      .signOut()
       .then(() => {
+        Alert.alert(
+          'Logged Out',
+          'You have been successfully logged out',
+          [{text: 'ok'}],
+          {cancelable: false},
+        );
         this.props.navigation.navigate('LandingScreen');
       })
       .catch((err) => {

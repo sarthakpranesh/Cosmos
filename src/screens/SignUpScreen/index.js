@@ -86,7 +86,6 @@ class SignUpScreen extends Component {
 
     firebase
       .auth()
-      .setPersistence(firebase.per)
       .createUserWithEmailAndPassword(email, password)
       .then(async (userObject) => {
         var user = {

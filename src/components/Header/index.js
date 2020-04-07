@@ -47,21 +47,11 @@ class Header extends Component {
       );
     }
 
-    return (
-      <TouchableOpacity onPress={() => navigate('NotificationScreen', {uid})}>
-        <Svg height={24} width={24} style={styles.headerIcon}>
-          <Image
-            height={24}
-            width={24}
-            href={require('../../../assets/icons/home.png')}
-          />
-        </Svg>
-      </TouchableOpacity>
-    );
+    return;
   };
 
   render() {
-    const {username, uid} = this.state;
+    const {username} = this.state;
     return (
       <>
         <StatusBar
