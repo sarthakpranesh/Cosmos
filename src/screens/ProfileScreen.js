@@ -16,7 +16,6 @@ import Styles from '../Styles';
 
 // importing components
 import Header from '../components/Header';
-import CacheImage from './CacheImage';
 import LoadingIndicator from '../components/LoadingIndicator';
 
 // importing firebase
