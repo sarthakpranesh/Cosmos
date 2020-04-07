@@ -15,26 +15,11 @@ import Styles from '../../Styles';
 
 // importing firebase
 import * as firebase from 'firebase';
+import {isUserLoggedIn} from '../../utils/firebase';
 
 // importing components
 import ButtonLarge from '../../components/ButtonLarge';
 import LoadingIndicator from '../../components/LoadingIndicator';
-
-const isUserLoggedIn = () => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-      });
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
 
 const {width, height} = Dimensions.get('window');
 

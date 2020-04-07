@@ -1,5 +1,21 @@
 import * as firebase from 'firebase';
 
+export const isUserLoggedIn = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
 export const addUserToDB = (user) => {
   return new Promise((resolve, reject) => {
     const userDB = firebase.database().ref('users/').child(user.uid);
