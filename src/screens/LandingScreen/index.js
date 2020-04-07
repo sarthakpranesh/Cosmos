@@ -1,27 +1,17 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  Image,
-  Alert,
-} from 'react-native';
+import {View, StyleSheet, Dimensions, Image} from 'react-native';
 
 // importing common styles
 import Styles from '../../Styles';
 
-// importing firebase
-import * as firebase from 'firebase';
+// importing firebase utils
 import {isUserLoggedIn} from '../../utils/firebase';
 
 // importing components
 import ButtonLarge from '../../components/ButtonLarge';
 import LoadingIndicator from '../../components/LoadingIndicator';
 
-const {width, height} = Dimensions.get('window');
+const height = Dimensions.get('window').height;
 
 class LandingScreen extends Component {
   constructor(props) {
@@ -82,33 +72,9 @@ class LandingScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  innerContainer: {
-    ...StyleSheet.absoluteFill,
-  },
-  bgImage: {
-    flex: 1,
-    height: null,
-    width: null,
-  },
   buttonContainer: {
     height: height / 3,
     justifyContent: 'center',
-  },
-  hiddenContainer: {
-    height: height / 3,
-    ...StyleSheet.absoluteFill,
-    top: null,
-    justifyContent: 'flex-end',
-    backgroundColor: 'white',
-  },
-  textInput: {
-    height: 50,
-    borderRadius: 25,
-    borderWidth: 0.5,
-    marginHorizontal: 20,
-    paddingHorizontal: 20,
-    marginVertical: 5,
-    borderColor: 'rgba(0,0,0,0.2)',
   },
 });
 
