@@ -19,25 +19,16 @@ import Main from './src/screens/Main';
 import ProfileScreen from './src/screens/ProfileScreen';
 import MainSettingsScreen from './src/screens/MainSettingsScreen';
 
-const profileStack = createStackNavigator(
-  {
-    ProfileScreen,
-    MainSettingsScreen,
-  },
-  {
-    initialRouteName: 'ProfileScreen',
-    backBehavior: 'initialRoute',
-    headerMode: 'none',
-  },
-);
-
 const mainAppStack = createBottomTabNavigator(
   {
     ' Home ': {
       screen: Main,
     },
     ' Profile ': {
-      screen: profileStack,
+      screen: ProfileScreen,
+    },
+    ' Setting ': {
+      screen: MainSettingsScreen,
     },
   },
   {
@@ -54,6 +45,18 @@ const mainAppStack = createBottomTabNavigator(
                 height={24}
                 width={24}
                 href={require('./assets/icons/home.png')}
+              />
+            </Svg>
+          );
+        }
+
+        if (routeName === ' Setting ') {
+          return (
+            <Svg height={24} width={24}>
+              <Image
+                height={24}
+                width={24}
+                href={require('./assets/icons/settings.png')}
               />
             </Svg>
           );
