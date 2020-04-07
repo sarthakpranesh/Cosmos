@@ -5,7 +5,7 @@ export const addUserToDB = (user) => {
     const userDB = firebase.database().ref('users/').child(user.uid);
     userDB
       .set(user)
-      .then((resp) => {
+      .then((_resp) => {
         resolve(true);
       })
       .catch((err) => {
@@ -33,10 +33,10 @@ export const updateUserObject = (uid, updates) => {
     const userDB = firebase.database().ref('users/').child(uid);
     userDB
       .update(updates)
-      .then((resp) => {
+      .then((_resp) => {
         resolve();
       })
-      .catch((err) => {
+      .catch((_err) => {
         reject();
       });
   });

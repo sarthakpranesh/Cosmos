@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Image} from 'react-native';
+import {View, Image, Platform} from 'react-native';
 let RNFS = require('react-native-fs');
 import shorthash from 'shorthash';
 

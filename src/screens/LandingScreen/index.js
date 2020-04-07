@@ -18,25 +18,60 @@ import * as firebase from 'firebase';
 
 // importing components
 import ButtonLarge from '../../components/ButtonLarge';
+import LoadingIndicator from '../../components/LoadingIndicator';
+
+const isUserLoggedIn = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
 
 const {width, height} = Dimensions.get('window');
 
 class LandingScreen extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      isLoading: true,
+    };
   }
 
   async UNSAFE_componentWillMount() {
-    const user = await firebase.auth().currentUser;
-    if (user) {
-      console.log(user.uid);
-      this.props.navigation.navigate('mainAppStack');
-    } else {
-      console.log('User not logged');
+    try {
+      const isLogged = await isUserLoggedIn();
+      if (isLogged) {
+        this.props.navigation.navigate('mainAppStack');
+        this.setState({
+          isLoading: false,
+        });
+      } else {
+        console.log('User not logged');
+        this.setState({
+          isLoading: false,
+        });
+      }
+    } catch (err) {
+      console.log(err.message);
     }
   }
 
   render() {
+    const {isLoading} = this.state;
+
+    if (isLoading) {
+      return <LoadingIndicator />;
+    }
     return (
       <View style={Styles.container} behavior={'height'}>
         <Image
