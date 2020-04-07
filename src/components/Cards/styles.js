@@ -7,13 +7,14 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+
     shadowOffset: {width: 1, height: 1},
     shadowColor: 'black',
     shadowOpacity: 0.8,
-    elevation: 10,
+    elevation: 8,
   },
   cardImage: {
-    width: '100%',
+    width: '80%',
     flex: 1,
     resizeMode: 'contain',
   },

@@ -8,7 +8,7 @@ export default StyleSheet.create({
     alignItems: 'flex-end',
     paddingBottom: 2,
 
-    height: 30,
+    height: 40,
     backgroundColor: 'white',
     shadowColor: 'black',
     shadowOffset: {width: 1, height: 8},

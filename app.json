@@ -1,4 +1,12 @@
 {
   "name": "cosmos",
-  "displayName": "cosmos"
+  "displayName": "cosmos",
+  "description": "Tinder for Nature",
+  "backgroundColor": "white",
+  "githubUrl": "https://github.com/sarthakpranesh/cosmos",
+  "orientation": "portrait",
+  "primaryColor": "white",
+  "androidNavigationBar": {
+    "backgroundColor": "white"
+  }
 }

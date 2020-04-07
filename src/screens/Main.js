@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, StyleSheet} from 'react-native';
 import Swiper from 'react-native-deck-swiper';
@@ -112,6 +113,7 @@ class Main extends Component {
                     backgroundColor: 'red',
                     color: 'white',
                     fontSize: 18,
+                    zIndex: 100,
                   },
                   wrapper: {
                     flexDirection: 'column',
@@ -119,6 +121,8 @@ class Main extends Component {
                     justifyContent: 'flex-start',
                     marginTop: 20,
                     paddingRight: 20,
+                    position: 'absolute',
+                    zIndex: 100,
                   },
                 },
               },
@@ -129,6 +133,7 @@ class Main extends Component {
                     backgroundColor: 'green',
                     color: 'white',
                     fontSize: 18,
+                    zIndex: 100,
                   },
                   wrapper: {
                     flexDirection: 'column',
@@ -136,17 +141,18 @@ class Main extends Component {
                     justifyContent: 'flex-start',
                     marginTop: 20,
                     paddingLeft: 20,
+                    zIndex: 100,
                   },
                 },
               },
             }}
-            animateOverlayLabelsOpacity
             animateCardOpacity
             infinite
             onTapCard={(cardIndex) => console.log('Card Was Taped')}
             onSwipedRight={(cardIndex) => console.log(cardIndex)}
             onSwipedLeft={(cardIndex) => console.log(cardIndex)}
             onSwipedAll={() => console.log('All cards swiped')}
+            backgroundColor={'white'}
           />
         </View>
       </>
@@ -157,7 +163,7 @@ class Main extends Component {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
