@@ -1,15 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TextInput,
-  Image,
-  TouchableOpacity,
-  Alert,
-  Button,
-} from 'react-native';
+import {View, Text, ScrollView, TextInput, Image, Alert} from 'react-native';
 
 // importing styles
 import styles from './styles';

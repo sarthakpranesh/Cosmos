@@ -1,15 +1,6 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
-  mainContainer: {
-    display: 'flex',
-
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    paddingTop: 60,
-  },
   userImage: {
     height: 100,
     width: 100,
