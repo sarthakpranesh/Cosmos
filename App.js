@@ -1,5 +1,4 @@
 import {createSwitchNavigator, createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 
 import React from 'react';
@@ -12,6 +11,7 @@ import * as firebase from './src/configs/firebase';
 // import {getUserDataAsync} from './src/utils/localDb';
 
 // importing Screens
+import SplashScreen from './src/screens/SpashScreen';
 import LandingScreen from './src/screens/LandingScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
@@ -99,11 +99,12 @@ const userStartingStack = createSwitchNavigator(
 
 const defaultApp = createSwitchNavigator(
   {
+    SplashScreen,
     userStartingStack,
     mainAppStack,
   },
   {
-    initialRouteName: 'userStartingStack',
+    initialRouteName: 'SplashScreen',
   },
 );
 
