@@ -17,7 +17,7 @@ import Styles from '../../Styles';
 import * as firebase from 'firebase';
 
 // importing firebase functions
-import {addUserToDB} from '../../utils/firebase';
+import {addUserToDB, updateDisplayName} from '../../utils/firebase';
 
 // importing components
 import ButtonLarge from '../../components/ButtonLarge';
@@ -88,17 +88,9 @@ class SignUpScreen extends Component {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(async (userObject) => {
+        await updateDisplayName(name);
         var user = {
-          username: userObject.user.displayName
-            ? userObject.user.displayName
-            : name,
           name: name,
-          email: userObject.user.email,
-          isEmailVerified: userObject.user.emailVerified,
-          phoneNumber: userObject.user.phoneNumber
-            ? userObject.user.phoneNumber
-            : false,
-          photoUrl: userObject.user.photoUrl ? userObject.user.photoURL : false,
           uid: userObject.user.uid,
         };
         await addUserToDB(user);

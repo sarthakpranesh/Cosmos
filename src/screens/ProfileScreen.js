@@ -44,26 +44,23 @@ class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
-      isLoading: true,
+      user: firebase.auth().currentUser,
     };
   }
 
-  async UNSAFE_componentWillMount() {
-    const uid = firebase.auth().currentUser.uid;
-    const user = await getUserObject(uid);
-    this.setState({
-      user: user,
-    });
-    this.setState({
-      isLoading: false,
-    });
+  async componentDidMount() {
+    const {user} = this.state;
+    if (!user.displayName) {
+      this.props.navigation.navigate('userStartingStack');
+      return;
+    }
+    return;
   }
 
   render() {
     const {user} = this.state;
 
-    if (this.state.isLoading) {
+    if (user === undefined) {
       return <LoadingIndicator />;
     }
 

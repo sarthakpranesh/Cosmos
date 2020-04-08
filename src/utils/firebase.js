@@ -16,6 +16,20 @@ export const isUserLoggedIn = () => {
   });
 };
 
+export const updateDisplayName = (username) => {
+  return new Promise((resolve, reject) => {
+    var user = firebase.auth().currentUser;
+    user
+      .updateProfile({displayName: username})
+      .then((resp) => {
+        resolve(true);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
 export const addUserToDB = (user) => {
   return new Promise((resolve, reject) => {
     const userDB = firebase.database().ref('users/').child(user.uid);

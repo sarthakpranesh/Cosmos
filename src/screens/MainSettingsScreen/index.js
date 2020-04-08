@@ -10,7 +10,7 @@ import Styles from '../../Styles';
 import * as firebase from 'firebase';
 
 // importing firebase utils
-import {updateUserObject, getUserObject} from '../../utils/firebase';
+import {updateDisplayName} from '../../utils/firebase';
 
 // importing components
 import Header from '../../components/Header';
@@ -24,25 +24,21 @@ class MainSettingsScreen extends Component {
     this.state = {
       uid: null,
       username: null,
-      name: null,
       email: null,
       isLoading: true,
-      opacity: 0.2,
+      opacity: 1,
     };
 
     this.user = null;
   }
 
   async UNSAFE_componentWillMount() {
-    var uid = firebase.auth().currentUser.uid;
-    const user = await getUserObject(uid);
+    var user = firebase.auth().currentUser;
     this.user = user;
     this.setState({
-      uid: uid,
-      username: user.username,
-      name: user.name,
+      uid: user.uid,
+      username: user.displayName,
       email: user.email,
-      opacity: 1,
       isLoading: false,
     });
   }
@@ -53,15 +49,9 @@ class MainSettingsScreen extends Component {
     });
   };
 
-  setName = (name) => {
-    this.setState({
-      name,
-    });
-  };
-
   checkForChange = () => {
-    const {username, name} = this.state;
-    if (this.user.username !== username || this.user.name !== name) {
+    const {username} = this.state;
+    if (this.user.username !== username) {
       this.setState({
         opacity: 0.2,
       });
@@ -74,21 +64,20 @@ class MainSettingsScreen extends Component {
   };
 
   invalidInput = () => {
-    const {username, name} = this.user;
+    const {username} = this.user;
     this.setState({
       username,
-      name,
     });
     return;
   };
 
   onSubmit = async () => {
-    const {username, name, uid} = this.state;
-    if (this.user.username === username && this.user.name === name) {
+    const {username} = this.state;
+    if (this.user.username === username) {
       return;
     }
 
-    if (username === '' || name === '') {
+    if (username === '') {
       Alert.alert(
         'Invalid Input',
         'Username/Name cannot be empty',
@@ -98,18 +87,9 @@ class MainSettingsScreen extends Component {
       return;
     }
 
-    updateUserObject(uid, {username, name})
-      .then(async () => {
-        const user = await getUserObject(uid);
-        console.log(user);
-        this.user = user;
+    updateDisplayName(username)
+      .then(() => {
         this.setState({
-          username: user.username,
-          name: user.name,
-          phoneNumber: user.phoneNumber,
-          photoUrl: user.photoUrl,
-          email: user.email,
-
           opacity: 1,
         });
         Alert.alert(
@@ -117,9 +97,10 @@ class MainSettingsScreen extends Component {
           'Your Username/Name was successfully updated',
           [{text: 'ok'}],
         );
+        return;
       })
       .catch((err) => {
-        console.log(err);
+        Alert.alert('Account Error', err.message, [{text: 'ok'}]);
       });
   };
 
@@ -165,16 +146,6 @@ class MainSettingsScreen extends Component {
                 onChangeText={(username) => this.setUsername(username)}
                 onKeyPress={() => this.checkForChange()}
                 placeholder="Username"
-              />
-            </View>
-            <View style={{marginVertical: 2}}>
-              <Text style={styles.label}>Name</Text>
-              <TextInput
-                value={this.state.name}
-                style={Styles.textInput}
-                onChangeText={(name) => this.setName(name)}
-                onKeyPress={() => this.checkForChange()}
-                placeholder="Name"
               />
             </View>
             <View style={{marginVertical: 2}}>
