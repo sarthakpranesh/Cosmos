@@ -48,12 +48,17 @@ class ProfileScreen extends Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const {user} = this.state;
     if (!user.displayName) {
       this.props.navigation.navigate('userStartingStack');
       return;
     }
+    this.props.navigation.addListener('willFocus', (payload) => {
+      this.setState({
+        user: firebase.auth().currentUser,
+      });
+    });
     return;
   }
 
@@ -73,7 +78,7 @@ class ProfileScreen extends Component {
             alt="User Image"
             style={styles.userImage}
           />
-          <Text style={[styles.headerUsername]}>{user.username}</Text>
+          <Text style={[styles.headerUsername]}>{user.displayName}</Text>
           <View style={styles.fixedTopHeaderInnerSection}>
             <View style={styles.fixedTopHeaderCards}>
               <Text>123</Text>

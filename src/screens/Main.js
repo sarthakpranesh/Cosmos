@@ -54,12 +54,17 @@ class Main extends Component {
     };
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     const {user} = this.state;
     if (!user.displayName) {
       this.props.navigation.navigate('userStartingStack');
       return;
     }
+    this.props.navigation.addListener('willFocus', (payLoad) => {
+      this.setState({
+        user: firebase.auth().currentUser,
+      });
+    });
     return;
   }
 

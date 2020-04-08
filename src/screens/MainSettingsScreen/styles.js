@@ -12,7 +12,7 @@ export default StyleSheet.create({
     shadowColor: '#000',
 
     alignSelf: 'center',
-    marginVertical: 20,
+    marginVertical: 12,
   },
   inputWrapper: {
     justifyContent: 'center',
