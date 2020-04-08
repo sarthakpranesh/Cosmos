@@ -49,12 +49,12 @@ class Main extends Component {
     super(props);
     this.state = {
       index: 0,
-      user: firebase.auth().currentUser,
       isLoading: false,
+      user: firebase.auth().currentUser,
     };
   }
 
-  async componentDidMount() {
+  UNSAFE_componentWillMount() {
     const {user} = this.state;
     if (!user.displayName) {
       this.props.navigation.navigate('userStartingStack');

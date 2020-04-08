@@ -22,25 +22,20 @@ class MainSettingsScreen extends Component {
     super(props);
 
     this.state = {
-      uid: null,
-      username: null,
-      email: null,
-      isLoading: true,
+      user: firebase.auth().currentUser,
+      username: firebase.auth().currentUser.displayName,
+      isLoading: false,
       opacity: 1,
     };
-
-    this.user = null;
   }
 
-  async UNSAFE_componentWillMount() {
-    var user = firebase.auth().currentUser;
-    this.user = user;
-    this.setState({
-      uid: user.uid,
-      username: user.displayName,
-      email: user.email,
-      isLoading: false,
-    });
+  componentDidMount() {
+    const {user} = this.state;
+    if (!user) {
+      this.props.navigation.navigate('userStartingStack');
+      return;
+    }
+    return;
   }
 
   setUsername = (username) => {
@@ -50,8 +45,8 @@ class MainSettingsScreen extends Component {
   };
 
   checkForChange = () => {
-    const {username} = this.state;
-    if (this.user.username !== username) {
+    const {username, user} = this.state;
+    if (user.username !== username) {
       this.setState({
         opacity: 0.2,
       });
@@ -64,7 +59,7 @@ class MainSettingsScreen extends Component {
   };
 
   invalidInput = () => {
-    const {username} = this.user;
+    const {username} = this.state.user;
     this.setState({
       username,
     });
@@ -73,7 +68,7 @@ class MainSettingsScreen extends Component {
 
   onSubmit = async () => {
     const {username} = this.state;
-    if (this.user.username === username) {
+    if (this.state.user.username === username) {
       return;
     }
 
@@ -124,6 +119,7 @@ class MainSettingsScreen extends Component {
 
   render() {
     const {navigation} = this.props;
+    const {username, user} = this.state;
 
     if (this.state.isLoading) {
       return <LoadingIndicator />;
@@ -141,9 +137,9 @@ class MainSettingsScreen extends Component {
             <View style={{marginVertical: 2}}>
               <Text style={styles.label}>Username</Text>
               <TextInput
-                value={this.state.username}
+                value={username}
                 style={Styles.textInput}
-                onChangeText={(username) => this.setUsername(username)}
+                onChangeText={(newUsername) => this.setUsername(newUsername)}
                 onKeyPress={() => this.checkForChange()}
                 placeholder="Username"
               />
@@ -151,7 +147,7 @@ class MainSettingsScreen extends Component {
             <View style={{marginVertical: 2}}>
               <Text style={styles.label}>Email</Text>
               <TextInput
-                value={this.state.email}
+                value={user.email}
                 style={[
                   Styles.textInput,
                   {backgroundColor: 'rgba(0,0,0, 0.1)'},
