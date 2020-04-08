@@ -6,13 +6,13 @@ import {isUserLoggedIn} from '../../utils/firebase';
 
 class SplashScreen extends React.Component {
   async componentDidMount() {
-    // Preload data from an external API
-    // Preload data using AsyncStorage
     const loggedIn = await isUserLoggedIn();
     if (loggedIn) {
       this.props.navigation.navigate('mainAppStack');
+      return;
     }
     this.props.navigation.navigate('userStartingStack');
+    return;
   }
 
   render() {
