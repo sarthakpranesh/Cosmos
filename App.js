@@ -2,13 +2,14 @@ import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 
 import React from 'react';
-import Svg, {Image} from 'react-native-svg';
 
 // importing Firebase
 import * as firebase from './src/configs/firebase';
 
-// importing local db
-// import {getUserDataAsync} from './src/utils/localDb';
+// importing icons
+import HomeIcon from './src/components/icons/HomeIcon';
+import ProfileIcon from './src/components/icons/ProfileIcon';
+import SettingsIcon from './src/components/icons/SettingsIcon';
 
 // importing Screens
 import SplashScreen from './src/screens/SpashScreen';
@@ -39,44 +40,20 @@ const mainAppStack = createBottomTabNavigator(
       tabBarIcon: ({focused, horizontal, tintColor}) => {
         const {routeName} = navigation.state;
         if (routeName === ' Home ') {
-          return (
-            <Svg height={24} width={24}>
-              <Image
-                height={24}
-                width={24}
-                href={require('./assets/icons/home.png')}
-              />
-            </Svg>
-          );
+          return <HomeIcon />;
         }
 
         if (routeName === ' Setting ') {
-          return (
-            <Svg height={24} width={24}>
-              <Image
-                height={24}
-                width={24}
-                href={require('./assets/icons/settings.png')}
-              />
-            </Svg>
-          );
+          return <SettingsIcon />;
         }
 
-        return (
-          <Svg height={24} width={24}>
-            <Image
-              height={24}
-              width={24}
-              href={require('./assets/icons/profile.png')}
-            />
-          </Svg>
-        );
+        return <ProfileIcon />;
       },
     }),
     tabBarOptions: {
       showLabel: false,
       showIcon: true,
-      activeBackgroundColor: 'rgba(0,0,0, 0.1)',
+      activeBackgroundColor: false,
       activeTintColor: 'red',
       inactiveTintColor: 'gray',
       keyboardHidesTabBar: true,
