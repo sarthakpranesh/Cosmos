@@ -24,42 +24,33 @@ const mainAppStack = createBottomTabNavigator(
   {
     ' Home ': {
       screen: Main,
+      navigationOptions: () => ({
+        tabBarIcon: ({focused}) => <HomeIcon isFocused={focused} />,
+      }),
     },
     ' Profile ': {
       screen: ProfileScreen,
+      navigationOptions: () => ({
+        tabBarIcon: ({focused}) => <ProfileIcon isFocused={focused} />,
+      }),
     },
     ' Setting ': {
       screen: MainSettingsScreen,
+      navigationOptions: () => ({
+        tabBarIcon: ({focused}) => <SettingsIcon isFocused={focused} />,
+      }),
     },
   },
   {
     initialRouteName: ' Home ',
     backBehavior: 'initialRoute',
-    activeTintColor: 'green',
-    defaultNavigationOptions: ({navigation}) => ({
-      tabBarIcon: ({focused, horizontal, tintColor}) => {
-        const {routeName} = navigation.state;
-        if (routeName === ' Home ') {
-          return <HomeIcon isFocused={focused} />;
-        }
-
-        if (routeName === ' Setting ') {
-          return <SettingsIcon isFocused={focused} />;
-        }
-
-        return <ProfileIcon isFocused={focused} />;
-      },
-    }),
     tabBarOptions: {
       showLabel: false,
       showIcon: true,
-      activeBackgroundColor: false,
-      activeTintColor: 'red',
-      inactiveTintColor: 'gray',
       keyboardHidesTabBar: true,
     },
     animationEnabled: true,
-    swipeEnabled: false,
+    swipeEnabled: true,
   },
 );
 
