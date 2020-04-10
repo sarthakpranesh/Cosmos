@@ -40,14 +40,14 @@ const mainAppStack = createBottomTabNavigator(
       tabBarIcon: ({focused, horizontal, tintColor}) => {
         const {routeName} = navigation.state;
         if (routeName === ' Home ') {
-          return <HomeIcon />;
+          return <HomeIcon isFocused={focused} />;
         }
 
         if (routeName === ' Setting ') {
-          return <SettingsIcon />;
+          return <SettingsIcon isFocused={focused} />;
         }
 
-        return <ProfileIcon />;
+        return <ProfileIcon isFocused={focused} />;
       },
     }),
     tabBarOptions: {

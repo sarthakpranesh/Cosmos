@@ -3,7 +3,12 @@ import Svg, {Path} from 'react-native-svg';
 
 function Settings(props) {
   return (
-    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+    <Svg
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill={props.isFocused ? '#67B521' : 'none'}
+      {...props}>
       <Path
         d="M12 15a3 3 0 100-6 3 3 0 000 6z"
         stroke="#000"
