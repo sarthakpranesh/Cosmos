@@ -48,7 +48,11 @@ const mainAppStack = createBottomTabNavigator(
       showLabel: false,
       showIcon: true,
       keyboardHidesTabBar: true,
+      style: {
+        backgroundColor: 'white',
+      },
     },
+    lazy: true,
     animationEnabled: true,
     swipeEnabled: true,
   },
