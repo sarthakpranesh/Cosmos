@@ -35,9 +35,9 @@ class Header extends Component {
           networkActivityIndicatorVisible={false}
           translucent={false}
         />
-        <View style={styles.headerWrapper}>
+        {/* <View style={styles.headerWrapper}>
           <Text style={Styles.textMedium}>{this.renderHeaderText()}</Text>
-        </View>
+        </View> */}
       </>
     );
   }

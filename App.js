@@ -7,6 +7,7 @@ import React from 'react';
 import * as firebase from './src/configs/firebase';
 
 // importing icons
+import AddPictureIcon from './src/components/icons/AddPictureIcon';
 import HomeIcon from './src/components/icons/HomeIcon';
 import ProfileIcon from './src/components/icons/ProfileIcon';
 import SettingsIcon from './src/components/icons/SettingsIcon';
@@ -22,6 +23,12 @@ import MainSettingsScreen from './src/screens/MainSettingsScreen';
 
 const mainAppStack = createBottomTabNavigator(
   {
+    ' Images ': {
+      screen: Main,
+      navigationOptions: () => ({
+        tabBarIcon: ({focused}) => <AddPictureIcon isFocused={focused} />,
+      }),
+    },
     ' Home ': {
       screen: Main,
       navigationOptions: () => ({
