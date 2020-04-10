@@ -17,6 +17,7 @@ import SplashScreen from './src/screens/SpashScreen';
 import LandingScreen from './src/screens/LandingScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
+import AddImageScreen from './src/screens/AddImageScreen';
 import Main from './src/screens/Main';
 import ProfileScreen from './src/screens/ProfileScreen';
 import MainSettingsScreen from './src/screens/MainSettingsScreen';
@@ -24,7 +25,7 @@ import MainSettingsScreen from './src/screens/MainSettingsScreen';
 const mainAppStack = createBottomTabNavigator(
   {
     ' Images ': {
-      screen: Main,
+      screen: AddImageScreen,
       navigationOptions: () => ({
         tabBarIcon: ({focused}) => <AddPictureIcon isFocused={focused} />,
       }),

@@ -19,6 +19,7 @@
     "react-native-deck-swiper": "^1.6.7",
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.6.1",
+    "react-native-image-crop-picker": "^0.28.0",
     "react-native-reanimated": "~1.1.0",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.4.0",
