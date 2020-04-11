@@ -1,14 +1,24 @@
+import {
+  API_KEY,
+  AUTH_DOMAIN,
+  DATABASE_URL,
+  PROJECT_ID,
+  STORAGE_BUCKET,
+  MESSAGING_SENDER_ID,
+  APP_ID,
+  MEASUREMENT_ID,
+} from 'react-native-dotenv';
 import * as firebase from 'firebase';
 
 var firebaseConfig = {
-  apiKey: 'AIzaSyByLAIhvboApo9TmfFlN1VpH4sxp-GFkRY',
-  authDomain: 'cosmos-bbe7a.firebaseapp.com',
-  databaseURL: 'https://cosmos-bbe7a.firebaseio.com',
-  projectId: 'cosmos-bbe7a',
-  storageBucket: 'cosmos-bbe7a.appspot.com',
-  messagingSenderId: '544413528888',
-  appId: '1:544413528888:web:a8803c4f66a981eb3347cd',
-  measurementId: 'G-KJTCG3PGW7',
+  apiKey: API_KEY,
+  authDomain: AUTH_DOMAIN,
+  databaseURL: DATABASE_URL,
+  projectId: PROJECT_ID,
+  storageBucket: STORAGE_BUCKET,
+  messagingSenderId: MESSAGING_SENDER_ID,
+  appId: APP_ID,
+  measurementId: MEASUREMENT_ID,
 };
 
 firebase.initializeApp(firebaseConfig);

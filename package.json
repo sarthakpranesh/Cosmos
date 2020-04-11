@@ -17,6 +17,7 @@
     "react": "16.11.0",
     "react-native": "0.62.1",
     "react-native-deck-swiper": "^1.6.7",
+    "react-native-dotenv": "^0.2.0",
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-image-crop-picker": "^0.28.0",
