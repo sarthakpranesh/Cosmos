@@ -9,6 +9,7 @@ import {
   TextInput,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+import RNFS from 'react-native-fs';
 
 // importing styles
 import styles from './styles';
@@ -17,18 +18,24 @@ import Styles from '../../Styles';
 // importing firebase
 import * as firebase from 'firebase';
 
+// importing firebase utils
+import {uploadImage, uploadDownloadUrlDB} from '../../utils/firebase';
+
 // importing components
 import Header from '../../components/Header';
 import ImagePickerIcon from '../../components/icons/ImagePickerIcon';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 class AddImageScreen extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      opacity: 1,
       image: null,
       imageCaption: '',
+      fileBlog: null,
+      isLoading: false,
+      uid: firebase.auth().currentUser.uid,
     };
   }
 
@@ -44,9 +51,12 @@ class AddImageScreen extends Component {
       height: 900,
       cropping: true,
     })
-      .then((image) => {
+      .then(async (image) => {
         // uri: i.path, width: i.width, height: i.height, mime: i.mime
+        const file = await fetch(image.path);
+        const fileBlog = await file.blob();
         this.setState({
+          fileBlog: fileBlog,
           image: {
             uri: image.path,
             width: image.width,
@@ -61,11 +71,33 @@ class AddImageScreen extends Component {
       });
   };
 
+  onPostUpload = async () => {
+    const {uid, imageCaption, image, fileBlog} = this.state;
+    try {
+      this.setState({
+        isLoading: true,
+      });
+      const downloadURL = await uploadImage(uid, fileBlog, image);
+      await uploadDownloadUrlDB(uid, downloadURL, imageCaption);
+      this.setState({
+        isLoading: false,
+      });
+    } catch (err) {
+      console.log(err.message);
+      this.setState({
+        isLoading: false,
+      });
+    }
+  };
+
   render() {
-    const {image, imageCaption} = this.state;
+    const {image, imageCaption, isLoading} = this.state;
+
+    if (isLoading) {
+      return <LoadingIndicator />;
+    }
 
     if (image !== null) {
-      console.log(image);
       return (
         <>
           <Header />
@@ -76,7 +108,7 @@ class AddImageScreen extends Component {
             <View style={[styles.aboutImageContainer]}>
               <View style={[styles.aboutImageHeader]}>
                 <Text style={Styles.textSmallBold}>Write a caption</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.onPostUpload}>
                   <Text style={[Styles.textSmallBold, {color: 'blue'}]}>
                     Share
                   </Text>
@@ -89,7 +121,7 @@ class AddImageScreen extends Component {
                 placeholder="Type a caption here"
                 autoCapitalize="sentences"
                 autoFocus={true}
-                maxLength={500}
+                maxLength={200}
                 multiline={true}
                 textAlignVertical="top"
               />

@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+import shorthash from 'shorthash';
 
 export const isUserLoggedIn = () => {
   return new Promise(async (resolve, reject) => {
@@ -69,5 +70,48 @@ export const updateUserObject = (uid, updates) => {
       .catch((_err) => {
         reject();
       });
+  });
+};
+
+export const uploadImage = (uid, file, image) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // eslint-disable-next-line prettier/prettier
+      const path = `posts/${uid}-${shorthash.unique(image.uri)}.${image.uri.split('.').pop()}`;
+      const storageImage = firebase.storage().ref(path);
+      await storageImage.put(file);
+      const url = storageImage.getDownloadURL();
+      resolve(url);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+export const uploadDownloadUrlDB = (uid, downloadURL, caption) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const user = await getUserObject(uid);
+      if (user.posts) {
+        user.posts = [
+          ...user.posts,
+          {
+            downloadURL,
+            caption,
+          },
+        ];
+      } else {
+        user.posts = [
+          {
+            downloadURL,
+            caption,
+          },
+        ];
+      }
+      await updateUserObject(uid, user);
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
   });
 };
