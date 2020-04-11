@@ -23,28 +23,13 @@ import * as firebase from 'firebase';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const POST = [
-  {token: '0', image: require('../../assets/bg.jpg')},
-  {token: '1', image: require('../../assets/bg.jpg')},
-  {token: '2', image: require('../../assets/bg.jpg')},
-  {token: '3', image: require('../../assets/bg.jpg')},
-  {token: '4', image: require('../../assets/bg.jpg')},
-  {token: '5', image: require('../../assets/bg.jpg')},
-  {token: '6', image: require('../../assets/bg.jpg')},
-  {token: '6', image: require('../../assets/bg.jpg')},
-  {token: '6', image: require('../../assets/bg.jpg')},
-  {token: '6', image: require('../../assets/bg.jpg')},
-  {token: '6', image: require('../../assets/bg.jpg')},
-  {token: '6', image: require('../../assets/bg.jpg')},
-  {token: '6', image: require('../../assets/bg.jpg')},
-  {token: '6', image: require('../../assets/bg.jpg')},
-];
 
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user: firebase.auth().currentUser,
+      posts: null,
     };
   }
 
@@ -55,6 +40,7 @@ class ProfileScreen extends Component {
       return;
     }
     this.props.navigation.addListener('willFocus', (payload) => {
+      this.getUserPosts();
       this.setState({
         user: firebase.auth().currentUser,
       });
@@ -62,16 +48,43 @@ class ProfileScreen extends Component {
     return;
   }
 
-  render() {
+  getUserPosts = () => {
     const {user} = this.state;
+    getUserObject(user.uid)
+      .then((user) => {
+        console.log(user);
+        this.setState({
+          posts: user.posts,
+        });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
 
-    if (user === undefined) {
+  renderPosts = () => {
+    const {posts} = this.state;
+    return (
+      <View style={styles.postContainer}>
+        {posts.map((i, index) => {
+          return (
+            <Image source={{uri: i.downloadURL}} style={styles.postImageCard} />
+          );
+        })}
+      </View>
+    );
+  };
+
+  render() {
+    const {user, posts} = this.state;
+
+    if (!posts) {
       return <LoadingIndicator />;
     }
 
     return (
       <>
-        <Header navigate={this.props.navigation.navigate} username="Profile" />
+        <Header navigate={this.props.navigation.navigate} />
         <View style={styles.fixedTopHeader}>
           <Image
             source={require('../../assets/bg.jpg')}
@@ -81,7 +94,7 @@ class ProfileScreen extends Component {
           <Text style={[styles.headerUsername]}>{user.displayName}</Text>
           <View style={styles.fixedTopHeaderInnerSection}>
             <View style={styles.fixedTopHeaderCards}>
-              <Text>123</Text>
+              <Text>{posts.length}</Text>
               <Text style={Styles.textSmall}>POSTS</Text>
             </View>
             <View style={styles.fixedTopHeaderCards}>
@@ -95,16 +108,7 @@ class ProfileScreen extends Component {
           </View>
         </View>
         <ScrollView style={styles.scrollBottomView} onScrollAnimationEnd>
-          <View style={styles.postContainer}>
-            {POST.map((i, index) => {
-              return (
-                <Image
-                  source={require('../../assets/bg.jpg')}
-                  style={styles.postImageCard}
-                />
-              );
-            })}
-          </View>
+          {this.renderPosts()}
         </ScrollView>
       </>
     );
@@ -169,6 +173,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   postImageCard: {
+    backgroundColor: 'rgba(0,0,0,0.2)',
     width: SCREEN_WIDTH / 3,
     height: SCREEN_WIDTH / 3,
     borderColor: '#000',

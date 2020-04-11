@@ -81,6 +81,8 @@ class AddImageScreen extends Component {
       await uploadDownloadUrlDB(uid, downloadURL, imageCaption);
       this.setState({
         isLoading: false,
+        fileBlog: null,
+        image: null,
       });
     } catch (err) {
       console.log(err.message);
