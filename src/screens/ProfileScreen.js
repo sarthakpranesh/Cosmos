@@ -52,7 +52,6 @@ class ProfileScreen extends Component {
     const {user} = this.state;
     getUserObject(user.uid)
       .then((user) => {
-        console.log(user);
         this.setState({
           posts: user.posts,
         });
