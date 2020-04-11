@@ -2,7 +2,6 @@ import * as React from 'react';
 import Svg, {Path, G} from 'react-native-svg';
 
 function ProfileIcon(props) {
-  console.log(props.isFocused);
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" {...props}>
       <G
