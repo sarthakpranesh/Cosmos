@@ -29,7 +29,10 @@ class ProfileScreen extends Component {
     super(props);
     this.state = {
       user: firebase.auth().currentUser,
-      posts: null,
+      posts: [],
+      like: 0,
+      nope: 0,
+      isLoading: true,
     };
   }
 
@@ -40,10 +43,11 @@ class ProfileScreen extends Component {
       return;
     }
     this.props.navigation.addListener('willFocus', (payload) => {
-      this.getUserPosts();
       this.setState({
         user: firebase.auth().currentUser,
+        isLoading: true,
       });
+      this.getUserPosts();
     });
     return;
   }
@@ -51,13 +55,19 @@ class ProfileScreen extends Component {
   getUserPosts = () => {
     const {user} = this.state;
     getUserObject(user.uid)
-      .then((user) => {
+      .then((u) => {
         this.setState({
-          posts: user.posts.reverse(),
+          posts: u.posts ? u.posts.reverse() : [],
+          like: u.like ? u.like : 0,
+          nope: u.nope ? u.nope : 0,
+          isLoading: false,
         });
       })
       .catch((err) => {
         console.log(err.message);
+        this.setState({
+          isLoading: false,
+        });
       });
   };
 
@@ -79,9 +89,9 @@ class ProfileScreen extends Component {
   };
 
   render() {
-    const {user, posts} = this.state;
+    const {user, posts, isLoading} = this.state;
 
-    if (!posts) {
+    if (isLoading) {
       return <LoadingIndicator />;
     }
 
@@ -101,11 +111,11 @@ class ProfileScreen extends Component {
               <Text style={Styles.textSmall}>POSTS</Text>
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text>123</Text>
+              <Text>{this.state.like}</Text>
               <Text style={Styles.textSmall}>LIKES</Text>
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text>123</Text>
+              <Text>{this.state.nope}</Text>
               <Text style={Styles.textSmall}>NOPES</Text>
             </View>
           </View>

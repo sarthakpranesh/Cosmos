@@ -43,11 +43,11 @@ class Main extends Component {
     }
     this.props.navigation.addListener('willFocus', (payLoad) => {
       if (posts.length === 0) {
-        this.loadPosts();
         this.setState({
           user: firebase.auth().currentUser,
           isLoading: true,
         });
+        this.loadPosts();
       }
       this.setState({
         user: firebase.auth().currentUser,
