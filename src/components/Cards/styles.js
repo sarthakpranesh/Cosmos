@@ -14,8 +14,9 @@ export default StyleSheet.create({
     elevation: 8,
   },
   cardImage: {
-    width: '80%',
-    flex: 1,
-    resizeMode: 'contain',
+    width: '90%',
+    flex: 0.8,
+    resizeMode: 'cover',
+    marginBottom: 0,
   },
 });

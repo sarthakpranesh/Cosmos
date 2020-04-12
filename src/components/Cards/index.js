@@ -7,17 +7,14 @@ import styles from './styles';
 class Card extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      card: props.card,
-    };
   }
 
   render() {
-    const {card} = this.state;
+    const {card} = this.props;
 
     return (
-      <View style={styles.card}>
-        <Image source={card.Image} style={styles.cardImage} />
+      <View style={[styles.card]}>
+        <Image source={{uri: card}} style={styles.cardImage} />
       </View>
     );
   }

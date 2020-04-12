@@ -25,3 +25,19 @@ export const uploadDownloadUrlDB = (downloadURL, caption) => {
     }
   });
 };
+
+export const getActivePosts = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const resp = await mainServerApi.get('/activePost', {
+        headers: {
+          Authorization: firebase.auth().currentUser.uid,
+        },
+      });
+      resolve(resp.data.payload.posts);
+    } catch (err) {
+      console.log(err);
+      reject();
+    }
+  });
+};
