@@ -78,7 +78,7 @@ class AddImageScreen extends Component {
         isLoading: true,
       });
       const downloadURL = await uploadImage(uid, fileBlog, image);
-      await uploadDownloadUrlDB(uid, downloadURL, imageCaption);
+      await uploadDownloadUrlDB(downloadURL, imageCaption);
       this.setState({
         isLoading: false,
         fileBlog: null,
@@ -126,6 +126,7 @@ class AddImageScreen extends Component {
                 maxLength={200}
                 multiline={true}
                 textAlignVertical="top"
+                defaultValue="No Caption"
               />
             </View>
           </ScrollView>
