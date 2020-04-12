@@ -53,7 +53,7 @@ class ProfileScreen extends Component {
     getUserObject(user.uid)
       .then((user) => {
         this.setState({
-          posts: user.posts,
+          posts: user.posts.reverse(),
         });
       })
       .catch((err) => {
@@ -67,7 +67,11 @@ class ProfileScreen extends Component {
       <View style={styles.postContainer}>
         {posts.map((i, index) => {
           return (
-            <Image source={{uri: i.downloadURL}} style={styles.postImageCard} />
+            <Image
+              key={i.pid}
+              source={{uri: i.downloadURL}}
+              style={styles.postImageCard}
+            />
           );
         })}
       </View>
