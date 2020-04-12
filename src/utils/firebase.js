@@ -1,6 +1,5 @@
 import * as firebase from 'firebase';
 import shorthash from 'shorthash';
-import mainServerApi from '../api/mainServerApi';
 
 export const isUserLoggedIn = () => {
   return new Promise(async (resolve, reject) => {
@@ -84,22 +83,6 @@ export const uploadImage = (uid, file, image) => {
       const url = storageImage.getDownloadURL();
       resolve(url);
     } catch (err) {
-      reject(err);
-    }
-  });
-};
-
-export const uploadDownloadUrlDB = (downloadURL, caption) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      await mainServerApi.post('/addNewPost', {
-        caption,
-        downloadURL,
-        pid: shorthash.unique(downloadURL),
-      });
-      resolve();
-    } catch (err) {
-      console.log(err);
       reject(err);
     }
   });

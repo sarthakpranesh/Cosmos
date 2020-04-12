@@ -19,7 +19,8 @@ import Styles from '../../Styles';
 import * as firebase from 'firebase';
 
 // importing firebase utils
-import {uploadImage, uploadDownloadUrlDB} from '../../utils/firebase';
+import {uploadImage} from '../../utils/firebase';
+import {uploadDownloadUrlDB} from '../../utils/apiFunctions';
 
 // importing components
 import Header from '../../components/Header';
