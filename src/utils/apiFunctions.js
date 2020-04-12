@@ -41,3 +41,45 @@ export const getActivePosts = () => {
     }
   });
 };
+
+export const likePost = (pid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const resp = await mainServerApi.get('/likePost', {
+        params: {
+          pid: pid,
+        },
+        headers: {
+          Authorization: firebase.auth().currentUser.uid,
+        },
+      });
+      if (resp.data.isLiked && resp.data.status === 1) {
+        resolve();
+      }
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+export const nopePost = (pid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const resp = await mainServerApi.get('/nopePost', {
+        params: {
+          pid: pid,
+        },
+        headers: {
+          Authorization: firebase.auth().currentUser.uid,
+        },
+      });
+      if (resp.data.isLiked && resp.data.status === 1) {
+        resolve();
+      }
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
+};

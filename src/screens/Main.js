@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, StyleSheet, Dimensions} from 'react-native';
+import {View, StyleSheet, Dimensions, Text} from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 
 // importing components
@@ -12,16 +12,15 @@ import LoadingIndicator from '../components/LoadingIndicator';
 import * as firebase from 'firebase';
 
 // importing utils
-import {getActivePosts} from '../utils/apiFunctions';
+import {getActivePosts, likePost, nopePost} from '../utils/apiFunctions';
+import Styles from '../Styles';
 
 const {width, height} = Dimensions.get('window');
 
 const Users = [
   {
-    id: '1',
-    Image: require('../../assets/bg.jpg'),
-    price: '32432',
-    name: 'sefeife',
+    pid: 'erfre',
+    downloadURL: require('../../assets/bg.jpg'),
   },
 ];
 
@@ -32,16 +31,24 @@ class Main extends Component {
       index: 0,
       isLoading: true,
       user: firebase.auth().currentUser,
+      posts: [],
     };
   }
 
   async componentDidMount() {
-    const {user} = this.state;
+    const {user, posts} = this.state;
     if (!user.displayName) {
       this.props.navigation.navigate('userStartingStack');
       return;
     }
     this.props.navigation.addListener('willFocus', (payLoad) => {
+      if (posts.length === 0) {
+        this.loadPosts();
+        this.setState({
+          user: firebase.auth().currentUser,
+          isLoading: true,
+        });
+      }
       this.setState({
         user: firebase.auth().currentUser,
       });
@@ -50,7 +57,7 @@ class Main extends Component {
     return;
   }
 
-  loadPosts = () => {
+  loadPosts = async () => {
     getActivePosts()
       .then((posts) => {
         this.setState({
@@ -61,7 +68,7 @@ class Main extends Component {
       .catch((err) => {
         console.log(err);
         this.setState({
-          posts: Users,
+          posts: [],
           isLoading: false,
         });
       });
@@ -74,86 +81,101 @@ class Main extends Component {
     this.loadPosts();
   };
 
-  render() {
-    const {user, isLoading, posts} = this.state;
+  renderCard = () => {
+    const {isLoading, posts} = this.state;
 
     if (isLoading) {
       return <LoadingIndicator />;
     }
 
+    if (posts.length === 0) {
+      return (
+        <Text
+          style={[
+            Styles.textMedium,
+            {
+              flexWrap: 'wrap',
+              textAlign: 'center',
+            },
+          ]}>
+          Waiting For Someone to Upload Something Interesting 🎨
+        </Text>
+      );
+    }
+
+    return (
+      <Swiper
+        cards={posts}
+        cardIndex={this.state.index}
+        keyExtractor={(card) => card.pid}
+        renderCard={(card) => <Card card={card.downloadURL} />}
+        stackSize={3}
+        stackScale={10}
+        stackSeparation={25}
+        disableTopSwipe
+        disableBottomSwipe
+        overlayLabels={{
+          left: {
+            title: 'Nope',
+            style: {
+              label: {
+                backgroundColor: 'red',
+                color: 'white',
+                fontSize: 18,
+                zIndex: 100,
+              },
+              wrapper: {
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                justifyContent: 'flex-start',
+                marginTop: 20,
+                paddingRight: 20,
+                position: 'absolute',
+                zIndex: 100,
+              },
+            },
+          },
+          right: {
+            title: 'Like',
+            style: {
+              label: {
+                backgroundColor: 'green',
+                color: 'white',
+                fontSize: 18,
+                zIndex: 100,
+              },
+              wrapper: {
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+                marginTop: 20,
+                paddingLeft: 20,
+                zIndex: 100,
+              },
+            },
+          },
+        }}
+        onTapCard={(cardIndex) => null}
+        onSwipedRight={(cardIndex) => likePost(posts[cardIndex].pid)}
+        onSwipedLeft={(cardIndex) => nopePost(posts[cardIndex].pid)}
+        onSwipedAll={this.onSwipedAll}
+        backgroundColor={'white'}
+        horizontalThreshold={width / 2}
+        swipeAnimationDuration={500}
+        animateCardOpacity={true}
+        animateOverlayLabelsOpacity={false}
+        marginTop={0}
+        cardHorizontalMargin={15}
+        childrenOnTop={true}
+      />
+    );
+  };
+
+  render() {
     return (
       <>
-        <Header
-          username={user.displayName}
-          uid={user.uid}
-          navigate={this.props.navigation.navigate}
-        />
-        <View style={styles.mainContainer}>
-          <Swiper
-            cards={posts}
-            cardIndex={this.state.index}
-            keyExtractor={(card) => card.pid}
-            renderCard={(card) => <Card card={card.downloadURL} />}
-            stackSize={3}
-            stackScale={10}
-            stackSeparation={25}
-            disableTopSwipe
-            disableBottomSwipe
-            overlayLabels={{
-              left: {
-                title: 'Nope',
-                style: {
-                  label: {
-                    backgroundColor: 'red',
-                    color: 'white',
-                    fontSize: 18,
-                    zIndex: 100,
-                  },
-                  wrapper: {
-                    flexDirection: 'column',
-                    alignItems: 'flex-end',
-                    justifyContent: 'flex-start',
-                    marginTop: 20,
-                    paddingRight: 20,
-                    position: 'absolute',
-                    zIndex: 100,
-                  },
-                },
-              },
-              right: {
-                title: 'Like',
-                style: {
-                  label: {
-                    backgroundColor: 'green',
-                    color: 'white',
-                    fontSize: 18,
-                    zIndex: 100,
-                  },
-                  wrapper: {
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    justifyContent: 'flex-start',
-                    marginTop: 20,
-                    paddingLeft: 20,
-                    zIndex: 100,
-                  },
-                },
-              },
-            }}
-            onTapCard={(cardIndex) => null}
-            onSwipedRight={(cardIndex) => null}
-            onSwipedLeft={(cardIndex) => null}
-            onSwipedAll={this.onSwipedAll}
-            backgroundColor={'white'}
-            horizontalThreshold={width / 2}
-            swipeAnimationDuration={500}
-            animateCardOpacity={true}
-            animateOverlayLabelsOpacity={false}
-            marginTop={0}
-            cardHorizontalMargin={10}
-            childrenOnTop={true}
-          />
-        </View>
+        <Header />
+        <View style={styles.mainContainer}>{this.renderCard()}</View>
       </>
     );
   }
