@@ -63,6 +63,17 @@ const Styles = StyleSheet.create({
     marginVertical: 5,
     borderColor: 'rgba(0,0,0,0.2)',
   },
+  inAppTextInput: {
+    height: 50,
+    borderRadius: 8,
+    borderWidth: 0.5,
+    marginHorizontal: 20,
+    paddingHorizontal: 20,
+    marginVertical: 5,
+    borderColor: 'rgba(0,0,0,0.2)',
+    color: colors.darkTheme.secondaryText,
+    backgroundColor: colors.darkTheme.primaryText,
+  },
   textSmall: {
     fontFamily: '',
     fontSize: 16,

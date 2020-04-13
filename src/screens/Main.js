@@ -15,14 +15,10 @@ import * as firebase from 'firebase';
 import {getActivePosts, likePost, nopePost} from '../utils/apiFunctions';
 import Styles from '../Styles';
 
-const {width, height} = Dimensions.get('window');
+// importing colors for default theme
+import {colors} from '../Constants';
 
-const Users = [
-  {
-    pid: 'erfre',
-    downloadURL: require('../../assets/bg.jpg'),
-  },
-];
+const {width, height} = Dimensions.get('window');
 
 class Main extends Component {
   constructor(props) {
@@ -108,10 +104,10 @@ class Main extends Component {
         cards={posts}
         cardIndex={this.state.index}
         keyExtractor={(card) => card.pid}
-        renderCard={(card) => <Card card={card.downloadURL} />}
+        renderCard={(card) => <Card card={card.downloadURL} name={card.name} />}
         stackSize={3}
         stackScale={10}
-        stackSeparation={25}
+        stackSeparation={35}
         disableTopSwipe
         disableBottomSwipe
         overlayLabels={{
@@ -159,11 +155,11 @@ class Main extends Component {
         onSwipedRight={(cardIndex) => likePost(posts[cardIndex].pid)}
         onSwipedLeft={(cardIndex) => nopePost(posts[cardIndex].pid)}
         onSwipedAll={this.onSwipedAll}
-        backgroundColor={'white'}
+        backgroundColor={colors.darkTheme.backgroundColor}
         horizontalThreshold={width / 2}
         swipeAnimationDuration={500}
         animateCardOpacity={true}
-        animateOverlayLabelsOpacity={false}
+        animateOverlayLabelsOpacity={true}
         marginTop={0}
         cardHorizontalMargin={15}
         childrenOnTop={true}
@@ -184,7 +180,7 @@ class Main extends Component {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.darkTheme.backgroundColor,
     alignItems: 'center',
     justifyContent: 'center',
   },

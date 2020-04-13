@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, ActivityIndicator} from 'react-native';
-import Styles from '../../Styles';
+
+// import colors for default theme
+import {colors} from '../../Constants';
 
 class LoadingIndicator extends Component {
   constructor(props) {
@@ -10,7 +12,10 @@ class LoadingIndicator extends Component {
   render() {
     return (
       <View style={styles.activityContainer}>
-        <ActivityIndicator size="large" color="#00ff00" />
+        <ActivityIndicator
+          size="large"
+          color={colors.darkTheme.primaryButton}
+        />
       </View>
     );
   }

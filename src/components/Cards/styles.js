@@ -1,22 +1,31 @@
 import {StyleSheet} from 'react-native';
 
+// importing colors for default theme
+import {colors} from '../../Constants';
+
 export default StyleSheet.create({
   card: {
-    flex: 0.8,
+    flex: 0.84,
     borderRadius: 8,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.darkTheme.backgroundColor,
 
     shadowOffset: {width: 1, height: 1},
     shadowColor: 'black',
-    shadowOpacity: 0.8,
+    shadowOpacity: 1,
     elevation: 8,
   },
   cardImage: {
-    width: '90%',
-    flex: 0.8,
+    width: '96%',
+    flex: 0.9,
     resizeMode: 'cover',
-    marginBottom: 0,
+    marginBottom: 6,
+    borderRadius: 8,
+  },
+  cardText: {
+    color: colors.darkTheme.secondaryText,
+    fontSize: 20,
+    marginBottom: 5,
   },
 });

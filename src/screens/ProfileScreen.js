@@ -21,6 +21,9 @@ import LoadingIndicator from '../components/LoadingIndicator';
 // importing firebase
 import * as firebase from 'firebase';
 
+// importing colors for default theme
+import {colros, colors} from '../Constants';
+
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -92,11 +95,19 @@ class ProfileScreen extends Component {
     const {user, posts, isLoading} = this.state;
 
     if (isLoading) {
-      return <LoadingIndicator />;
+      return (
+        <View
+          style={[
+            Styles.container,
+            {backgroundColor: colors.darkTheme.backgroundColor},
+          ]}>
+          <LoadingIndicator />
+        </View>
+      );
     }
 
     return (
-      <>
+      <View style={{backgroundColor: colors.darkTheme.backgroundColor}}>
         <Header navigate={this.props.navigation.navigate} />
         <View style={styles.fixedTopHeader}>
           <Image
@@ -107,23 +118,23 @@ class ProfileScreen extends Component {
           <Text style={[styles.headerUsername]}>{user.displayName}</Text>
           <View style={styles.fixedTopHeaderInnerSection}>
             <View style={styles.fixedTopHeaderCards}>
-              <Text>{posts.length}</Text>
-              <Text style={Styles.textSmall}>POSTS</Text>
+              <Text style={styles.postResp}>{posts.length}</Text>
+              <Text style={[Styles.textSmall, styles.postResp]}>POSTS</Text>
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text>{this.state.like}</Text>
-              <Text style={Styles.textSmall}>LIKES</Text>
+              <Text style={styles.postResp}>{this.state.like}</Text>
+              <Text style={[Styles.textSmall, styles.postResp]}>LIKES</Text>
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text>{this.state.nope}</Text>
-              <Text style={Styles.textSmall}>NOPES</Text>
+              <Text style={styles.postResp}>{this.state.nope}</Text>
+              <Text style={[Styles.textSmall, styles.postResp]}>NOPES</Text>
             </View>
           </View>
         </View>
         <ScrollView style={styles.scrollBottomView} onScrollAnimationEnd>
           {this.renderPosts()}
         </ScrollView>
-      </>
+      </View>
     );
   }
 }
@@ -137,23 +148,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
 
-    backgroundColor: '#fff',
     paddingTop: 10,
   },
   userImage: {
     height: 100,
     width: 100,
     borderRadius: 50,
-
-    shadowOffset: {width: 1, height: 10},
-    shadowOpacity: 0.8,
-    shadowRadius: 10,
-    shadowColor: '#000',
   },
   headerUsername: {
     marginTop: 10,
     fontSize: 24,
-    color: '#000',
+    color: colors.darkTheme.secondaryText,
     fontWeight: 'bold',
   },
   fixedTopHeaderInnerSection: {
@@ -177,9 +182,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  postResp: {
+    color: colors.darkTheme.secondaryText,
+  },
   scrollBottomView: {
-    height: (2 * SCREEN_HEIGHT) / 3,
-    backgroundColor: '#fff',
+    height: (2 * SCREEN_HEIGHT) / 3 - 60,
   },
   postContainer: {
     flexDirection: 'row',

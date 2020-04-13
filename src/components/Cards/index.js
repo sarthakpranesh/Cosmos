@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Image} from 'react-native';
+import {View, Image, Text} from 'react-native';
 
 // importing styles
 import styles from './styles';
@@ -14,6 +14,7 @@ class Card extends Component {
 
     return (
       <View style={[styles.card]}>
+        <Text style={styles.cardText}>{this.props.name}</Text>
         <Image source={{uri: card}} style={styles.cardImage} />
       </View>
     );

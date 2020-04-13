@@ -7,9 +7,9 @@ import {
   Image,
   ScrollView,
   TextInput,
+  Alert,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import RNFS from 'react-native-fs';
 
 // importing styles
 import styles from './styles';
@@ -26,6 +26,9 @@ import {uploadDownloadUrlDB} from '../../utils/apiFunctions';
 import Header from '../../components/Header';
 import ImagePickerIcon from '../../components/icons/ImagePickerIcon';
 import LoadingIndicator from '../../components/LoadingIndicator';
+
+// importing colors for default theme
+import {colors} from '../../Constants';
 
 class AddImageScreen extends Component {
   constructor(props) {
@@ -74,6 +77,10 @@ class AddImageScreen extends Component {
 
   onPostUpload = async () => {
     const {uid, imageCaption, image, fileBlog} = this.state;
+    if (!imageCaption) {
+      Alert.alert("Can't Upload", 'Caption is required!', [{text: 'Ok'}]);
+      return;
+    }
     try {
       this.setState({
         isLoading: true,
@@ -97,12 +104,20 @@ class AddImageScreen extends Component {
     const {image, imageCaption, isLoading} = this.state;
 
     if (isLoading) {
-      return <LoadingIndicator />;
+      return (
+        <View
+          style={[
+            Styles.container,
+            {backgroundColor: colors.darkTheme.backgroundColor},
+          ]}>
+          <LoadingIndicator />
+        </View>
+      );
     }
 
     if (image !== null) {
       return (
-        <>
+        <View style={{backgroundColor: colors.darkTheme.backgroundColor}}>
           <Header />
           <ScrollView>
             <View style={[styles.loadedImageContainer]}>
@@ -110,7 +125,13 @@ class AddImageScreen extends Component {
             </View>
             <View style={[styles.aboutImageContainer]}>
               <View style={[styles.aboutImageHeader]}>
-                <Text style={Styles.textSmallBold}>Write a caption</Text>
+                <Text
+                  style={[
+                    Styles.textSmallBold,
+                    {color: colors.darkTheme.primaryText},
+                  ]}>
+                  Write a caption
+                </Text>
                 <TouchableOpacity onPress={this.onPostUpload}>
                   <Text style={[Styles.textSmallBold, {color: 'blue'}]}>
                     Share
@@ -119,9 +140,14 @@ class AddImageScreen extends Component {
               </View>
               <TextInput
                 value={imageCaption}
-                style={[Styles.textInput, styles.textInputCaption]}
+                style={[
+                  Styles.textInput,
+                  styles.textInputCaption,
+                  {color: colors.darkTheme.secondaryText},
+                ]}
                 onChangeText={(caption) => this.setImageCaption(caption)}
                 placeholder="Type a caption here"
+                placeholderTextColor={colors.darkTheme.primaryText}
                 autoCapitalize="sentences"
                 autoFocus={true}
                 maxLength={200}
@@ -131,20 +157,30 @@ class AddImageScreen extends Component {
               />
             </View>
           </ScrollView>
-        </>
+        </View>
       );
     }
 
     return (
-      <>
+      <View
+        style={[
+          Styles.containerStarting,
+          {backgroundColor: colors.darkTheme.backgroundColor},
+        ]}>
         <Header />
         <View style={[styles.mainAddImageContainer]}>
           <TouchableOpacity onPress={this.openImagePicker}>
             <ImagePickerIcon width={40} height={40} />
           </TouchableOpacity>
-          <Text style={[Styles.textSmall, {marginTop: 10}]}>Add Image</Text>
+          <Text
+            style={[
+              Styles.textSmall,
+              {marginTop: 10, color: colors.darkTheme.primaryText},
+            ]}>
+            Add Image
+          </Text>
         </View>
-      </>
+      </View>
     );
   }
 }

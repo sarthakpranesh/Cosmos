@@ -64,12 +64,12 @@ class LandingScreen extends Component {
         <View style={styles.buttonContainer}>
           <ButtonLarge
             onPress={() => this.props.navigation.navigate('SignInScreen')}
-            title="SIGN IN"
+            title="Login"
           />
           <ButtonLarge
             onPress={() => this.props.navigation.navigate('SignUpScreen')}
             bigUglyBlue
-            title="SIGN UP"
+            title="Sign Up"
           />
         </View>
       </View>

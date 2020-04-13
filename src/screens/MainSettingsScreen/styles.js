@@ -6,18 +6,17 @@ export default StyleSheet.create({
     width: 100,
     borderRadius: 50,
 
-    shadowOffset: {width: 1, height: 10},
-    shadowOpacity: 0.8,
-    shadowRadius: 10,
-    shadowColor: '#000',
-
     alignSelf: 'center',
     marginVertical: 12,
   },
-  inputWrapper: {
-    justifyContent: 'center',
-  },
   label: {
     textAlign: 'center',
+  },
+  btnWrapper: {
+    paddingTop: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
