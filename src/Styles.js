@@ -1,5 +1,8 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
+// importing theming constants
+import {colors} from './Constants';
+
 const {width, height} = Dimensions.get('window');
 
 const Styles = StyleSheet.create({
@@ -8,6 +11,16 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'flex-end',
   },
+  containerStarting: {
+    flex: 1,
+    backgroundColor: colors.darkTheme.backgroundColor,
+
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
   landingImage: {
     position: 'absolute',
     height: height,
@@ -15,23 +28,26 @@ const Styles = StyleSheet.create({
     zIndex: -100,
   },
   buttonLogin: {
-    backgroundColor: 'white',
+    backgroundColor: colors.darkTheme.primaryButton,
     height: 48,
-    marginHorizontal: 20,
+    width: width / 3,
+    paddingHorizontal: 20,
     marginVertical: 10,
-    borderRadius: 8,
+    marginHorizontal: 20,
+    borderRadius: 4,
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonShadow: {
     shadowOffset: {width: 1, height: 1},
-    shadowColor: 'black',
+    shadowColor: colors.darkTheme.primaryText,
     shadowOpacity: 0.8,
     elevation: 3,
   },
   btnText: {
     fontSize: 20,
     fontWeight: 'normal',
+    color: colors.darkTheme.secondaryText,
   },
   textInput: {
     height: 50,
@@ -60,7 +76,7 @@ const Styles = StyleSheet.create({
     fontFamily: '',
     fontSize: 20,
     textAlign: 'center',
-    color: 'black',
+    color: colors.darkTheme.primaryText,
     fontWeight: '900',
   },
 });

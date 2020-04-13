@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, StyleSheet, Dimensions, Image} from 'react-native';
+import {View, StyleSheet, Dimensions, Animated, Text} from 'react-native';
 
 // importing common styles
 import Styles from '../../Styles';
@@ -12,16 +13,53 @@ const height = Dimensions.get('window').height;
 class LandingScreen extends Component {
   constructor(props) {
     super(props);
+    this.start = new Animated.Value(0);
+    this.opacity = new Animated.Value(0);
+
+    this.starting = () => {
+      Animated.timing(this.start, {
+        toValue: height / 8,
+        duration: 2000,
+        useNativeDriver: true,
+      }).start();
+    };
+
+    this.opacity = this.start.interpolate({
+      inputRange: [0, height / 8],
+      outputRange: [0, 1],
+    });
+
+    this.startBody = this.start.interpolate({
+      inputRange: [0, height / 8],
+      outputRange: [40, -40],
+    });
   }
 
   render() {
+    this.starting();
     return (
-      <View style={Styles.container} behavior={'height'}>
-        <Image
-          source={require('../../../assets/bg.jpg')}
-          style={Styles.landingImage}
-        />
-
+      <View style={[Styles.containerStarting]}>
+        <Animated.View
+          style={[
+            {opacity: this.opacity, transform: [{translateY: this.start}]},
+          ]}>
+          <Text style={[Styles.textMedium, {fontSize: 32}]}>
+            Welcome to Cosmos
+          </Text>
+        </Animated.View>
+        <Animated.View
+          style={[
+            {
+              opacity: Animated.multiply(0.6, this.opacity),
+              transform: [{translateY: this.startBody}],
+            },
+          ]}>
+          <Text style={[Styles.textMedium]}>
+            We are a open source project made and maintained by the community.
+            The project is driven by the support of artists, photographers, etc
+            throughout the world. Come be a part of our growing community 🙂
+          </Text>
+        </Animated.View>
         {/* Different Login Options */}
         <View style={styles.buttonContainer}>
           <ButtonLarge
@@ -41,9 +79,10 @@ class LandingScreen extends Component {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    height: height / 3 - 20,
-    justifyContent: 'flex-start',
-    marginTop: 40,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
