@@ -22,6 +22,9 @@ import Main from './src/screens/Main';
 import ProfileScreen from './src/screens/ProfileScreen';
 import MainSettingsScreen from './src/screens/MainSettingsScreen';
 
+// importing default theme properties
+import {colors} from './src/Constants';
+
 const mainAppStack = createBottomTabNavigator(
   {
     ' Images ': {
@@ -57,7 +60,7 @@ const mainAppStack = createBottomTabNavigator(
       showIcon: true,
       keyboardHidesTabBar: true,
       style: {
-        backgroundColor: 'white',
+        backgroundColor: colors.darkTheme.backgroundColor,
       },
     },
     lazy: true,

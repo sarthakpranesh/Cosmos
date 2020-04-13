@@ -5,5 +5,6 @@ export const colors = {
     primaryText: '#bbe1fa',
     secondaryText: '#ff6363',
     primaryButton: '#543864',
+    defaultIconColor: 'white',
   },
 };
