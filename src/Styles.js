@@ -11,6 +11,11 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'flex-end',
   },
+  containerLoginSign: {
+    flex: 1,
+    backgroundColor: colors.darkTheme.backgroundColor,
+    justifyContent: 'flex-end',
+  },
   containerStarting: {
     flex: 1,
     backgroundColor: colors.darkTheme.backgroundColor,

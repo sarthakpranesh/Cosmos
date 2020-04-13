@@ -4,8 +4,9 @@ import {
   Text,
   TextInput,
   Alert,
-  Image,
   TouchableOpacity,
+  Animated,
+  Dimensions,
 } from 'react-native';
 
 // importing styles
@@ -18,12 +19,39 @@ import * as firebase from 'firebase';
 // importing components
 import ButtonLogin from '../../components/ButtonLarge';
 
+const {height, width} = Dimensions.get('window');
+
 class SignInScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
       password: '',
+    };
+    this.opacity = new Animated.Value(0);
+
+    this.starting = () => {
+      Animated.timing(this.opacity, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start();
+    };
+
+    this.fromY = this.opacity.interpolate({
+      inputRange: [0, 1],
+      outputRange: [height / 3, 0],
+    });
+
+    this.closing = () => {
+      Animated.timing(this.opacity, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start(() => {
+        props.navigation.navigate('LandingScreen');
+        return;
+      });
     };
 
     this.emailInput = null;
@@ -77,18 +105,26 @@ class SignInScreen extends Component {
   };
 
   render() {
+    this.starting();
     return (
       <>
-        <View style={Styles.container}>
-          <Image
-            source={require('../../../assets/bg.jpg')}
-            style={Styles.landingImage}
-          />
-          <View style={[styles.signInFormContainer]}>
+        <View style={Styles.containerLoginSign}>
+          <Animated.View
+            style={[
+              styles.signInFormContainer,
+              {
+                transform: [
+                  {
+                    translateY: this.fromY,
+                  },
+                ],
+                opacity: this.opacity,
+              },
+            ]}>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('LandingScreen')}
+              onPress={() => this.closing()}
               style={[styles.closeBtn, Styles.buttonShadow]}>
-              <Text>X</Text>
+              <Text>x</Text>
             </TouchableOpacity>
             <TextInput
               ref={(input) => {
@@ -111,7 +147,7 @@ class SignInScreen extends Component {
               value={this.state.password}
             />
             <ButtonLogin onPress={this.onSubmitSignIn} title="Login" />
-          </View>
+          </Animated.View>
         </View>
       </>
     );

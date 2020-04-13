@@ -5,8 +5,9 @@ import {
   Text,
   TextInput,
   Alert,
-  Image,
   TouchableOpacity,
+  Animated,
+  Dimensions,
 } from 'react-native';
 
 // importing styles
@@ -22,6 +23,8 @@ import {addUserToDB, updateDisplayName} from '../../utils/firebase';
 // importing components
 import ButtonLarge from '../../components/ButtonLarge';
 
+const {height, width} = Dimensions.get('window');
+
 class SignUpScreen extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +33,31 @@ class SignUpScreen extends Component {
       email: '',
       password: '',
     };
+    this.signUpFormOpacity = new Animated.Value(0);
+    this.formY = new Animated.Value(height / 3);
+
+    this.openSignUp = () => {
+      Animated.timing(this.formY, {
+        toValue: 0,
+        duration: 1000,
+        useNative: true,
+      }).start();
+    };
+
+    this.onCloseSignUp = () => {
+      Animated.timing(this.formY, {
+        toValue: height / 2,
+        duration: 1000,
+        useNative: true,
+      }).start(() => {
+        props.navigation.navigate('LandingScreen');
+      });
+    };
+
+    this.signUpFormOpacity = this.formY.interpolate({
+      inputRange: [0, height / 2],
+      outputRange: [1, 0],
+    });
 
     this.emailInput = null;
     this.passwordInput = null;
@@ -107,18 +135,26 @@ class SignUpScreen extends Component {
   };
 
   render() {
+    this.openSignUp();
     return (
       <>
-        <View style={Styles.container}>
-          <Image
-            source={require('../../../assets/bg.jpg')}
-            style={Styles.landingImage}
-          />
-          <View style={styles.signUpFormContainer}>
+        <View style={Styles.containerLoginSign}>
+          <Animated.View
+            style={[
+              styles.signUpFormContainer,
+              {
+                transform: [
+                  {
+                    translateY: this.formY,
+                  },
+                ],
+                opacity: this.signUpFormOpacity,
+              },
+            ]}>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('LandingScreen')}
+              onPress={() => this.onCloseSignUp()}
               style={[styles.closeBtn, Styles.buttonShadow]}>
-              <Text>X</Text>
+              <Text>x</Text>
             </TouchableOpacity>
             <TextInput
               ref={(input) => {
@@ -151,7 +187,7 @@ class SignUpScreen extends Component {
               value={this.state.password}
             />
             <ButtonLarge onPress={this.onSubmitSignUp} title="Register" />
-          </View>
+          </Animated.View>
         </View>
       </>
     );
