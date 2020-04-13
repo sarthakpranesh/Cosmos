@@ -49,11 +49,6 @@ const Styles = StyleSheet.create({
     shadowOpacity: 0.8,
     elevation: 3,
   },
-  btnText: {
-    fontSize: 20,
-    fontWeight: 'normal',
-    color: colors.darkTheme.secondaryText,
-  },
   textInput: {
     height: 50,
     borderRadius: 8,
@@ -76,21 +71,21 @@ const Styles = StyleSheet.create({
   },
   textSmall: {
     fontFamily: '',
-    fontSize: 16,
+    fontSize: width / 24,
     textAlign: 'center',
-    color: 'black',
+    color: colors.darkTheme.primaryText,
     fontWeight: 'normal',
-  },
-  textSmallBold: {
-    fontFamily: '',
-    fontSize: 16,
-    textAlign: 'center',
-    color: 'black',
-    fontWeight: 'bold',
   },
   textMedium: {
     fontFamily: '',
-    fontSize: 20,
+    fontSize: width / 20,
+    textAlign: 'center',
+    color: colors.darkTheme.primaryText,
+    fontWeight: '900',
+  },
+  textLarge: {
+    fontFamily: '',
+    fontSize: width / 14,
     textAlign: 'center',
     color: colors.darkTheme.primaryText,
     fontWeight: '900',

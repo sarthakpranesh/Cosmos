@@ -92,6 +92,7 @@ class Main extends Component {
             {
               flexWrap: 'wrap',
               textAlign: 'center',
+              marginHorizontal: 10,
             },
           ]}>
           Waiting For Someone to Upload Something Interesting 🎨

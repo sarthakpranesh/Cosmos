@@ -43,18 +43,17 @@ class LandingScreen extends Component {
           style={[
             {opacity: this.opacity, transform: [{translateY: this.start}]},
           ]}>
-          <Text style={[Styles.textMedium, {fontSize: 32}]}>
-            Welcome to Cosmos
-          </Text>
+          <Text style={[Styles.textLarge]}>Welcome to Cosmos</Text>
         </Animated.View>
         <Animated.View
           style={[
             {
               opacity: Animated.multiply(0.6, this.opacity),
               transform: [{translateY: this.startBody}],
+              marginHorizontal: 10,
             },
           ]}>
-          <Text style={[Styles.textMedium]}>
+          <Text style={[Styles.textSmall]}>
             We are a open source project made and maintained by the community.
             The project is driven by the support of artists, photographers, etc
             throughout the world. Come be a part of our growing community 🙂

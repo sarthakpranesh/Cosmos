@@ -22,7 +22,7 @@ import LoadingIndicator from '../components/LoadingIndicator';
 import * as firebase from 'firebase';
 
 // importing colors for default theme
-import {colros, colors} from '../Constants';
+import {colors} from '../Constants';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -115,19 +115,21 @@ class ProfileScreen extends Component {
             alt="User Image"
             style={styles.userImage}
           />
-          <Text style={[styles.headerUsername]}>{user.displayName}</Text>
+          <Text style={[Styles.textMedium, styles.headerUsername]}>
+            {user.displayName}
+          </Text>
           <View style={styles.fixedTopHeaderInnerSection}>
             <View style={styles.fixedTopHeaderCards}>
               <Text style={styles.postResp}>{posts.length}</Text>
-              <Text style={[Styles.textSmall, styles.postResp]}>POSTS</Text>
+              <Text style={[Styles.textSmall, styles.postResp]}>Posts</Text>
             </View>
             <View style={styles.fixedTopHeaderCards}>
               <Text style={styles.postResp}>{this.state.like}</Text>
-              <Text style={[Styles.textSmall, styles.postResp]}>LIKES</Text>
+              <Text style={[Styles.textSmall, styles.postResp]}>Likes</Text>
             </View>
             <View style={styles.fixedTopHeaderCards}>
               <Text style={styles.postResp}>{this.state.nope}</Text>
-              <Text style={[Styles.textSmall, styles.postResp]}>NOPES</Text>
+              <Text style={[Styles.textSmall, styles.postResp]}>Nopes</Text>
             </View>
           </View>
         </View>
@@ -151,13 +153,12 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   userImage: {
-    height: 100,
-    width: 100,
+    height: SCREEN_WIDTH / 4,
+    width: SCREEN_WIDTH / 4,
     borderRadius: 50,
   },
   headerUsername: {
     marginTop: 10,
-    fontSize: 24,
     color: colors.darkTheme.secondaryText,
     fontWeight: 'bold',
   },
