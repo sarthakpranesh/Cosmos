@@ -1,38 +1,69 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useRef, useEffect} from 'react';
+import {View, Text, Image, StyleSheet, Animated} from 'react-native';
+
+const {Value} = Animated;
 
 // importing firebase utils
 import {isUserLoggedIn} from '../../utils/firebase';
 
-class SplashScreen extends React.Component {
-  async componentDidMount() {
-    const loggedIn = await isUserLoggedIn();
-    if (loggedIn) {
-      this.props.navigation.navigate('mainAppStack');
-      return;
-    }
-    this.props.navigation.navigate('userStartingStack');
-    return;
-  }
+const SplashScreen = (props) => {
+  const start = useRef(new Value(0)).current;
 
-  render() {
-    return (
-      <View style={styles.viewStyles}>
-        <Text style={styles.textStyles}>COSMOS</Text>
-      </View>
-    );
-  }
-}
+  useEffect(() => {
+    start.setValue(0);
+    Animated.timing(start, {
+      toValue: 1,
+      duration: 2000,
+      useNativeDriver: true,
+    }).start(() => {
+      isUserLoggedIn()
+        .then((user) => {
+          if (!user) {
+            Animated.timing(start, {
+              toValue: 0,
+              duration: 1000,
+              useNativeDriver: true,
+            }).start(() => {
+              props.navigation.navigate('userStartingStack');
+            });
+            return;
+          }
+          Animated.timing(start, {
+            toValue: 0,
+            duration: 1000,
+            useNativeDriver: true,
+          }).start(() => {
+            props.navigation.navigate('mainAppStack');
+          });
+          return;
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    });
+    console.log('Starting animation');
+  }, [props.navigation, start]);
+
+  return (
+    <View style={styles.viewStyles}>
+      {console.log()}
+      <Animated.Image
+        source={require('../../../assets/splashScreenLogo.png')}
+        style={{opacity: start}}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   viewStyles: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'orange',
+    backgroundColor: '#1b262c',
   },
   textStyles: {
-    color: 'white',
+    color: '#bbe1fa',
     fontSize: 40,
     fontWeight: 'bold',
   },
