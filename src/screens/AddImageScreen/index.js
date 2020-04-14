@@ -97,6 +97,7 @@ class AddImageScreen extends Component {
         isLoading: false,
         fileBlog: null,
         image: null,
+        imageCaption: '',
       });
     } catch (err) {
       console.log(err.message);
