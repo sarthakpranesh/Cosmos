@@ -1,4 +1,5 @@
 import {createSwitchNavigator, createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 
 import React from 'react';
@@ -21,9 +22,23 @@ import AddImageScreen from './src/screens/AddImageScreen';
 import Main from './src/screens/Main';
 import ProfileScreen from './src/screens/ProfileScreen';
 import MainSettingsScreen from './src/screens/MainSettingsScreen';
+import PostViewScreen from './src/screens/PostViewScreen';
 
 // importing default theme properties
 import {colors} from './src/Constants';
+
+const postViewStack = createStackNavigator(
+  {
+    ' Home ': {
+      screen: Main,
+    },
+    PostViewScreen,
+  },
+  {
+    initialRouteName: ' Home ',
+    headerMode: 'none',
+  },
+);
 
 const mainAppStack = createBottomTabNavigator(
   {
@@ -33,8 +48,8 @@ const mainAppStack = createBottomTabNavigator(
         tabBarIcon: ({focused}) => <AddPictureIcon isFocused={focused} />,
       }),
     },
-    ' Home ': {
-      screen: Main,
+    postViewStack: {
+      screen: postViewStack,
       navigationOptions: () => ({
         tabBarIcon: ({focused}) => <HomeIcon isFocused={focused} />,
       }),
@@ -53,8 +68,15 @@ const mainAppStack = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: ' Home ',
+    initialRouteName: 'postViewStack',
     backBehavior: 'history',
+    defaultNavigationOptions: {
+      navigationOptions: {
+        tabBarIcon: ({focused}) => {
+          console.log(focused);
+        },
+      },
+    },
     tabBarOptions: {
       showLabel: false,
       showIcon: true,

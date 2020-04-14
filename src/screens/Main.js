@@ -152,7 +152,9 @@ class Main extends Component {
             },
           },
         }}
-        onTapCard={(cardIndex) => null}
+        onTapCard={(cardIndex) =>
+          this.props.navigation.navigate('PostViewScreen')
+        }
         onSwipedRight={(cardIndex) => likePost(posts[cardIndex].pid)}
         onSwipedLeft={(cardIndex) => nopePost(posts[cardIndex].pid)}
         onSwipedAll={this.onSwipedAll}
