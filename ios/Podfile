@@ -58,6 +58,8 @@ target 'cosmos' do
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
+  pod 'react-native-simple-toast', :path => '../node_modules/react-native-simple-toast'
+
   target 'cosmosTests' do
     inherit! :complete
     # Pods for testing
