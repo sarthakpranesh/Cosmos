@@ -6336,6 +6336,11 @@ react-native-screens@^2.4.0:
   dependencies:
     debounce "^1.2.0"
 
+react-native-simple-toast@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-simple-toast/-/react-native-simple-toast-1.1.0.tgz#196a7eef7f1434759d771f286434b565a10c1c6f"
+  integrity sha512-nNeZv8jOzvUL2v/McCwU5y3YrRcUr1dmfwcBDqtXTyi4ZO88Ujj1AzCS8OBw7e3t86wKyaWeWy20Q1x16xEm3Q==
+
 react-native-svg@^12.0.3:
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-12.1.0.tgz#acfe48c35cd5fca3d5fd767abae0560c36cfc03d"

@@ -10,6 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+import Toast from 'react-native-simple-toast';
 
 // importing styles
 import styles from './styles';
@@ -87,6 +88,11 @@ class AddImageScreen extends Component {
       });
       const downloadURL = await uploadImage(uid, fileBlog, image);
       await uploadDownloadUrlDB(downloadURL, imageCaption);
+      Toast.showWithGravity(
+        'Post Uploaded Successfully',
+        Toast.SHORT,
+        Toast.CENTER,
+      );
       this.setState({
         isLoading: false,
         fileBlog: null,
