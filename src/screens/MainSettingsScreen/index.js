@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, Text, ScrollView, TextInput, Image, Alert} from 'react-native';
+import Toast from 'react-native-simple-toast';
 
 // importing styles
 import styles from './styles';
@@ -103,21 +104,35 @@ class MainSettingsScreen extends Component {
   };
 
   onSignOut = async () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        Alert.alert(
-          'Logged Out',
-          'You have been successfully logged out',
-          [{text: 'ok'}],
-          {cancelable: false},
-        );
-        this.props.navigation.navigate('LandingScreen');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    Alert.alert(
+      'Log Out',
+      'Are you sure, you want to log out?',
+      [
+        {text: 'Cancel'},
+        {
+          text: 'Sign Out',
+          onPress: () => {
+            firebase
+              .auth()
+              .signOut()
+              .then(() => {
+                this.props.navigation.navigate('LandingScreen');
+                Toast.showWithGravity(
+                  'You have been logged out!',
+                  Toast.CENTER,
+                  Toast.SHORT,
+                );
+                return;
+              })
+              .catch((err) => {
+                console.log(err);
+                return;
+              });
+          },
+        },
+      ],
+      {cancelable: true},
+    );
   };
 
   render() {
