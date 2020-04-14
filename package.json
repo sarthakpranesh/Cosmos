@@ -29,7 +29,7 @@
     "react-native-unimodules": "^0.9.0",
     "react-native-view-overflow": "^0.0.5",
     "react-navigation": "^4.3.7",
-    "react-navigation-tabs": "^2.8.11",
+    "react-navigation-tabs": "1.2.0",
     "shorthash": "^0.0.2"
   },
   "devDependencies": {

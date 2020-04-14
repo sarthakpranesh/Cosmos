@@ -54,7 +54,7 @@ const mainAppStack = createBottomTabNavigator(
   },
   {
     initialRouteName: ' Home ',
-    backBehavior: 'initialRoute',
+    backBehavior: 'history',
     tabBarOptions: {
       showLabel: false,
       showIcon: true,
