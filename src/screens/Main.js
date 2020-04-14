@@ -77,6 +77,11 @@ class Main extends Component {
     this.loadPosts();
   };
 
+  onTabCard = () => {
+    const {index, posts} = this.state;
+    this.props.navigation.navigate('PostViewScreen', {card: posts[index]});
+  };
+
   renderCard = () => {
     const {isLoading, posts} = this.state;
 
@@ -152,9 +157,7 @@ class Main extends Component {
             },
           },
         }}
-        onTapCard={(cardIndex) =>
-          this.props.navigation.navigate('PostViewScreen')
-        }
+        onTapCard={() => this.onTabCard()}
         onSwipedRight={(cardIndex) => likePost(posts[cardIndex].pid)}
         onSwipedLeft={(cardIndex) => nopePost(posts[cardIndex].pid)}
         onSwipedAll={this.onSwipedAll}
