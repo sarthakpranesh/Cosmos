@@ -145,6 +145,7 @@ class SignInScreen extends Component {
               placeholderTextColor="black"
               onChangeText={(password) => this.setPassword(password)}
               value={this.state.password}
+              secureTextEntry={true}
             />
             <ButtonLogin onPress={this.onSubmitSignIn} title="Login" />
           </Animated.View>
