@@ -133,9 +133,7 @@ class AddImageScreen extends Component {
                   Write a caption
                 </Text>
                 <TouchableOpacity onPress={this.onPostUpload}>
-                  <Text style={[Styles.textSmallBold, {color: 'blue'}]}>
-                    Share
-                  </Text>
+                  <Text style={[Styles.textMedium]}>Share</Text>
                 </TouchableOpacity>
               </View>
               <TextInput
