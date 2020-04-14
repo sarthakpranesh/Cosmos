@@ -22,6 +22,7 @@ import {addUserToDB, updateDisplayName} from '../../utils/firebase';
 
 // importing components
 import ButtonLarge from '../../components/ButtonLarge';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 const {height, width} = Dimensions.get('window');
 
@@ -32,6 +33,7 @@ class SignUpScreen extends Component {
       name: '',
       email: '',
       password: '',
+      isLoading: false,
     };
     this.signUpFormOpacity = new Animated.Value(0);
     this.formY = new Animated.Value(height / 3);
@@ -40,7 +42,7 @@ class SignUpScreen extends Component {
       Animated.timing(this.formY, {
         toValue: 0,
         duration: 1000,
-        useNative: true,
+        useNativeDriver: true,
       }).start();
     };
 
@@ -48,7 +50,7 @@ class SignUpScreen extends Component {
       Animated.timing(this.formY, {
         toValue: height / 2,
         duration: 1000,
-        useNative: true,
+        useNativeDriver: true,
       }).start(() => {
         props.navigation.navigate('LandingScreen');
       });
@@ -62,6 +64,10 @@ class SignUpScreen extends Component {
     this.emailInput = null;
     this.passwordInput = null;
     this.nameInput = null;
+  }
+
+  componentDidMount() {
+    this.openSignUp();
   }
 
   setEmail = (userEmail) => {
@@ -85,7 +91,14 @@ class SignUpScreen extends Component {
     this.setState({name: username});
   };
 
+  setIsLoading = (isLoading) => {
+    this.setState({
+      isLoading,
+    });
+  };
+
   onSubmitSignUp = () => {
+    this.setIsLoading(true);
     const {email, password, name} = this.state;
     if (!email) {
       Alert.alert('Invalid Credentials', 'Please Provide an Email!', [
@@ -112,6 +125,8 @@ class SignUpScreen extends Component {
       return;
     }
 
+    const setIsLoading = this.setIsLoading;
+    const starting = this.openSignUp;
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -126,6 +141,8 @@ class SignUpScreen extends Component {
       })
       .catch(function (error) {
         console.log(error.message);
+        setIsLoading(false);
+        starting();
         Alert.alert(
           'User Exists',
           'User with that Email already exists! Try Login instead',
@@ -135,7 +152,16 @@ class SignUpScreen extends Component {
   };
 
   render() {
-    this.openSignUp();
+    const {isLoading} = this.state;
+
+    if (isLoading) {
+      return (
+        <View style={Styles.containerLoginSign}>
+          <LoadingIndicator />
+        </View>
+      );
+    }
+
     return (
       <>
         <View style={Styles.containerLoginSign}>
