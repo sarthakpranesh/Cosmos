@@ -18,6 +18,7 @@ import * as firebase from 'firebase';
 
 // importing components
 import ButtonLogin from '../../components/ButtonLarge';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 const {height, width} = Dimensions.get('window');
 
@@ -27,6 +28,7 @@ class SignInScreen extends Component {
     this.state = {
       email: '',
       password: '',
+      isLoading: false,
     };
     this.opacity = new Animated.Value(0);
 
@@ -59,6 +61,10 @@ class SignInScreen extends Component {
     this.nameInput = null;
   }
 
+  componentDidMount() {
+    this.starting();
+  }
+
   setEmail = (userEmail) => {
     if (userEmail === '') {
       this.setState({email: ''});
@@ -73,12 +79,20 @@ class SignInScreen extends Component {
     this.setState({password: userPassword});
   };
 
+  setIsLoading = (isLoading) => {
+    this.setState({
+      isLoading,
+    });
+  };
+
   onSubmitSignIn = () => {
+    this.setIsLoading(true);
     const {email, password} = this.state;
     if (!email) {
       Alert.alert('Invalid Credentials', 'Please Provide an Email!', [
         {text: 'ok', onPress: () => this.emailInput.focus()},
       ]);
+      this.setIsLoading(false);
       return;
     }
 
@@ -88,9 +102,12 @@ class SignInScreen extends Component {
         'Please make sure your password is in the range of 6 to 40 characters!',
         [{text: 'ok', onPress: () => this.passwordInput.focus()}],
       );
+      this.setIsLoading(false);
       return;
     }
 
+    const setIsLoading = this.setIsLoading;
+    const starting = this.starting;
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -98,14 +115,23 @@ class SignInScreen extends Component {
         this.props.navigation.navigate(' Home ');
       })
       .catch(function (error) {
-        console.log(error);
+        setIsLoading(false);
         Alert.alert('Problem logging In', error.message, [{text: 'ok'}]);
+        starting();
         return;
       });
   };
 
   render() {
-    this.starting();
+    const {isLoading} = this.state;
+    if (isLoading) {
+      return (
+        <View style={Styles.containerLoginSign}>
+          <LoadingIndicator />
+        </View>
+      );
+    }
+
     return (
       <>
         <View style={Styles.containerLoginSign}>
