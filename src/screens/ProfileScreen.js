@@ -17,6 +17,7 @@ import Styles from '../Styles';
 // importing components
 import Header from '../components/Header';
 import LoadingIndicator from '../components/LoadingIndicator';
+import CacheImage from '../components/CacheImage';
 
 // importing firebase
 import * as firebase from 'firebase';
@@ -80,9 +81,9 @@ class ProfileScreen extends Component {
       <View style={styles.postContainer}>
         {posts.map((i, index) => {
           return (
-            <Image
+            <CacheImage
               key={i.pid}
-              source={{uri: i.downloadURL}}
+              uri={i.downloadURL}
               style={styles.postImageCard}
             />
           );

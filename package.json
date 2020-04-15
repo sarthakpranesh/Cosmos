@@ -17,6 +17,7 @@
     "firebase": "^7.13.2",
     "react": "16.11.0",
     "react-native": "0.62.1",
+    "react-native-actionsheet": "^2.4.2",
     "react-native-deck-swiper": "^1.6.7",
     "react-native-dotenv": "^0.2.0",
     "react-native-fs": "^2.16.6",
