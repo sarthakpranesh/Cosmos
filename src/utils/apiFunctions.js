@@ -2,15 +2,16 @@ import shorthash from 'shorthash';
 import mainServerApi from '../api/mainServerApi';
 import * as firebase from 'firebase';
 
-export const uploadDownloadUrlDB = (downloadURL, caption) => {
+export const uploadDownloadUrlDB = (uploadedImage, caption) => {
   return new Promise(async (resolve, reject) => {
     try {
       await mainServerApi.post(
         '/addNewPost',
         {
           caption,
-          downloadURL,
-          pid: shorthash.unique(downloadURL),
+          downloadURL: uploadedImage.url,
+          postName: uploadedImage.name,
+          pid: shorthash.unique(uploadedImage.url),
         },
         {
           headers: {

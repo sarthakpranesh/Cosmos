@@ -80,8 +80,8 @@ export const uploadImage = (uid, file, image) => {
       const path = `posts/${uid}-${shorthash.unique(image.uri)}.${image.uri.split('.').pop()}`;
       const storageImage = firebase.storage().ref(path);
       await storageImage.put(file);
-      const url = storageImage.getDownloadURL();
-      resolve(url);
+      const url = await storageImage.getDownloadURL();
+      resolve({url, name: storageImage.name});
     } catch (err) {
       reject(err);
     }

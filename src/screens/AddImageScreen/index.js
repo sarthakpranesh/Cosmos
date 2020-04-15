@@ -86,8 +86,8 @@ class AddImageScreen extends Component {
       this.setState({
         isLoading: true,
       });
-      const downloadURL = await uploadImage(uid, fileBlog, image);
-      await uploadDownloadUrlDB(downloadURL, imageCaption);
+      const uploadedImage = await uploadImage(uid, fileBlog, image);
+      await uploadDownloadUrlDB(uploadedImage, imageCaption);
       Toast.showWithGravity(
         'Post Uploaded Successfully',
         Toast.SHORT,
