@@ -150,8 +150,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    borderBottomColor: 'white',
 
     paddingTop: 10,
+    shadowColor: 'white',
+    shadowOffset: {width: 1, height: 1},
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    elevation: 5,
   },
   userImage: {
     height: SCREEN_WIDTH / 4,
