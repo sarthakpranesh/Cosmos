@@ -6,7 +6,9 @@ import {
   Image,
   ScrollView,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
+import ActionSheet from 'react-native-actionsheet';
 
 // importing Firebase utils
 import {getUserObject} from '../utils/firebase';
@@ -37,7 +39,10 @@ class ProfileScreen extends Component {
       like: 0,
       nope: 0,
       isLoading: true,
+      actionSheetCardPID: -1,
     };
+
+    this.ActionSheet = null;
   }
 
   componentDidMount() {
@@ -75,17 +80,44 @@ class ProfileScreen extends Component {
       });
   };
 
+  handleCardLongPress = (cardPID) => {
+    this.setState({
+      actionSheetIndex: cardPID,
+    });
+    this.ActionSheet.show();
+  };
+
+  handleActionPress = (index) => {
+    // if index is 0 - handle delete
+    if (index === 0) {
+      console.log('Deleting the post');
+    }
+
+    // if index is 1 - handle cancel
+    if (index === 1) {
+      console.log('Cancelling the Action Sheet');
+      this.setState({
+        actionSheetCardPID: -1,
+      });
+    }
+
+    return;
+  };
+
   renderPosts = () => {
     const {posts} = this.state;
     return (
       <View style={styles.postContainer}>
         {posts.map((i, index) => {
           return (
-            <CacheImage
-              key={i.pid}
-              uri={i.downloadURL}
-              style={styles.postImageCard}
-            />
+            <TouchableOpacity
+              onLongPress={() => this.handleCardLongPress(i.pid)}>
+              <CacheImage
+                key={i.pid}
+                uri={i.downloadURL}
+                style={styles.postImageCard}
+              />
+            </TouchableOpacity>
           );
         })}
       </View>
@@ -137,6 +169,14 @@ class ProfileScreen extends Component {
         <ScrollView style={styles.scrollBottomView} onScrollAnimationEnd>
           {this.renderPosts()}
         </ScrollView>
+        <ActionSheet
+          ref={(o) => (this.ActionSheet = o)}
+          title={'What do you wanna do?'}
+          options={['Delete', 'Cancel']}
+          cancelButtonIndex={1}
+          destructiveButtonIndex={1}
+          onPress={(index) => this.handleActionPress(index)}
+        />
       </View>
     );
   }
