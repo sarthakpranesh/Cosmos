@@ -10,7 +10,7 @@ Come be a part of our growing community and help us build a better experience ðŸ
 <br/>
 
 ## Download 
-Beta-Release: [Cosmos beta](https://drive.google.com/file/d/10ribc157qyuqTPSuMeqjDWeiSElEgwId/view?usp=sharing)
+Beta-Release: [Cosmos beta](https://drive.google.com/file/d/14lU4bSe2yDppG8zhABaq0uNmmWIvdZDm/view?usp=sharing)
 
 <br/>
 
