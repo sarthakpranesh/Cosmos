@@ -84,3 +84,25 @@ export const nopePost = (pid) => {
     }
   });
 };
+
+export const deletePosts = (pid, postName) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const resp = await mainServerApi.delete('/deletePosts', {
+        params: {
+          pid: pid,
+          postName: postName,
+        },
+        headers: {
+          Authorization: firebase.auth().currentUser.uid,
+        },
+      });
+      if (resp.data.isPostDeleted && resp.data.status === 1) {
+        resolve();
+      }
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
+};

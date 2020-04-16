@@ -9,9 +9,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
+import Toast from 'react-native-simple-toast';
 
 // importing Firebase utils
 import {getUserObject} from '../utils/firebase';
+import {deletePosts} from '../utils/apiFunctions';
 
 // importing global styles
 import Styles from '../Styles';
@@ -39,7 +41,7 @@ class ProfileScreen extends Component {
       like: 0,
       nope: 0,
       isLoading: true,
-      actionSheetCardPID: -1,
+      actionSheetIndex: -1,
     };
 
     this.ActionSheet = null;
@@ -80,27 +82,37 @@ class ProfileScreen extends Component {
       });
   };
 
-  handleCardLongPress = (cardPID) => {
+  handleCardLongPress = (cardIndex) => {
     this.setState({
-      actionSheetIndex: cardPID,
+      actionSheetIndex: cardIndex,
     });
     this.ActionSheet.show();
   };
 
-  handleActionPress = (index) => {
+  handleActionPress = async (index) => {
+    const {actionSheetIndex, posts} = this.state;
     // if index is 0 - handle delete
     if (index === 0) {
-      console.log('Deleting the post');
+      await deletePosts(
+        posts[actionSheetIndex].pid,
+        posts[actionSheetIndex].postName,
+      );
+      this.getUserPosts();
+      Toast.showWithGravity(
+        'Post Deleted Successfully',
+        Toast.SHORT,
+        Toast.CENTER,
+      );
     }
 
     // if index is 1 - handle cancel
     if (index === 1) {
       console.log('Cancelling the Action Sheet');
-      this.setState({
-        actionSheetCardPID: -1,
-      });
     }
 
+    this.setState({
+      actionSheetIndex: -1,
+    });
     return;
   };
 
@@ -109,9 +121,10 @@ class ProfileScreen extends Component {
     return (
       <View style={styles.postContainer}>
         {posts.map((i, index) => {
+          console.log(i);
           return (
             <TouchableOpacity
-              onLongPress={() => this.handleCardLongPress(i.pid)}>
+              onLongPress={() => this.handleCardLongPress(index)}>
               <CacheImage
                 key={i.pid}
                 uri={i.downloadURL}
