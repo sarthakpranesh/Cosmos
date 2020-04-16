@@ -6,10 +6,14 @@ import {
   Image,
   ScrollView,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
+import ActionSheet from 'react-native-actionsheet';
+import Toast from 'react-native-simple-toast';
 
 // importing Firebase utils
 import {getUserObject} from '../utils/firebase';
+import {deletePosts} from '../utils/apiFunctions';
 
 // importing global styles
 import Styles from '../Styles';
@@ -37,7 +41,10 @@ class ProfileScreen extends Component {
       like: 0,
       nope: 0,
       isLoading: true,
+      actionSheetIndex: -1,
     };
+
+    this.ActionSheet = null;
   }
 
   componentDidMount() {
@@ -75,17 +82,55 @@ class ProfileScreen extends Component {
       });
   };
 
+  handleCardLongPress = (cardIndex) => {
+    this.setState({
+      actionSheetIndex: cardIndex,
+    });
+    this.ActionSheet.show();
+  };
+
+  handleActionPress = async (index) => {
+    const {actionSheetIndex, posts} = this.state;
+    // if index is 0 - handle delete
+    if (index === 0) {
+      await deletePosts(
+        posts[actionSheetIndex].pid,
+        posts[actionSheetIndex].postName,
+      );
+      this.getUserPosts();
+      Toast.showWithGravity(
+        'Post Deleted Successfully',
+        Toast.SHORT,
+        Toast.CENTER,
+      );
+    }
+
+    // if index is 1 - handle cancel
+    if (index === 1) {
+      console.log('Cancelling the Action Sheet');
+    }
+
+    this.setState({
+      actionSheetIndex: -1,
+    });
+    return;
+  };
+
   renderPosts = () => {
     const {posts} = this.state;
     return (
       <View style={styles.postContainer}>
         {posts.map((i, index) => {
+          console.log(i);
           return (
-            <CacheImage
-              key={i.pid}
-              uri={i.downloadURL}
-              style={styles.postImageCard}
-            />
+            <TouchableOpacity
+              onLongPress={() => this.handleCardLongPress(index)}>
+              <CacheImage
+                key={i.pid}
+                uri={i.downloadURL}
+                style={styles.postImageCard}
+              />
+            </TouchableOpacity>
           );
         })}
       </View>
@@ -137,6 +182,14 @@ class ProfileScreen extends Component {
         <ScrollView style={styles.scrollBottomView} onScrollAnimationEnd>
           {this.renderPosts()}
         </ScrollView>
+        <ActionSheet
+          ref={(o) => (this.ActionSheet = o)}
+          title={'What do you wanna do?'}
+          options={['Delete', 'Cancel']}
+          cancelButtonIndex={1}
+          destructiveButtonIndex={1}
+          onPress={(index) => this.handleActionPress(index)}
+        />
       </View>
     );
   }
