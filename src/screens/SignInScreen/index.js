@@ -8,6 +8,7 @@ import {
   Animated,
   Dimensions,
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
 
 // importing styles
 import styles from './styles';
@@ -20,7 +21,7 @@ import * as firebase from 'firebase';
 import ButtonLogin from '../../components/ButtonLarge';
 import LoadingIndicator from '../../components/LoadingIndicator';
 
-const {height, width} = Dimensions.get('window');
+const {height} = Dimensions.get('window');
 
 class SignInScreen extends Component {
   constructor(props) {
@@ -85,6 +86,38 @@ class SignInScreen extends Component {
     });
   };
 
+  handleEmailNotVerified = (user) => {
+    Alert.alert(
+      'Email Verification Required',
+      'We have send you a email verification, please verify your email before you continue! Do you want us to resend the email verification?',
+      [
+        {text: 'No'},
+        {
+          text: 'Yes',
+          onPress: () => {
+            user
+              .sendEmailVerification()
+              .then(() => {
+                Toast.showWithGravity(
+                  'Verification Email Send!',
+                  Toast.SHORT,
+                  Toast.CENTER,
+                );
+              })
+              .catch((err) => {
+                console.log(err);
+                Toast.showWithGravity(
+                  'Error Sending Email Verification',
+                  Toast.SHORT,
+                  Toast.CENTER,
+                );
+              });
+          },
+        },
+      ],
+    );
+  };
+
   onSubmitSignIn = () => {
     this.setIsLoading(true);
     const {email, password} = this.state;
@@ -112,7 +145,13 @@ class SignInScreen extends Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(async (userObject) => {
-        this.props.navigation.navigate(' Home ');
+        if (userObject.user.emailVerified) {
+          this.props.navigation.navigate(' Home ');
+        } else {
+          this.handleEmailNotVerified(userObject.user);
+          this.setIsLoading(false);
+          this.starting();
+        }
       })
       .catch(function (error) {
         setIsLoading(false);
