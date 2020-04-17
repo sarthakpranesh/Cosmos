@@ -9,6 +9,7 @@ import {
   Animated,
   Dimensions,
 } from 'react-native';
+import Toast from 'react-native-simple-toast';
 
 // importing styles
 import styles from './styles';
@@ -117,6 +118,7 @@ class SignUpScreen extends Component {
     }
 
     if (!name || name.length > 40 || name.length < 6) {
+      console.log(this.nameInput.focus);
       Alert.alert(
         'Invalid Credentials',
         'Please make sure your username is in the range of 6 to 40 characters!',
@@ -131,13 +133,24 @@ class SignUpScreen extends Component {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(async (userObject) => {
-        await updateDisplayName(name);
         var user = {
           name: name,
           uid: userObject.user.uid,
         };
-        await addUserToDB(user);
-        this.props.navigation.navigate(' Home ');
+        await Promise.all([
+          await updateDisplayName(name),
+          await addUserToDB(user),
+          await userObject.user.sendEmailVerification(),
+        ]);
+        Alert.alert(
+          'User Registered',
+          'Your account is registered with us 🎉! Before getting started please verify your email address, we have sent a mail already 😉',
+          [{text: 'Ok'}],
+          {
+            cancelable: true,
+          },
+        );
+        this.props.navigation.navigate('LandingScreen');
       })
       .catch(function (error) {
         console.log(error.message);
