@@ -1,0 +1,22 @@
+branches:
+  only:
+  - master
+  - develop
+language: android
+before_install:
+- openssl aes-256-cbc -K $encrypted_4266f92e2fa3_key -iv $encrypted_4266f92e2fa3_iv
+  -in sarthak.keystore.enc -out ./android/app/sarthak.keystore -d
+- nvm install 12
+- node --version
+install:
+- yarn
+android:
+  components:
+  - build-tools-28.0.3
+  - android-28
+script:
+- yarn lint
+- yarn build-android
+after_success:
+- chmod +x ./upload-apk.sh
+- "./upload.sh"
