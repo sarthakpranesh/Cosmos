@@ -12,8 +12,6 @@ import SettingsIcon from './src/components/icons/SettingsIcon/index.js';
 
 // importing Screens
 import LandingScreen from './src/screens/LandingScreen/index.js';
-// import SignUpScreen from './src/screens/SignUpScreen';
-// import SignInScreen from './src/screens/SignInScreen';
 import AddImageScreen from './src/screens/AddImageScreen/index.js';
 import Main from './src/screens/Main.js';
 import ProfileScreen from './src/screens/ProfileScreen.js';

@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {View, Text, ScrollView, TextInput, Image, Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-community/google-signin';
 
 // importing styles
 import styles from './styles';
@@ -103,7 +104,7 @@ class MainSettingsScreen extends Component {
       });
   };
 
-  onSignOut = async () => {
+  onSignOut = () => {
     Alert.alert(
       'Log Out',
       'Are you sure, you want to log out?',
@@ -111,23 +112,10 @@ class MainSettingsScreen extends Component {
         {text: 'Cancel'},
         {
           text: 'Sign Out',
-          onPress: () => {
-            // firebase
-            //   .auth()
-            //   .signOut()
-            //   .then(() => {
-            //     this.props.navigation.navigate('LandingScreen');
-            //     Toast.showWithGravity(
-            //       'You have been logged out!',
-            //       Toast.CENTER,
-            //       Toast.SHORT,
-            //     );
-            //     return;
-            //   })
-            //   .catch((err) => {
-            //     console.log(err);
-            //     return;
-            //   });
+          onPress: async () => {
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+            auth().signOut();
           },
         },
       ],
@@ -166,7 +154,7 @@ class MainSettingsScreen extends Component {
         <Header />
         <ScrollView>
           <Image
-            source={require('../../../assets/bg.jpg')}
+            source={{uri: auth().currentUser.photoURL}}
             style={styles.userImage}
           />
           <View style={{marginVertical: 2}}>

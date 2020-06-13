@@ -9,12 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
-import Toast from 'react-native-simple-toast';
 import auth from '@react-native-firebase/auth';
-
-// importing Firebase utils
-// import {getUserObject} from '../utils/firebase';
-// import {deletePosts} from '../utils/apiFunctions';
 
 // importing global styles
 import Styles from '../Styles';
@@ -120,7 +115,7 @@ class ProfileScreen extends Component {
         <Header navigate={this.props.navigation.navigate} />
         <View style={styles.fixedTopHeader}>
           <Image
-            source={require('../../assets/bg.jpg')}
+            source={{uri: auth().currentUser.photoURL}}
             alt="User Image"
             style={styles.userImage}
           />
