@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import auth from '@react-native-firebase/auth';
+import {Provider as PaperProvider, DarkTheme} from 'react-native-paper';
 
 // importing icons
 import AddPictureIcon from './src/components/icons/AddPictureIcon/index.js';
@@ -104,8 +105,10 @@ class MainAppStack extends Component {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <MainAppStack />
-    </NavigationContainer>
+    <PaperProvider theme={DarkTheme}>
+      <NavigationContainer>
+        <MainAppStack />
+      </NavigationContainer>
+    </PaperProvider>
   );
 }

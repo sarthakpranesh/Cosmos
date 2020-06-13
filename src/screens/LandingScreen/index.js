@@ -1,13 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  Animated,
-  Text,
-  ToastAndroid,
-} from 'react-native';
+import {View, Dimensions, Animated, ToastAndroid} from 'react-native';
+import {Text, Headline} from 'react-native-paper';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -20,34 +14,33 @@ GoogleSignin.configure({
     '340048764527-9nt30qgc4rj3p0hmhos5kkdfpb0cj8ta.apps.googleusercontent.com',
 });
 
-// importing common styles
-import Styles from '../../Styles';
+const {width} = Dimensions.get('screen');
 
-const height = Dimensions.get('window').height;
+// importing common styles
+import styles from './styles.js';
 
 class LandingScreen extends Component {
   constructor(props) {
     super(props);
     this.start = new Animated.Value(0);
-    this.opacity = new Animated.Value(0);
 
-    this.starting = () => {
-      Animated.timing(this.start, {
-        toValue: height / 8,
-        duration: 2000,
-        useNativeDriver: true,
-      }).start();
-    };
+    this.headlineTranslateX = this.start.interpolate({
+      inputRange: [0, 1],
+      outputRange: [-width, 0],
+    });
 
     this.opacity = this.start.interpolate({
-      inputRange: [0, height / 8],
+      inputRange: [0, 1],
       outputRange: [0, 1],
     });
+  }
 
-    this.startBody = this.start.interpolate({
-      inputRange: [0, height / 8],
-      outputRange: [40, -40],
-    });
+  componentDidMount() {
+    Animated.timing(this.start, {
+      toValue: 1,
+      duration: 2000,
+      useNativeDriver: true,
+    }).start();
   }
 
   async continueWithGoogle() {
@@ -87,45 +80,38 @@ class LandingScreen extends Component {
   }
 
   render() {
-    this.starting();
     return (
-      <View style={[Styles.containerStarting]}>
+      <View style={styles.landingContainer}>
         <Animated.View
           style={[
-            {opacity: this.opacity, transform: [{translateY: this.start}]},
+            styles.headerTextContainer,
+            {
+              opacity: this.opacity,
+              transform: [{translateX: this.headlineTranslateX}],
+            },
           ]}>
-          <Text style={[Styles.textLarge]}>Welcome to Cosmos</Text>
+          <Headline>Welcome to Cosmos</Headline>
         </Animated.View>
         <Animated.View
           style={[
+            styles.subHeaderTextContainer,
             {
-              opacity: Animated.multiply(0.6, this.opacity),
-              transform: [{translateY: this.startBody}],
-              marginHorizontal: 10,
+              opacity: this.opacity,
             },
           ]}>
-          <Text style={[Styles.textSmall]}>
+          <Text style={styles.subHeaderText}>
             We are a open source project made and maintained by the community.
             The project is driven by the support of artists, photographers, etc
             throughout the world. Come be a part of our growing community 🙂
           </Text>
         </Animated.View>
-        {/* Different Login Options */}
-        <View style={styles.buttonContainer}>
-          <GoogleSigninButton onPress={this.continueWithGoogle} />
-        </View>
+        <GoogleSigninButton
+          style={styles.googleBtn}
+          onPress={this.continueWithGoogle}
+        />
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  buttonContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default LandingScreen;
