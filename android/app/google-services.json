@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "340048764527",
+    "firebase_url": "https://cosmos-e5fad.firebaseio.com",
+    "project_id": "cosmos-e5fad",
+    "storage_bucket": "cosmos-e5fad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340048764527:android:7284c8a4d42dd16f3fb79a",
+        "android_client_info": {
+          "package_name": "com.cosmos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340048764527-gem764hc3oekvuhl2rhilpal8qqgohb4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cosmos",
+            "certificate_hash": "e3cf13c24f401a610057debbcc6e0b2faa6af65b"
+          }
+        },
+        {
+          "client_id": "340048764527-9nt30qgc4rj3p0hmhos5kkdfpb0cj8ta.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5e70X0bpW5ik7WyxlV07g4lFt9ixicbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340048764527-9nt30qgc4rj3p0hmhos5kkdfpb0cj8ta.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

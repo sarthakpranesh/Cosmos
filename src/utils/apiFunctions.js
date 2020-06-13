@@ -1,6 +1,6 @@
 import shorthash from 'shorthash';
 import mainServerApi from '../api/mainServerApi';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 
 export const uploadDownloadUrlDB = (uploadedImage, caption) => {
   return new Promise(async (resolve, reject) => {
@@ -15,7 +15,7 @@ export const uploadDownloadUrlDB = (uploadedImage, caption) => {
         },
         {
           headers: {
-            Authorization: firebase.auth().currentUser.uid,
+            // Authorization: firebase.auth().currentUser.uid,
           },
         },
       );
@@ -32,7 +32,7 @@ export const getActivePosts = () => {
     try {
       const resp = await mainServerApi.get('/activePost', {
         headers: {
-          Authorization: firebase.auth().currentUser.uid,
+          // Authorization: firebase.auth().currentUser.uid,
         },
       });
       resolve(resp.data.payload.posts);
@@ -51,7 +51,7 @@ export const likePost = (pid) => {
           pid: pid,
         },
         headers: {
-          Authorization: firebase.auth().currentUser.uid,
+          // Authorization: firebase.auth().currentUser.uid,
         },
       });
       if (resp.data.isLiked && resp.data.status === 1) {
@@ -72,7 +72,7 @@ export const nopePost = (pid) => {
           pid: pid,
         },
         headers: {
-          Authorization: firebase.auth().currentUser.uid,
+          // Authorization: firebase.auth().currentUser.uid,
         },
       });
       if (resp.data.isLiked && resp.data.status === 1) {
@@ -94,7 +94,7 @@ export const deletePosts = (pid, postName) => {
           postName: postName,
         },
         headers: {
-          Authorization: firebase.auth().currentUser.uid,
+          // Authorization: firebase.auth().currentUser.uid,
         },
       });
       if (resp.data.isPostDeleted && resp.data.status === 1) {

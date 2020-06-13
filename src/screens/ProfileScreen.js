@@ -10,10 +10,11 @@ import {
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 import Toast from 'react-native-simple-toast';
+import auth from '@react-native-firebase/auth';
 
 // importing Firebase utils
-import {getUserObject} from '../utils/firebase';
-import {deletePosts} from '../utils/apiFunctions';
+// import {getUserObject} from '../utils/firebase';
+// import {deletePosts} from '../utils/apiFunctions';
 
 // importing global styles
 import Styles from '../Styles';
@@ -22,9 +23,6 @@ import Styles from '../Styles';
 import Header from '../components/Header';
 import LoadingIndicator from '../components/LoadingIndicator';
 import CacheImage from '../components/CacheImage';
-
-// importing firebase
-import * as firebase from 'firebase';
 
 // importing colors for default theme
 import {colors} from '../Constants';
@@ -36,51 +34,16 @@ class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: firebase.auth().currentUser,
+      user: auth().currentUser,
       posts: [],
       like: 0,
       nope: 0,
-      isLoading: true,
+      isLoading: false,
       actionSheetIndex: -1,
     };
 
     this.ActionSheet = null;
   }
-
-  componentDidMount() {
-    const {user} = this.state;
-    if (!user.displayName) {
-      this.props.navigation.navigate('userStartingStack');
-      return;
-    }
-    this.props.navigation.addListener('willFocus', (payload) => {
-      this.setState({
-        user: firebase.auth().currentUser,
-        isLoading: true,
-      });
-      this.getUserPosts();
-    });
-    return;
-  }
-
-  getUserPosts = () => {
-    const {user} = this.state;
-    getUserObject(user.uid)
-      .then((u) => {
-        this.setState({
-          posts: u.posts ? u.posts.reverse() : [],
-          like: u.like ? u.like : 0,
-          nope: u.nope ? u.nope : 0,
-          isLoading: false,
-        });
-      })
-      .catch((err) => {
-        console.log(err.message);
-        this.setState({
-          isLoading: false,
-        });
-      });
-  };
 
   handleCardLongPress = (cardIndex) => {
     this.setState({
@@ -93,16 +56,16 @@ class ProfileScreen extends Component {
     const {actionSheetIndex, posts} = this.state;
     // if index is 0 - handle delete
     if (index === 0) {
-      await deletePosts(
-        posts[actionSheetIndex].pid,
-        posts[actionSheetIndex].postName,
-      );
-      this.getUserPosts();
-      Toast.showWithGravity(
-        'Post Deleted Successfully',
-        Toast.SHORT,
-        Toast.CENTER,
-      );
+      // await deletePosts(
+      //   posts[actionSheetIndex].pid,
+      //   posts[actionSheetIndex].postName,
+      // );
+      // this.getUserPosts();
+      // Toast.showWithGravity(
+      //   'Post Deleted Successfully',
+      //   Toast.SHORT,
+      //   Toast.CENTER,
+      // );
     }
 
     // if index is 1 - handle cancel

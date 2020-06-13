@@ -1,12 +1,27 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, StyleSheet, Dimensions, Animated, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Animated,
+  Text,
+  ToastAndroid,
+} from 'react-native';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-community/google-signin';
+import auth from '@react-native-firebase/auth';
+
+GoogleSignin.configure({
+  webClientId:
+    '340048764527-9nt30qgc4rj3p0hmhos5kkdfpb0cj8ta.apps.googleusercontent.com',
+});
 
 // importing common styles
 import Styles from '../../Styles';
-
-// importing components
-import ButtonLarge from '../../components/ButtonLarge';
 
 const height = Dimensions.get('window').height;
 
@@ -35,6 +50,42 @@ class LandingScreen extends Component {
     });
   }
 
+  async continueWithGoogle() {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const {idToken} = await GoogleSignin.signIn();
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      return auth().signInWithCredential(googleCredential);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        ToastAndroid.showWithGravity(
+          'user cancelled the login flow',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        ToastAndroid.showWithGravity(
+          'operation (e.g. sign in) is in progress already',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        ToastAndroid.showWithGravity(
+          'play services not available or outdated',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
+      } else {
+        console.log(error);
+        ToastAndroid.showWithGravity(
+          error.message,
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
+      }
+    }
+  }
+
   render() {
     this.starting();
     return (
@@ -61,15 +112,7 @@ class LandingScreen extends Component {
         </Animated.View>
         {/* Different Login Options */}
         <View style={styles.buttonContainer}>
-          <ButtonLarge
-            onPress={() => this.props.navigation.navigate('SignInScreen')}
-            title="Login"
-          />
-          <ButtonLarge
-            onPress={() => this.props.navigation.navigate('SignUpScreen')}
-            bigUglyBlue
-            title="Sign Up"
-          />
+          <GoogleSigninButton onPress={this.continueWithGoogle} />
         </View>
       </View>
     );

@@ -26,7 +26,7 @@ const Settings = (props) => {
     }).start();
   };
 
-  if (props.isFocused) {
+  if (props.focused) {
     rotate.setValue(0);
     isSelected();
   } else {

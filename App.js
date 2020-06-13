@@ -1,116 +1,113 @@
-import {createSwitchNavigator, createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
-
-import React from 'react';
-
-// importing Firebase
-import * as firebase from './src/configs/firebase';
+import React, {Component} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import auth from '@react-native-firebase/auth';
 
 // importing icons
-import AddPictureIcon from './src/components/icons/AddPictureIcon';
-import HomeIcon from './src/components/icons/HomeIcon';
-import ProfileIcon from './src/components/icons/ProfileIcon';
-import SettingsIcon from './src/components/icons/SettingsIcon';
+import AddPictureIcon from './src/components/icons/AddPictureIcon/index.js';
+import HomeIcon from './src/components/icons/HomeIcon/index.js';
+import ProfileIcon from './src/components/icons/ProfileIcon/index.js';
+import SettingsIcon from './src/components/icons/SettingsIcon/index.js';
 
 // importing Screens
-import SplashScreen from './src/screens/SpashScreen';
-import LandingScreen from './src/screens/LandingScreen';
-import SignUpScreen from './src/screens/SignUpScreen';
-import SignInScreen from './src/screens/SignInScreen';
-import AddImageScreen from './src/screens/AddImageScreen';
-import Main from './src/screens/Main';
-import ProfileScreen from './src/screens/ProfileScreen';
-import MainSettingsScreen from './src/screens/MainSettingsScreen';
-import PostViewScreen from './src/screens/PostViewScreen';
+import LandingScreen from './src/screens/LandingScreen/index.js';
+// import SignUpScreen from './src/screens/SignUpScreen';
+// import SignInScreen from './src/screens/SignInScreen';
+import AddImageScreen from './src/screens/AddImageScreen/index.js';
+import Main from './src/screens/Main.js';
+import ProfileScreen from './src/screens/ProfileScreen.js';
+import MainSettingsScreen from './src/screens/MainSettingsScreen/index.js';
+// import PostViewScreen from './src/screens/PostViewScreen';
 
-// importing default theme properties
-import {colors} from './src/Constants';
+// const postViewStack = createStackNavigator(
+//   {
+//     ' Home ': {
+//       screen: Main,
+//     },
+//     PostViewScreen,
+//   },
+//   {
+//     initialRouteName: ' Home ',
+//     headerMode: 'none',
+//   },
+// );
 
-const postViewStack = createStackNavigator(
-  {
-    ' Home ': {
-      screen: Main,
-    },
-    PostViewScreen,
-  },
-  {
-    initialRouteName: ' Home ',
-    headerMode: 'none',
-  },
-);
+const Stack = createStackNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
-const mainAppStack = createBottomTabNavigator(
-  {
-    ' Images ': {
-      screen: AddImageScreen,
-      navigationOptions: () => ({
-        tabBarIcon: ({focused}) => <AddPictureIcon isFocused={focused} />,
-      }),
-    },
-    postViewStack: {
-      screen: postViewStack,
-      navigationOptions: () => ({
-        tabBarIcon: ({focused}) => <HomeIcon isFocused={focused} />,
-      }),
-    },
-    ' Profile ': {
-      screen: ProfileScreen,
-      navigationOptions: () => ({
-        tabBarIcon: ({focused}) => <ProfileIcon isFocused={focused} />,
-      }),
-    },
-    ' Setting ': {
-      screen: MainSettingsScreen,
-      navigationOptions: () => ({
-        tabBarIcon: ({focused}) => <SettingsIcon isFocused={focused} />,
-      }),
-    },
-  },
-  {
-    initialRouteName: 'postViewStack',
-    backBehavior: 'history',
-    defaultNavigationOptions: {
-      navigationOptions: {
-        tabBarIcon: ({focused}) => {
-          console.log(focused);
-        },
-      },
-    },
-    tabBarOptions: {
-      showLabel: false,
-      showIcon: true,
-      keyboardHidesTabBar: true,
-      style: {
-        backgroundColor: colors.darkTheme.backgroundColor,
-      },
-    },
-    lazy: true,
-    animationEnabled: true,
-    swipeEnabled: true,
-  },
-);
+class MainAppStack extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: false,
+    };
+  }
 
-const userStartingStack = createSwitchNavigator(
-  {
-    LandingScreen,
-    SignUpScreen,
-    SignInScreen,
-  },
-  {
-    initialRouteName: 'LandingScreen',
-  },
-);
+  componentDidMount() {
+    auth().onAuthStateChanged((user) => {
+      this.setState({
+        isLoggedIn: user ? true : false,
+      });
+    });
+  }
 
-const defaultApp = createSwitchNavigator(
-  {
-    SplashScreen,
-    userStartingStack,
-    mainAppStack,
-  },
-  {
-    initialRouteName: 'SplashScreen',
-  },
-);
+  render() {
+    if (!this.state.isLoggedIn) {
+      return (
+        <Stack.Navigator
+          initialRouteName="Starting"
+          keyboardHandlingEnabled={true}
+          headerMode="none">
+          <Stack.Screen name="Starting" component={LandingScreen} />
+        </Stack.Navigator>
+      );
+    }
 
-export default createAppContainer(defaultApp);
+    return (
+      <Tab.Navigator
+        initialRouteName="Main"
+        backBehavior="initialRoute"
+        labeled={false}
+        shifting={false}
+        barStyle={{backgroundColor: '#694fad'}}>
+        <Tab.Screen
+          options={{
+            tabBarIcon: ({focused}) => <AddPictureIcon focused={focused} />,
+          }}
+          name="Add"
+          component={AddImageScreen}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: ({focused}) => <HomeIcon focused={focused} />,
+          }}
+          name="Main"
+          component={Main}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: ({focused}) => <ProfileIcon focused={focused} />,
+          }}
+          name="Profile"
+          component={ProfileScreen}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: ({focused}) => <SettingsIcon focused={focused} />,
+          }}
+          name="Setting"
+          component={MainSettingsScreen}
+        />
+      </Tab.Navigator>
+    );
+  }
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <MainAppStack />
+    </NavigationContainer>
+  );
+}

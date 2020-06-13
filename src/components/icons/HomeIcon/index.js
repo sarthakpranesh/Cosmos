@@ -18,7 +18,7 @@ const HomeIcon = (props) => {
     outputRange: [0.2, 1],
   });
 
-  if (props.isFocused) {
+  if (props.focused) {
     start.setValue(0);
     isSelected();
   } else {

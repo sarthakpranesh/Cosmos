@@ -1,89 +1,89 @@
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 import shorthash from 'shorthash';
 
 export const isUserLoggedIn = () => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-      });
-    } catch (err) {
-      reject(err);
-    }
-  });
+  // return new Promise(async (resolve, reject) => {
+  //   try {
+  //     firebase.auth().onAuthStateChanged((user) => {
+  //       if (user) {
+  //         resolve(true);
+  //       } else {
+  //         resolve(false);
+  //       }
+  //     });
+  //   } catch (err) {
+  //     reject(err);
+  //   }
+  // });
 };
 
 export const updateDisplayName = (username) => {
-  return new Promise((resolve, reject) => {
-    var user = firebase.auth().currentUser;
-    user
-      .updateProfile({displayName: username})
-      .then((resp) => {
-        resolve(true);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
+  // return new Promise((resolve, reject) => {
+  //   var user = firebase.auth().currentUser;
+  //   user
+  //     .updateProfile({displayName: username})
+  //     .then((resp) => {
+  //       resolve(true);
+  //     })
+  //     .catch((err) => {
+  //       reject(err);
+  //     });
+  // });
 };
 
 export const addUserToDB = (user) => {
-  return new Promise((resolve, reject) => {
-    const userDB = firebase.database().ref('users/').child(user.uid);
-    userDB
-      .set(user)
-      .then((_resp) => {
-        resolve(true);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
+  // return new Promise((resolve, reject) => {
+  //   const userDB = firebase.database().ref('users/').child(user.uid);
+  //   userDB
+  //     .set(user)
+  //     .then((_resp) => {
+  //       resolve(true);
+  //     })
+  //     .catch((err) => {
+  //       reject(err);
+  //     });
+  // });
 };
 
 export const getUserObject = (uid) => {
-  return new Promise((resolve, reject) => {
-    const userDB = firebase.database().ref('users/').child(uid);
-    userDB
-      .once('value')
-      .then((user) => {
-        resolve(user.val());
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
+  // return new Promise((resolve, reject) => {
+  //   const userDB = firebase.database().ref('users/').child(uid);
+  //   userDB
+  //     .once('value')
+  //     .then((user) => {
+  //       resolve(user.val());
+  //     })
+  //     .catch((err) => {
+  //       reject(err);
+  //     });
+  // });
 };
 
 export const updateUserObject = (uid, updates) => {
-  return new Promise((resolve, reject) => {
-    const userDB = firebase.database().ref('users/').child(uid);
-    userDB
-      .update(updates)
-      .then((_resp) => {
-        resolve();
-      })
-      .catch((_err) => {
-        reject();
-      });
-  });
+  // return new Promise((resolve, reject) => {
+  //   const userDB = firebase.database().ref('users/').child(uid);
+  //   userDB
+  //     .update(updates)
+  //     .then((_resp) => {
+  //       resolve();
+  //     })
+  //     .catch((_err) => {
+  //       reject();
+  //     });
+  // });
 };
 
 export const uploadImage = (uid, file, image) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      // eslint-disable-next-line prettier/prettier
-      const path = `posts/${uid}-${shorthash.unique(image.uri)}.${image.uri.split('.').pop()}`;
-      const storageImage = firebase.storage().ref(path);
-      await storageImage.put(file);
-      const url = await storageImage.getDownloadURL();
-      resolve({url, name: storageImage.name});
-    } catch (err) {
-      reject(err);
-    }
-  });
+  // return new Promise(async (resolve, reject) => {
+  //   try {
+  //     // eslint-disable-next-line prettier/prettier
+  //     const path = `posts/${uid}-${shorthash.unique(image.uri)}.${image.uri.split('.').pop()}`;
+  //     const storageImage = firebase.storage().ref(path);
+  //     await storageImage.put(file);
+  //     const url = await storageImage.getDownloadURL();
+  //     resolve({url, name: storageImage.name});
+  //   } catch (err) {
+  //     reject(err);
+  //   }
+  // });
 };

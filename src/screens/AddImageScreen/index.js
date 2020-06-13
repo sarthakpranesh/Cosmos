@@ -10,18 +10,11 @@ import {
   Alert,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import Toast from 'react-native-simple-toast';
+import auth from '@react-native-firebase/auth';
 
 // importing styles
 import styles from './styles';
 import Styles from '../../Styles';
-
-// importing firebase
-import * as firebase from 'firebase';
-
-// importing firebase utils
-import {uploadImage} from '../../utils/firebase';
-import {uploadDownloadUrlDB} from '../../utils/apiFunctions';
 
 // importing components
 import Header from '../../components/Header';
@@ -40,7 +33,7 @@ class AddImageScreen extends Component {
       imageCaption: '',
       fileBlog: null,
       isLoading: false,
-      uid: firebase.auth().currentUser.uid,
+      uid: auth().currentUser.uid,
     };
   }
 
@@ -82,29 +75,29 @@ class AddImageScreen extends Component {
       Alert.alert("Can't Upload", 'Caption is required!', [{text: 'Ok'}]);
       return;
     }
-    try {
-      this.setState({
-        isLoading: true,
-      });
-      const uploadedImage = await uploadImage(uid, fileBlog, image);
-      await uploadDownloadUrlDB(uploadedImage, imageCaption);
-      Toast.showWithGravity(
-        'Post Uploaded Successfully',
-        Toast.SHORT,
-        Toast.CENTER,
-      );
-      this.setState({
-        isLoading: false,
-        fileBlog: null,
-        image: null,
-        imageCaption: '',
-      });
-    } catch (err) {
-      console.log(err.message);
-      this.setState({
-        isLoading: false,
-      });
-    }
+    // try {
+    //   this.setState({
+    //     isLoading: true,
+    //   });
+    //   const uploadedImage = await uploadImage(uid, fileBlog, image);
+    //   await uploadDownloadUrlDB(uploadedImage, imageCaption);
+    //   Toast.showWithGravity(
+    //     'Post Uploaded Successfully',
+    //     Toast.SHORT,
+    //     Toast.CENTER,
+    //   );
+    //   this.setState({
+    //     isLoading: false,
+    //     fileBlog: null,
+    //     image: null,
+    //     imageCaption: '',
+    //   });
+    // } catch (err) {
+    //   console.log(err.message);
+    //   this.setState({
+    //     isLoading: false,
+    //   });
+    // }
   };
 
   render() {

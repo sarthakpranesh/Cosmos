@@ -2,73 +2,32 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Dimensions, Text} from 'react-native';
 import Swiper from 'react-native-deck-swiper';
+import auth from '@react-native-firebase/auth';
 
 // importing components
 import Card from '../components/Cards';
 import Header from '../components/Header';
 import LoadingIndicator from '../components/LoadingIndicator';
 
-// importing firebase
-import * as firebase from 'firebase';
-
 // importing utils
-import {getActivePosts, likePost, nopePost} from '../utils/apiFunctions';
+// import {getActivePosts, likePost, nopePost} from '../utils/apiFunctions';
 import Styles from '../Styles';
 
 // importing colors for default theme
 import {colors} from '../Constants';
 
-const {width, height} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
       index: 0,
-      isLoading: true,
-      user: firebase.auth().currentUser,
+      isLoading: false,
+      user: auth().currentUser,
       posts: [],
     };
   }
-
-  async componentDidMount() {
-    const {user, posts} = this.state;
-    if (!user.displayName) {
-      this.props.navigation.navigate('userStartingStack');
-      return;
-    }
-    this.props.navigation.addListener('willFocus', (payLoad) => {
-      if (posts.length === 0) {
-        this.setState({
-          user: firebase.auth().currentUser,
-          isLoading: true,
-        });
-        this.loadPosts();
-      }
-      this.setState({
-        user: firebase.auth().currentUser,
-      });
-    });
-    this.loadPosts();
-    return;
-  }
-
-  loadPosts = async () => {
-    getActivePosts()
-      .then((posts) => {
-        this.setState({
-          posts,
-          isLoading: false,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        this.setState({
-          posts: [],
-          isLoading: false,
-        });
-      });
-  };
 
   onSwipedAll = async (i) => {
     this.setState({
@@ -158,8 +117,8 @@ class Main extends Component {
           },
         }}
         onTapCard={(cardIndex) => this.onTabCard(cardIndex)}
-        onSwipedRight={(cardIndex) => likePost(posts[cardIndex].pid)}
-        onSwipedLeft={(cardIndex) => nopePost(posts[cardIndex].pid)}
+        onSwipedRight={(cardIndex) => console.log('swipped left')}
+        onSwipedLeft={(cardIndex) => console.log('swipped left')}
         onSwipedAll={this.onSwipedAll}
         backgroundColor={colors.darkTheme.backgroundColor}
         horizontalThreshold={width / 2}

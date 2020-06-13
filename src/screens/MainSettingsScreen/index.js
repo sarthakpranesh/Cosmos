@@ -1,14 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, Text, ScrollView, TextInput, Image, Alert} from 'react-native';
-import Toast from 'react-native-simple-toast';
+import auth from '@react-native-firebase/auth';
 
 // importing styles
 import styles from './styles';
 import Styles from '../../Styles';
 
 // importing firebase
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 
 // importing firebase utils
 import {updateDisplayName} from '../../utils/firebase';
@@ -26,8 +26,8 @@ class MainSettingsScreen extends Component {
     super(props);
 
     this.state = {
-      user: firebase.auth().currentUser,
-      username: firebase.auth().currentUser.displayName,
+      user: auth().currentUser,
+      username: auth().currentUser.displayName,
       isLoading: false,
       opacity: 1,
     };
@@ -112,22 +112,22 @@ class MainSettingsScreen extends Component {
         {
           text: 'Sign Out',
           onPress: () => {
-            firebase
-              .auth()
-              .signOut()
-              .then(() => {
-                this.props.navigation.navigate('LandingScreen');
-                Toast.showWithGravity(
-                  'You have been logged out!',
-                  Toast.CENTER,
-                  Toast.SHORT,
-                );
-                return;
-              })
-              .catch((err) => {
-                console.log(err);
-                return;
-              });
+            // firebase
+            //   .auth()
+            //   .signOut()
+            //   .then(() => {
+            //     this.props.navigation.navigate('LandingScreen');
+            //     Toast.showWithGravity(
+            //       'You have been logged out!',
+            //       Toast.CENTER,
+            //       Toast.SHORT,
+            //     );
+            //     return;
+            //   })
+            //   .catch((err) => {
+            //     console.log(err);
+            //     return;
+            //   });
           },
         },
       ],
