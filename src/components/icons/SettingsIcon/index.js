@@ -21,7 +21,7 @@ const Settings = (props) => {
   const isSelected = () => {
     Animated.timing(rotate, {
       toValue: 1,
-      duration: 1000,
+      duration: 500,
       useNativeDriver: true,
     }).start();
   };

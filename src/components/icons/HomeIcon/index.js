@@ -8,7 +8,7 @@ const HomeIcon = (props) => {
   const isSelected = () => {
     Animated.timing(start, {
       toValue: 1,
-      dureation: 1000,
+      dureation: 500,
       useNativeDriver: true,
     }).start();
   };

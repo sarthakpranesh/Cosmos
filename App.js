@@ -19,19 +19,6 @@ import ProfileScreen from './src/screens/ProfileScreen.js';
 import MainSettingsScreen from './src/screens/MainSettingsScreen/index.js';
 // import PostViewScreen from './src/screens/PostViewScreen';
 
-// const postViewStack = createStackNavigator(
-//   {
-//     ' Home ': {
-//       screen: Main,
-//     },
-//     PostViewScreen,
-//   },
-//   {
-//     initialRouteName: ' Home ',
-//     headerMode: 'none',
-//   },
-// );
-
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
@@ -69,7 +56,8 @@ class MainAppStack extends Component {
         backBehavior="initialRoute"
         labeled={false}
         shifting={false}
-        barStyle={{backgroundColor: '#694fad'}}>
+        barStyle={{backgroundColor: DarkTheme.colors.background}}
+        lazy={false}>
         <Tab.Screen
           options={{
             tabBarIcon: ({focused}) => <AddPictureIcon focused={focused} />,

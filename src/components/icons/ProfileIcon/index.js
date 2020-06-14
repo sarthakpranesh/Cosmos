@@ -8,7 +8,7 @@ const ProfileIcon = (props) => {
   const isSelected = () => {
     Animated.timing(start, {
       toValue: 1,
-      duration: 1000,
+      duration: 500,
       useNativeDriver: true,
     }).start();
   };
