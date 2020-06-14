@@ -4,13 +4,14 @@ import {View, StyleSheet, Dimensions, Text} from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import auth from '@react-native-firebase/auth';
 
+// importing helper functions
+import {getUserDetails} from '../utils/firebase.js';
+
 // importing components
 import Card from '../components/Cards';
 import Header from '../components/Header';
 import LoadingIndicator from '../components/LoadingIndicator';
 
-// importing utils
-// import {getActivePosts, likePost, nopePost} from '../utils/apiFunctions';
 import Styles from '../Styles';
 
 // importing colors for default theme
@@ -27,6 +28,10 @@ class Main extends Component {
       user: auth().currentUser,
       posts: [],
     };
+  }
+
+  componentDidMount() {
+    getUserDetails();
   }
 
   onSwipedAll = async (i) => {

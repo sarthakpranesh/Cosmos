@@ -2,15 +2,19 @@
 import React, {Component} from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   Image,
   ScrollView,
   TextInput,
   Alert,
+  ToastAndroid,
 } from 'react-native';
+import {Text, ActivityIndicator} from 'react-native-paper';
 import ImagePicker from 'react-native-image-crop-picker';
 import auth from '@react-native-firebase/auth';
+
+// importing helper functions
+import {uploadImage, updatePosts} from '../../utils/firebase.js';
 
 // importing styles
 import styles from './styles';
@@ -19,7 +23,6 @@ import Styles from '../../Styles';
 // importing components
 import Header from '../../components/Header';
 import ImagePickerIcon from '../../components/icons/ImagePickerIcon';
-import LoadingIndicator from '../../components/LoadingIndicator';
 
 // importing colors for default theme
 import {colors} from '../../Constants';
@@ -75,29 +78,33 @@ class AddImageScreen extends Component {
       Alert.alert("Can't Upload", 'Caption is required!', [{text: 'Ok'}]);
       return;
     }
-    // try {
-    //   this.setState({
-    //     isLoading: true,
-    //   });
-    //   const uploadedImage = await uploadImage(uid, fileBlog, image);
-    //   await uploadDownloadUrlDB(uploadedImage, imageCaption);
-    //   Toast.showWithGravity(
-    //     'Post Uploaded Successfully',
-    //     Toast.SHORT,
-    //     Toast.CENTER,
-    //   );
-    //   this.setState({
-    //     isLoading: false,
-    //     fileBlog: null,
-    //     image: null,
-    //     imageCaption: '',
-    //   });
-    // } catch (err) {
-    //   console.log(err.message);
-    //   this.setState({
-    //     isLoading: false,
-    //   });
-    // }
+    try {
+      this.setState({
+        isLoading: true,
+      });
+      const uploadedImage = await uploadImage(uid, fileBlog, image);
+      await updatePosts(uid, uploadedImage, imageCaption);
+      ToastAndroid.showWithGravity(
+        'Post Uploaded Successfully',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+      this.setState({
+        isLoading: false,
+        fileBlog: null,
+        image: null,
+        imageCaption: '',
+      });
+    } catch (err) {
+      ToastAndroid.showWithGravity(
+        err.message,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+      this.setState({
+        isLoading: false,
+      });
+    }
   };
 
   render() {
@@ -110,7 +117,7 @@ class AddImageScreen extends Component {
             Styles.container,
             {backgroundColor: colors.darkTheme.backgroundColor},
           ]}>
-          <LoadingIndicator />
+          <ActivityIndicator />
         </View>
       );
     }
