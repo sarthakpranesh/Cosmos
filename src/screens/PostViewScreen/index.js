@@ -1,10 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, TouchableOpacity, Text, Animated} from 'react-native';
+import {View, TouchableOpacity, Animated} from 'react-native';
+import {Text} from 'react-native-paper';
 import {ScrollView, TapGestureHandler} from 'react-native-gesture-handler';
 
 // importing components
-import Header from '../../components/Header';
 import CloseIcon from '../../components/icons/CloseIcon';
 import CacheImage from '../../components/CacheImage';
 
@@ -59,45 +59,38 @@ class PostViewScreen extends Component {
     const {card} = this.state;
 
     return (
-      <>
-        <Header />
-        <View style={styles.postContainer}>
-          <TouchableOpacity
-            style={[styles.closeBtn]}
-            onPress={() => this.props.navigation.goBack()}>
-            <CloseIcon />
-          </TouchableOpacity>
+      <View style={styles.postContainer}>
+        <TouchableOpacity
+          style={[styles.closeBtn]}
+          onPress={() => this.props.navigation.goBack()}>
+          <CloseIcon />
+        </TouchableOpacity>
+        <Animated.View
+          style={{
+            flex: 1,
+            opacity: this.imageOpacity,
+            scaleY: this.scale,
+            scaleX: this.scale,
+          }}>
+          <CacheImage uri={card.downloadURL} style={{flex: 1, zIndex: 10}} />
+        </Animated.View>
+        <TapGestureHandler onHandlerStateChange={this.fadeOut}>
           <Animated.View
-            style={{
-              flex: 1,
-              opacity: this.imageOpacity,
-              scaleY: this.scale,
-              scaleX: this.scale,
-            }}>
-            <CacheImage uri={card.downloadURL} style={{flex: 1, zIndex: 10}} />
+            style={[styles.postTextContainer, {opacity: this.textOpacity}]}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.innerContentContainer}>
+              <Text
+                style={[Styles.textLarge, styles.postText, styles.mainHeader]}>
+                {card.name}
+              </Text>
+              <Text style={[Styles.textMedium, styles.postText]}>
+                {card.caption}
+              </Text>
+            </ScrollView>
           </Animated.View>
-          <TapGestureHandler onHandlerStateChange={this.fadeOut}>
-            <Animated.View
-              style={[styles.postTextContainer, {opacity: this.textOpacity}]}>
-              <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.innerContentContainer}>
-                <Text
-                  style={[
-                    Styles.textLarge,
-                    styles.postText,
-                    styles.mainHeader,
-                  ]}>
-                  {card.name}
-                </Text>
-                <Text style={[Styles.textMedium, styles.postText]}>
-                  {card.caption}
-                </Text>
-              </ScrollView>
-            </Animated.View>
-          </TapGestureHandler>
-        </View>
-      </>
+        </TapGestureHandler>
+      </View>
     );
   }
 }

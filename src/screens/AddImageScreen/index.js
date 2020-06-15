@@ -21,7 +21,6 @@ import styles from './styles';
 import Styles from '../../Styles';
 
 // importing components
-import Header from '../../components/Header';
 import ImagePickerIcon from '../../components/icons/ImagePickerIcon';
 
 // importing colors for default theme
@@ -125,7 +124,6 @@ class AddImageScreen extends Component {
     if (image !== null) {
       return (
         <View style={{backgroundColor: colors.darkTheme.backgroundColor}}>
-          <Header />
           <ScrollView>
             <View style={[styles.loadedImageContainer]}>
               <Image style={styles.loadedImage} source={image} />
@@ -172,7 +170,6 @@ class AddImageScreen extends Component {
           Styles.containerStarting,
           {backgroundColor: colors.darkTheme.backgroundColor},
         ]}>
-        <Header />
         <View style={[styles.mainAddImageContainer]}>
           <TouchableOpacity onPress={this.openImagePicker}>
             <ImagePickerIcon width={40} height={40} />

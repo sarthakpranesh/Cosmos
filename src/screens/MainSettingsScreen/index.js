@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, Text, ScrollView, TextInput, Image, Alert} from 'react-native';
+import {View, ScrollView, TextInput, Image, Alert} from 'react-native';
+import {Text, ActivityIndicator} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-community/google-signin';
 
@@ -8,16 +9,11 @@ import {GoogleSignin} from '@react-native-community/google-signin';
 import styles from './styles';
 import Styles from '../../Styles';
 
-// importing firebase
-// import * as firebase from 'firebase';
-
 // importing firebase utils
 import {updateDisplayName} from '../../utils/firebase';
 
 // importing components
-import Header from '../../components/Header';
 import ButtonLarge from '../../components/ButtonLarge';
-import LoadingIndicator from '../../components/LoadingIndicator';
 
 // importing colors for default theme
 import {colors} from '../../Constants';
@@ -133,7 +129,7 @@ class MainSettingsScreen extends Component {
             Styles.container,
             {backgroundColor: colors.darkTheme.backgroundColor},
           ]}>
-          <LoadingIndicator />
+          <ActivityIndicator />
         </View>
       );
     }
@@ -151,7 +147,6 @@ class MainSettingsScreen extends Component {
             paddingTop: 60,
           },
         ]}>
-        <Header />
         <ScrollView>
           <Image
             source={{uri: auth().currentUser.photoURL}}

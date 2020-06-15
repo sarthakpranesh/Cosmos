@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   Image,
   ScrollView,
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import {Text, ActivityIndicator} from 'react-native-paper';
 import ActionSheet from 'react-native-actionsheet';
 import auth from '@react-native-firebase/auth';
 
@@ -15,8 +15,6 @@ import auth from '@react-native-firebase/auth';
 import Styles from '../Styles';
 
 // importing components
-import Header from '../components/Header';
-import LoadingIndicator from '../components/LoadingIndicator';
 import CacheImage from '../components/CacheImage';
 
 // importing colors for default theme
@@ -105,14 +103,13 @@ class ProfileScreen extends Component {
             Styles.container,
             {backgroundColor: colors.darkTheme.backgroundColor},
           ]}>
-          <LoadingIndicator />
+          <ActivityIndicator />
         </View>
       );
     }
 
     return (
       <View style={{backgroundColor: colors.darkTheme.backgroundColor}}>
-        <Header navigate={this.props.navigation.navigate} />
         <View style={styles.fixedTopHeader}>
           <Image
             source={{uri: auth().currentUser.photoURL}}

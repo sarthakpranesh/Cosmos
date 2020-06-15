@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
@@ -95,6 +96,10 @@ export default function App() {
   return (
     <PaperProvider theme={DarkTheme}>
       <NavigationContainer>
+        <StatusBar
+          backgroundColor={DarkTheme.colors.background}
+          barStyle="light-content"
+        />
         <MainAppStack />
       </NavigationContainer>
     </PaperProvider>

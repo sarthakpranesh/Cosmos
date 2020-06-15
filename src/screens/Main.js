@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, StyleSheet, Dimensions, Text} from 'react-native';
+import {View, StyleSheet, Dimensions} from 'react-native';
+import {Text, ActivityIndicator} from 'react-native-paper';
 import Swiper from 'react-native-deck-swiper';
 import auth from '@react-native-firebase/auth';
 
@@ -9,8 +10,6 @@ import {getUserDetails} from '../utils/firebase.js';
 
 // importing components
 import Card from '../components/Cards';
-import Header from '../components/Header';
-import LoadingIndicator from '../components/LoadingIndicator';
 
 import Styles from '../Styles';
 
@@ -50,7 +49,7 @@ class Main extends Component {
     const {isLoading, posts} = this.state;
 
     if (isLoading) {
-      return <LoadingIndicator />;
+      return <ActivityIndicator />;
     }
 
     if (posts.length === 0) {
@@ -138,12 +137,7 @@ class Main extends Component {
   };
 
   render() {
-    return (
-      <>
-        <Header />
-        <View style={styles.mainContainer}>{this.renderCard()}</View>
-      </>
-    );
+    return <View style={styles.mainContainer}>{this.renderCard()}</View>;
   }
 }
 
