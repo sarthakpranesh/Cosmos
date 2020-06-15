@@ -15,8 +15,8 @@ import SettingsIcon from './src/components/icons/SettingsIcon/index.js';
 // importing Screens
 import LandingScreen from './src/screens/LandingScreen/index.js';
 import AddImageScreen from './src/screens/AddImageScreen/index.js';
-import Main from './src/screens/Main.js';
-import ProfileScreen from './src/screens/ProfileScreen.js';
+import HomeScreen from './src/screens/HomeScreen/index.js';
+import ProfileScreen from './src/screens/ProfileScreen/index.js';
 import MainSettingsScreen from './src/screens/MainSettingsScreen/index.js';
 // import PostViewScreen from './src/screens/PostViewScreen';
 
@@ -53,7 +53,7 @@ class MainAppStack extends Component {
 
     return (
       <Tab.Navigator
-        initialRouteName="Main"
+        initialRouteName="HomeScreen"
         backBehavior="initialRoute"
         labeled={false}
         shifting={false}
@@ -70,8 +70,8 @@ class MainAppStack extends Component {
           options={{
             tabBarIcon: ({focused}) => <HomeIcon focused={focused} />,
           }}
-          name="Main"
-          component={Main}
+          name="HomeScreen"
+          component={HomeScreen}
         />
         <Tab.Screen
           options={{

@@ -15,9 +15,6 @@ import {updateDisplayName} from '../../utils/firebase';
 // importing components
 import ButtonLarge from '../../components/ButtonLarge';
 
-// importing colors for default theme
-import {colors} from '../../Constants';
-
 class MainSettingsScreen extends Component {
   constructor(props) {
     super(props);
@@ -124,11 +121,7 @@ class MainSettingsScreen extends Component {
 
     if (this.state.isLoading) {
       return (
-        <View
-          style={[
-            Styles.container,
-            {backgroundColor: colors.darkTheme.backgroundColor},
-          ]}>
+        <View style={[Styles.container, Styles.mainContainerBackgroundColor]}>
           <ActivityIndicator />
         </View>
       );
@@ -138,8 +131,8 @@ class MainSettingsScreen extends Component {
       <View
         style={[
           Styles.container,
+          Styles.mainContainerBackgroundColor,
           {
-            backgroundColor: colors.darkTheme.backgroundColor,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -153,9 +146,7 @@ class MainSettingsScreen extends Component {
             style={styles.userImage}
           />
           <View style={{marginVertical: 2}}>
-            <Text style={[styles.label, {color: colors.darkTheme.primaryText}]}>
-              Username
-            </Text>
+            <Text style={[styles.label]}>Username</Text>
             <TextInput
               value={username}
               style={Styles.inAppTextInput}
@@ -165,9 +156,7 @@ class MainSettingsScreen extends Component {
             />
           </View>
           <View style={{marginVertical: 2}}>
-            <Text style={[styles.label, {color: colors.darkTheme.primaryText}]}>
-              Email
-            </Text>
+            <Text style={[styles.label]}>Email</Text>
             <TextInput
               value={user.email}
               style={[Styles.inAppTextInput, {opacity: 0.4}]}

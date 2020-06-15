@@ -12,13 +12,10 @@ import ActionSheet from 'react-native-actionsheet';
 import auth from '@react-native-firebase/auth';
 
 // importing global styles
-import Styles from '../Styles';
+import Styles from '../../Styles';
 
 // importing components
-import CacheImage from '../components/CacheImage';
-
-// importing colors for default theme
-import {colors} from '../Constants';
+import CacheImage from '../../components/CacheImage';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -98,18 +95,14 @@ class ProfileScreen extends Component {
 
     if (isLoading) {
       return (
-        <View
-          style={[
-            Styles.container,
-            {backgroundColor: colors.darkTheme.backgroundColor},
-          ]}>
+        <View style={[Styles.container, Styles.mainContainerBackgroundColor]}>
           <ActivityIndicator />
         </View>
       );
     }
 
     return (
-      <View style={{backgroundColor: colors.darkTheme.backgroundColor}}>
+      <View style={[Styles.mainContainerBackgroundColor]}>
         <View style={styles.fixedTopHeader}>
           <Image
             source={{uri: auth().currentUser.photoURL}}
@@ -174,7 +167,6 @@ const styles = StyleSheet.create({
   },
   headerUsername: {
     marginTop: 10,
-    color: colors.darkTheme.secondaryText,
     fontWeight: 'bold',
   },
   fixedTopHeaderInnerSection: {
@@ -198,9 +190,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  postResp: {
-    color: colors.darkTheme.secondaryText,
-  },
+  postResp: {},
   scrollBottomView: {
     height: (2 * SCREEN_HEIGHT) / 3 - 60,
   },

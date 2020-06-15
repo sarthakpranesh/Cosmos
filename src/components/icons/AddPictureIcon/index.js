@@ -1,7 +1,6 @@
 import React, {useRef} from 'react';
 import {Animated} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
-import {colors} from '../../../Constants';
 
 const SvgComponent = (props) => {
   const start = useRef(new Animated.Value(0)).current;
@@ -32,7 +31,7 @@ const SvgComponent = (props) => {
         height={24}
         viewBox="0 0 24 24"
         fill="none"
-        stroke={colors.darkTheme.defaultIconColor}
+        stroke="white"
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"

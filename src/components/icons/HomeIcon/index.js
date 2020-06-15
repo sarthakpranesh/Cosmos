@@ -1,7 +1,6 @@
 import React, {useRef} from 'react';
 import {Animated} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
-import {colors} from '../../../Constants';
 
 const HomeIcon = (props) => {
   const start = useRef(new Animated.Value(0)).current;
@@ -31,7 +30,7 @@ const HomeIcon = (props) => {
         width={24}
         height={24}
         viewBox="0 0 24 24"
-        stroke={colors.darkTheme.defaultIconColor}
+        stroke="white"
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"

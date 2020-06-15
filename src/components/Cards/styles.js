@@ -1,7 +1,5 @@
 import {StyleSheet} from 'react-native';
-
-// importing colors for default theme
-import {colors} from '../../Constants';
+import {DarkTheme} from 'react-native-paper';
 
 export default StyleSheet.create({
   card: {
@@ -9,7 +7,7 @@ export default StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: colors.darkTheme.backgroundColor,
+    backgroundColor: DarkTheme.colors.background,
 
     shadowOffset: {width: 1, height: 1},
     shadowColor: 'black',
@@ -24,7 +22,7 @@ export default StyleSheet.create({
     borderRadius: 8,
   },
   cardText: {
-    color: colors.darkTheme.secondaryText,
+    color: 'white',
     fontSize: 20,
     marginBottom: 5,
   },

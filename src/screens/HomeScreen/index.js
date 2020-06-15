@@ -6,15 +6,12 @@ import Swiper from 'react-native-deck-swiper';
 import auth from '@react-native-firebase/auth';
 
 // importing helper functions
-import {getUserDetails} from '../utils/firebase.js';
+import {getUserDetails} from '../../utils/firebase.js';
 
 // importing components
-import Card from '../components/Cards';
+import Card from '../../components/Cards';
 
-import Styles from '../Styles';
-
-// importing colors for default theme
-import {colors} from '../Constants';
+import Styles from '../../Styles';
 
 const {width} = Dimensions.get('window');
 
@@ -144,7 +141,7 @@ class Main extends Component {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: colors.darkTheme.backgroundColor,
+    backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
   },
