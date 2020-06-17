@@ -1,19 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, StyleSheet, Dimensions} from 'react-native';
+import {View, StyleSheet, FlatList, ToastAndroid} from 'react-native';
 import {Text, ActivityIndicator} from 'react-native-paper';
-import Swiper from 'react-native-deck-swiper';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
-// importing helper functions
+// importing component
+import Post from '../../components/Post/index.js';
+
+// importing firebase utils;
 import {getUserDetails} from '../../utils/firebase.js';
 
-// importing components
-import Card from '../../components/Cards';
-
+// importing styles
 import Styles from '../../Styles';
-
-const {width} = Dimensions.get('window');
 
 class Main extends Component {
   constructor(props) {
@@ -28,7 +27,31 @@ class Main extends Component {
 
   componentDidMount() {
     getUserDetails();
+    database()
+      .ref('posts/')
+      .once('value')
+      .then((postsObjFire) => postsObjFire.val())
+      .then((postsObj) => {
+        const posts = Object.keys(postsObj).map((key) => {
+          return postsObj[key];
+        });
+        this.setPosts(posts);
+      })
+      .catch((err) => {
+        console.log(err);
+        ToastAndroid.showWithGravity(
+          err.message,
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
+      });
   }
+
+  setPosts = (posts) => {
+    this.setState({
+      posts,
+    });
+  };
 
   onSwipedAll = async (i) => {
     this.setState({
@@ -42,8 +65,10 @@ class Main extends Component {
     this.props.navigation.navigate('PostViewScreen', {card: posts[cardIndex]});
   };
 
-  renderCard = () => {
+  renderPosts = () => {
     const {isLoading, posts} = this.state;
+
+    console.log('Posts length: ', posts.length);
 
     if (isLoading) {
       return <ActivityIndicator />;
@@ -66,75 +91,17 @@ class Main extends Component {
     }
 
     return (
-      <Swiper
-        cards={posts}
-        cardIndex={this.state.index}
-        keyExtractor={(card) => card.pid}
-        renderCard={(card) => <Card card={card.downloadURL} name={card.name} />}
-        stackSize={3}
-        stackScale={10}
-        stackSeparation={35}
-        disableTopSwipe
-        disableBottomSwipe
-        overlayLabels={{
-          left: {
-            title: 'Nope',
-            style: {
-              label: {
-                backgroundColor: 'red',
-                color: 'white',
-                fontSize: 18,
-                zIndex: 100,
-              },
-              wrapper: {
-                flexDirection: 'column',
-                alignItems: 'flex-end',
-                justifyContent: 'flex-start',
-                marginTop: 20,
-                paddingRight: 20,
-                position: 'absolute',
-                zIndex: 100,
-              },
-            },
-          },
-          right: {
-            title: 'Like',
-            style: {
-              label: {
-                backgroundColor: 'green',
-                color: 'white',
-                fontSize: 18,
-                zIndex: 100,
-              },
-              wrapper: {
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-                marginTop: 20,
-                paddingLeft: 20,
-                zIndex: 100,
-              },
-            },
-          },
+      <FlatList
+        data={posts}
+        renderItem={({item, index}) => {
+          return <Post key={index} item={item} />;
         }}
-        onTapCard={(cardIndex) => this.onTabCard(cardIndex)}
-        onSwipedRight={(cardIndex) => console.log('swipped left')}
-        onSwipedLeft={(cardIndex) => console.log('swipped left')}
-        onSwipedAll={this.onSwipedAll}
-        backgroundColor={colors.darkTheme.backgroundColor}
-        horizontalThreshold={width / 2}
-        swipeAnimationDuration={500}
-        animateCardOpacity={true}
-        animateOverlayLabelsOpacity={true}
-        marginTop={0}
-        cardHorizontalMargin={15}
-        childrenOnTop={true}
       />
     );
   };
 
   render() {
-    return <View style={styles.mainContainer}>{this.renderCard()}</View>;
+    return <View style={styles.mainContainer}>{this.renderPosts()}</View>;
   }
 }
 

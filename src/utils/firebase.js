@@ -17,12 +17,24 @@ export const updateDisplayName = (username) => {
   });
 };
 
+export const setUpNewUser = () => {
+  const {uid, displayName, photoURL} = auth().currentUser;
+  database().ref('users/').child(uid).set({
+    uid,
+    name: displayName,
+    photoUrl: photoURL,
+  });
+};
+
 export const getUserDetails = (uid) => {
   return new Promise((resolve, reject) => {
     database()
       .ref(`users/${uid}`)
       .once('value')
       .then((userobj) => {
+        if (!userobj.val()) {
+          setUpNewUser();
+        }
         resolve(userobj.val());
       })
       .catch((err) => {
@@ -35,7 +47,6 @@ export const getUserDetails = (uid) => {
 export const updatePosts = (uid, uploadedImage, postCaption) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log();
       await database()
         .ref(`posts/${uploadedImage.name.split('.')[0]}`)
         .set({
@@ -45,6 +56,8 @@ export const updatePosts = (uid, uploadedImage, postCaption) => {
           nopes: 0,
           postCaption,
           uid,
+          createdBy: auth().currentUser.displayName,
+          createdByPhoto: auth().currentUser.photoURL,
         });
       resolve();
     } catch (e) {
