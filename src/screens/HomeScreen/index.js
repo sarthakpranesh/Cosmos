@@ -19,7 +19,7 @@ class Main extends Component {
     super(props);
     this.state = {
       index: 0,
-      isLoading: false,
+      isLoading: true,
       user: auth().currentUser,
       posts: [],
     };
@@ -37,6 +37,7 @@ class Main extends Component {
             return postsObj[key];
           });
           this.setPosts(posts);
+          this.setLoading(false);
         } catch (err) {
           console.log(err);
           ToastAndroid.showWithGravity(
@@ -54,6 +55,12 @@ class Main extends Component {
     });
   };
 
+  setLoading = (bool) => {
+    this.setState({
+      isLoading: bool,
+    });
+  };
+
   onSwipedAll = async (i) => {
     this.setState({
       isLoading: true,
@@ -68,8 +75,6 @@ class Main extends Component {
 
   renderPosts = () => {
     const {isLoading, posts} = this.state;
-
-    console.log('Posts length: ', posts.length);
 
     if (isLoading) {
       return <ActivityIndicator />;

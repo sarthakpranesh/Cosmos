@@ -6,10 +6,12 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
-import {Text, ActivityIndicator} from 'react-native-paper';
+import {Text, ActivityIndicator, DarkTheme} from 'react-native-paper';
 import ActionSheet from 'react-native-actionsheet';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 // importing global styles
 import Styles from '../../Styles';
@@ -28,12 +30,48 @@ class ProfileScreen extends Component {
       posts: [],
       like: 0,
       nope: 0,
-      isLoading: false,
+      isLoading: true,
       actionSheetIndex: -1,
     };
 
     this.ActionSheet = null;
   }
+
+  componentDidMount() {
+    const {user} = this.state;
+    database()
+      .ref('posts/')
+      .on('value', (snap) => {
+        try {
+          const postsObj = snap.val();
+          const posts = Object.keys(postsObj).map((key) => {
+            return postsObj[key];
+          });
+          const userPosts = posts.filter(({uid}) => uid === user.uid);
+          this.setPosts(userPosts);
+          this.setLoading(false);
+        } catch (err) {
+          console.log(err);
+          ToastAndroid.showWithGravity(
+            err.message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+        }
+      });
+  }
+
+  setPosts = (userPosts) => {
+    this.setState({
+      posts: userPosts,
+    });
+  };
+
+  setLoading = (bool) => {
+    this.setState({
+      isLoading: bool,
+    });
+  };
 
   handleCardLongPress = (cardIndex) => {
     this.setState({
@@ -43,30 +81,30 @@ class ProfileScreen extends Component {
   };
 
   handleActionPress = async (index) => {
-    const {actionSheetIndex, posts} = this.state;
-    // if index is 0 - handle delete
-    if (index === 0) {
-      // await deletePosts(
-      //   posts[actionSheetIndex].pid,
-      //   posts[actionSheetIndex].postName,
-      // );
-      // this.getUserPosts();
-      // Toast.showWithGravity(
-      //   'Post Deleted Successfully',
-      //   Toast.SHORT,
-      //   Toast.CENTER,
-      // );
-    }
+    // const {actionSheetIndex, posts} = this.state;
+    // // if index is 0 - handle delete
+    // if (index === 0) {
+    //   await deletePosts(
+    //     posts[actionSheetIndex].pid,
+    //     posts[actionSheetIndex].postName,
+    //   );
+    //   this.getUserPosts();
+    //   Toast.showWithGravity(
+    //     'Post Deleted Successfully',
+    //     Toast.SHORT,
+    //     Toast.CENTER,
+    //   );
+    // }
 
     // if index is 1 - handle cancel
-    if (index === 1) {
-      console.log('Cancelling the Action Sheet');
-    }
+    // if (index === 1) {
+    //   console.log('Cancelling the Action Sheet');
+    // }
 
-    this.setState({
-      actionSheetIndex: -1,
-    });
-    return;
+    // this.setState({
+    //   actionSheetIndex: -1,
+    // });
+    // return;
   };
 
   renderPosts = () => {
@@ -74,13 +112,12 @@ class ProfileScreen extends Component {
     return (
       <View style={styles.postContainer}>
         {posts.map((i, index) => {
-          console.log(i);
           return (
             <TouchableOpacity
               onLongPress={() => this.handleCardLongPress(index)}>
               <CacheImage
-                key={i.pid}
-                uri={i.downloadURL}
+                key={i.name}
+                uri={i.postURL}
                 style={styles.postImageCard}
               />
             </TouchableOpacity>
@@ -151,14 +188,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    borderBottomColor: 'white',
-
+    backgroundColor: DarkTheme.colors.background,
     paddingTop: 10,
-    shadowColor: 'white',
-    shadowOffset: {width: 1, height: 1},
-    shadowOpacity: 0.4,
-    shadowRadius: 3,
-    elevation: 5,
   },
   userImage: {
     height: SCREEN_WIDTH / 4,
