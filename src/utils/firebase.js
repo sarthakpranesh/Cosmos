@@ -2,6 +2,7 @@ import storage from '@react-native-firebase/storage';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import shorthash from 'shorthash';
+import {ToastAndroid} from 'react-native';
 
 export const updateDisplayName = (username) => {
   return new Promise((resolve, reject) => {
@@ -52,8 +53,10 @@ export const updatePosts = (uid, uploadedImage, postCaption) => {
         .set({
           postURL: uploadedImage.url,
           name: uploadedImage.name,
-          likes: 0,
-          nopes: 0,
+          love: [],
+          meh: [],
+          sad: [],
+          comments: [],
           postCaption,
           uid,
           createdBy: auth().currentUser.displayName,
@@ -78,6 +81,65 @@ export const uploadImage = (uid, file, image) => {
       const url = await storageImage.getDownloadURL();
       resolve({url, name: storageImage.name});
     } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+export const getPost = (name) => {
+  return new Promise((resolve, reject) => {
+    database()
+      .ref('posts/')
+      .child(name)
+      .once('value')
+      .then((snap) => snap.val())
+      .then((post) => resolve(post))
+      .catch((err) => reject(err));
+  });
+};
+
+export const setPost = (name, post) => {
+  return new Promise((resolve, reject) => {
+    database()
+      .ref('posts/')
+      .child(name)
+      .set(post)
+      .then(() => resolve())
+      .catch((err) => reject(err));
+  });
+};
+
+export const reactToPost = (postName, reactiontype) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const isReactionValid = ['love', 'meh', 'sad'].find(
+        (reaction) => reaction === reactiontype,
+      );
+      if (!isReactionValid) {
+        throw new Error('Invalid Reaction Type');
+      }
+      const uid = auth().currentUser.uid;
+      const name = postName.split('.')[0];
+      const post = await getPost(name);
+      if (Object.keys(post).includes(reactiontype)) {
+        const alreadyReacted = post[reactiontype].find((u) => u === uid);
+        if (alreadyReacted) {
+          post[reactiontype] = post[reactiontype].filter((u) => u !== uid);
+        } else {
+          post[reactiontype] = [...post[reactiontype], uid];
+        }
+      } else {
+        post[reactiontype] = [uid];
+      }
+      await setPost(name, post);
+      resolve();
+    } catch (err) {
+      console.log(err);
+      ToastAndroid.showWithGravity(
+        err.message,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
       reject(err);
     }
   });

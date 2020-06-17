@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, StyleSheet, FlatList, ToastAndroid} from 'react-native';
-import {Text, ActivityIndicator} from 'react-native-paper';
+import {Text, ActivityIndicator, Divider} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
@@ -27,23 +27,24 @@ class Main extends Component {
 
   componentDidMount() {
     getUserDetails();
+
     database()
       .ref('posts/')
-      .once('value')
-      .then((postsObjFire) => postsObjFire.val())
-      .then((postsObj) => {
-        const posts = Object.keys(postsObj).map((key) => {
-          return postsObj[key];
-        });
-        this.setPosts(posts);
-      })
-      .catch((err) => {
-        console.log(err);
-        ToastAndroid.showWithGravity(
-          err.message,
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
+      .on('value', (snap) => {
+        try {
+          const postsObj = snap.val();
+          const posts = Object.keys(postsObj).map((key) => {
+            return postsObj[key];
+          });
+          this.setPosts(posts);
+        } catch (err) {
+          console.log(err);
+          ToastAndroid.showWithGravity(
+            err.message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+        }
       });
   }
 
@@ -96,6 +97,9 @@ class Main extends Component {
         renderItem={({item, index}) => {
           return <Post key={index} item={item} />;
         }}
+        ItemSeparatorComponent={() => (
+          <Divider style={{height: 1, backgroundColor: 'black'}} />
+        )}
       />
     );
   };
