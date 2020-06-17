@@ -18,5 +18,5 @@ script:
 - yarn lint
 - yarn build-android
 after_success:
-- chmod +x ./upload-apk.sh
+- chmod +x ./upload.sh
 - "./upload.sh"
