@@ -8,11 +8,9 @@ import database from '@react-native-firebase/database';
 // importing component
 import Post from '../../components/Post/index.js';
 
-// importing firebase utils;
-import {getUserDetails} from '../../utils/firebase.js';
-
 // importing styles
 import Styles from '../../Styles';
+import {getUserDetails} from '../../utils/firebase.js';
 
 class Main extends Component {
   constructor(props) {
@@ -26,8 +24,8 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    getUserDetails();
-
+    const {user} = this.state;
+    getUserDetails(user.uid);
     database()
       .ref('posts/')
       .on('value', (snap) => {
@@ -100,8 +98,9 @@ class Main extends Component {
       <FlatList
         data={posts}
         renderItem={({item, index}) => {
-          return <Post key={index} item={item} />;
+          return <Post item={item} />;
         }}
+        keyExtractor={(item) => item.name}
         ItemSeparatorComponent={() => (
           <Divider style={{height: 1, backgroundColor: 'black'}} />
         )}

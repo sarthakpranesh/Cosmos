@@ -30,13 +30,16 @@ export const setUpNewUser = () => {
 export const getUserDetails = (uid) => {
   return new Promise((resolve, reject) => {
     database()
-      .ref(`users/${uid}`)
+      .ref('users/')
+      .child(uid)
       .once('value')
-      .then((userobj) => {
-        if (!userobj.val()) {
+      .then(async (userobj) => {
+        const user = await userobj.val();
+        if (user) {
           setUpNewUser();
         }
-        resolve(userobj.val());
+
+        resolve(user);
       })
       .catch((err) => {
         console.log(err.message);
