@@ -31,6 +31,10 @@ class Main extends Component {
       .on('value', (snap) => {
         try {
           const postsObj = snap.val();
+          if (postsObj === null) {
+            this.setLoading(false);
+            return;
+          }
           const posts = Object.keys(postsObj).map((key) => {
             return postsObj[key];
           });

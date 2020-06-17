@@ -35,14 +35,14 @@ export const getUserDetails = (uid) => {
       .once('value')
       .then(async (userobj) => {
         const user = await userobj.val();
-        if (user) {
+        if (user === null) {
           setUpNewUser();
         }
 
         resolve(user);
       })
       .catch((err) => {
-        console.log(err.message);
+        console.log(err);
         reject(err);
       });
   });
