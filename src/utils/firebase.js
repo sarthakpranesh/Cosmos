@@ -144,3 +144,15 @@ export const reactToPost = (postName, reactiontype) => {
     }
   });
 };
+
+export const deletePosts = (postName) => {
+  return new Promise((resolve, reject) => {
+    const name = postName.split('.')[0];
+    database()
+      .ref('posts/')
+      .child(name)
+      .set({})
+      .then(() => resolve())
+      .catch(() => reject());
+  });
+};

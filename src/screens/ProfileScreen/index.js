@@ -13,11 +13,14 @@ import ActionSheet from 'react-native-actionsheet';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
-// importing global styles
-import Styles from '../../Styles';
-
 // importing components
 import CacheImage from '../../components/CacheImage';
+
+// importing firebase utils
+import {deletePosts} from '../../utils/firebase.js';
+
+// importing global styles
+import Styles from '../../Styles';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -81,30 +84,26 @@ class ProfileScreen extends Component {
   };
 
   handleActionPress = async (index) => {
-    // const {actionSheetIndex, posts} = this.state;
-    // // if index is 0 - handle delete
-    // if (index === 0) {
-    //   await deletePosts(
-    //     posts[actionSheetIndex].pid,
-    //     posts[actionSheetIndex].postName,
-    //   );
-    //   this.getUserPosts();
-    //   Toast.showWithGravity(
-    //     'Post Deleted Successfully',
-    //     Toast.SHORT,
-    //     Toast.CENTER,
-    //   );
-    // }
+    const {actionSheetIndex, posts} = this.state;
+    // if index is 0 - handle delete
+    if (index === 0) {
+      await deletePosts(posts[actionSheetIndex].name);
+      ToastAndroid.showWithGravity(
+        'Post Deleted Successfully',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+    }
 
     // if index is 1 - handle cancel
-    // if (index === 1) {
-    //   console.log('Cancelling the Action Sheet');
-    // }
+    if (index === 1) {
+      console.log('Cancelling the Action Sheet');
+    }
 
-    // this.setState({
-    //   actionSheetIndex: -1,
-    // });
-    // return;
+    this.setState({
+      actionSheetIndex: -1,
+    });
+    return;
   };
 
   renderPosts = () => {
