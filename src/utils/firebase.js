@@ -45,6 +45,17 @@ export const getUserDetails = (uid) => {
   });
 };
 
+export const setUserDetails = (uid, user) => {
+  return new Promise((resolve, reject) => {
+    database()
+      .ref(`users/`)
+      .child(uid)
+      .set(user)
+      .then(() => resolve())
+      .catch((err) => reject(err));
+  });
+};
+
 export const updatePosts = (uid, uploadedImage, postCaption) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -109,6 +120,29 @@ export const setPost = (name, post) => {
   });
 };
 
+export const reactToUser = (uid, reactiontype, dif) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const user = await getUserDetails(uid);
+      if (Object.keys(user).includes(reactiontype)) {
+        user[reactiontype] = user[reactiontype] + dif;
+      } else {
+        user[reactiontype] = 1;
+      }
+      await setUserDetails(uid, user);
+      resolve();
+    } catch (err) {
+      console.log(err);
+      ToastAndroid.showWithGravity(
+        err.message,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+      reject(err);
+    }
+  });
+};
+
 export const reactToPost = (postName, reactiontype) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -125,14 +159,21 @@ export const reactToPost = (postName, reactiontype) => {
         const alreadyReacted = post[reactiontype].find((u) => u === uid);
         if (alreadyReacted) {
           post[reactiontype] = post[reactiontype].filter((u) => u !== uid);
+          await setPost(name, post);
+          await reactToUser(post.uid, reactiontype, -1);
+          return resolve();
         } else {
           post[reactiontype] = [...post[reactiontype], uid];
+          await setPost(name, post);
+          await reactToUser(post.uid, reactiontype, 1);
+          return resolve();
         }
       } else {
         post[reactiontype] = [uid];
+        await setPost(name, post);
+        await reactToUser(post.uid, reactiontype, 1);
+        return resolve();
       }
-      await setPost(name, post);
-      resolve();
     } catch (err) {
       console.log(err);
       ToastAndroid.showWithGravity(

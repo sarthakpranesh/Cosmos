@@ -31,8 +31,9 @@ class ProfileScreen extends Component {
     this.state = {
       user: auth().currentUser,
       posts: [],
-      like: 0,
-      nope: 0,
+      love: 0,
+      meh: 0,
+      sad: 0,
       isLoading: true,
       actionSheetIndex: -1,
     };
@@ -42,6 +43,27 @@ class ProfileScreen extends Component {
 
   componentDidMount() {
     const {user} = this.state;
+    database()
+      .ref('users/')
+      .child(user.uid)
+      .on('value', (snap) => {
+        try {
+          const u = snap.val();
+          this.setState({
+            love: u.love ? u.love : 0,
+            meh: u.meh ? u.meh : 0,
+            sad: u.sad ? u.sad : 0,
+          });
+        } catch (err) {
+          console.log(err);
+          ToastAndroid.showWithGravity(
+            err.message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+        }
+      });
+
     database()
       .ref('posts/')
       .on('value', (snap) => {
@@ -107,7 +129,16 @@ class ProfileScreen extends Component {
   };
 
   renderPosts = () => {
-    const {posts} = this.state;
+    const {posts, isLoading} = this.state;
+
+    if (isLoading) {
+      return (
+        <View style={[Styles.mainContainerBackgroundColor]}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+
     return (
       <View style={styles.postContainer}>
         {posts.map((i, index) => {
@@ -127,16 +158,7 @@ class ProfileScreen extends Component {
   };
 
   render() {
-    const {user, posts, isLoading} = this.state;
-
-    if (isLoading) {
-      return (
-        <View style={[Styles.container, Styles.mainContainerBackgroundColor]}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-
+    const {user, posts} = this.state;
     return (
       <View style={[Styles.mainContainerBackgroundColor]}>
         <View style={styles.fixedTopHeader}>
@@ -154,12 +176,16 @@ class ProfileScreen extends Component {
               <Text style={[Styles.textSmall, styles.postResp]}>Posts</Text>
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text style={styles.postResp}>{this.state.like}</Text>
-              <Text style={[Styles.textSmall, styles.postResp]}>Likes</Text>
+              <Text style={styles.postResp}>{this.state.love}</Text>
+              <Text style={[Styles.textSmall, styles.postResp]}>Lovers</Text>
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text style={styles.postResp}>{this.state.nope}</Text>
-              <Text style={[Styles.textSmall, styles.postResp]}>Nopes</Text>
+              <Text style={styles.postResp}>{this.state.meh}</Text>
+              <Text style={[Styles.textSmall, styles.postResp]}>Mehs</Text>
+            </View>
+            <View style={styles.fixedTopHeaderCards}>
+              <Text style={styles.postResp}>{this.state.sad}</Text>
+              <Text style={[Styles.textSmall, styles.postResp]}>Sads</Text>
             </View>
           </View>
         </View>
@@ -229,11 +255,11 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   postImageCard: {
-    backgroundColor: 'rgba(0,0,0,0.2)',
-    width: SCREEN_WIDTH / 3,
-    height: SCREEN_WIDTH / 3,
-    borderColor: '#000',
-    borderWidth: 0.2,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    width: SCREEN_WIDTH / 3 - 0.8,
+    height: SCREEN_WIDTH / 3 - 0.8,
+    borderColor: 'white',
+    borderWidth: 0.4,
   },
 });
 

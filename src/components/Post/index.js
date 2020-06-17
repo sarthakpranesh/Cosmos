@@ -67,7 +67,7 @@ const Post = ({item}) => {
             color={hasReacted('sad') ? 'yellow' : 'white'}
           />
         </Button>
-        <Button style={{alignSelf: 'flex-end', position: 'absolute', right: 0}}>
+        <Button style={{alignSelf: 'flex-end', position: 'absolute', right: 10}}>
           <Icon name="message-square" size={24} />
         </Button>
       </Card.Actions>
