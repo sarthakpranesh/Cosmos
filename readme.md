@@ -1,29 +1,34 @@
+<div align="center">
+
 # Cosmos React-Native client
+
+[![Build Status](https://travis-ci.com/sarthakpranesh/cosmos.ReactNative.svg?branch=master)](https://travis-ci.com/sarthakpranesh/cosmos.ReactNative)
+[![GitHub issues](https://img.shields.io/github/issues/sarthakpranesh/cosmos.ReactNative)](https://github.com/sarthakpranesh/cosmos.ReactNative/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/sarthakpranesh/cosmos.ReactNative)](https://github.com/sarthakpranesh/cosmos.ReactNative/pulls)
+[![GitHub](https://img.shields.io/github/license/sarthakpranesH/cosmos.ReactNative)](https://github.com/sarthakpranesh/cosmos.ReactNative/blob/master/LICENSE)
+</div>
+
 ## What is Cosmos?
 <p>
-Cosmos is an open source project made and maintained by the community. The project aims to provide a dedicated platform for artists such as Photographers for having a separate dedicated social media platform to present their work on.
+Cosmos is an open source project made and maintained by the community. The project aims to provide a dedicated platform for it's users to have there own personal dedicated social media for there friend and work circle.
 </p>
 <p>
-Come be a part of our growing community and help us build a better experience 🙂.
+Work Still in progress
 </p>
 
 <br/>
 
 ## Download 
-Latest-Release: [Cosmos](https://drive.google.com/file/d/1txRFgkINie1AwEIItjDRfseYsxZyoifG/view?usp=sharing)
+Latest Build: [Cosmos](https://github.com/sarthakpranesh/cosmos.ReactNative/tree/build)
 
 <br/>
 
-## Features Table
+## Future Features Plans
+Review the `Latest Build` and let us know where we can improve, see future plans below
 
 |Feature Gist           |How to!            |Helps With         | 
 |---	|---	|---	|
-|Post Content|Click capture Icon -> Add image -> Add Caption and hit share|Share your daily Nature Photographs and other artistic content with the world.|
-|Tinder Swipe Cards|Swipe a card left or right to Down vote or Up vote|Show your support to your fellow artists sharing content with you.|
-|Read Captions|Tap on a card to read caption|Know more about each card you see and the story behind it.|
-|Profile View|Click profile icon|See your daily posts and overall total response from the community to the content you post.|
-|Delete Posts|Long press post image in profile view -> click delete|Uploaded something by mistake? Delete it now.|
-|Fresh content|See only Fresh content by default|We only keep posts for 24h so that we provide our users with a clean slate to start with each day.|
+|None   |None    |None   |
 
 <br/>
 
