@@ -1,22 +1,36 @@
 import {StyleSheet} from 'react-native';
+import {DarkTheme} from 'react-native-paper';
 
 export default StyleSheet.create({
+  settingContainer: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'black',
+    padding: 16,
+  },
+  goBackIcon: {
+    position: 'absolute',
+  },
   userImage: {
     height: 100,
     width: 100,
     borderRadius: 50,
-
     alignSelf: 'center',
-    marginVertical: 12,
+    marginVertical: 40,
   },
-  label: {
-    textAlign: 'center',
+  inputChangeContainer: {
+    marginVertical: 10,
+  },
+  inAppTextInput: {
+    height: 50,
+    paddingHorizontal: 10,
+    marginVertical: 5,
+    color: 'white',
+    backgroundColor: DarkTheme.colors.background,
   },
   btnWrapper: {
     paddingTop: 10,
-    display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
   },
 });

@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, TouchableOpacity, Animated} from 'react-native';
-import {Headline, Subheading, Title} from 'react-native-paper';
+import {Headline, Subheading} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import {ScrollView, TapGestureHandler} from 'react-native-gesture-handler';
 
@@ -9,7 +9,6 @@ import {ScrollView, TapGestureHandler} from 'react-native-gesture-handler';
 import CacheImage from '../../components/CacheImage';
 
 // importing styles
-import Styles from '../../Styles';
 import styles from './styles';
 
 class PostViewScreen extends Component {

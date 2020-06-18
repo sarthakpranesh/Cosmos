@@ -1,12 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import {Avatar, Button, Card, Paragraph, Caption} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 
 // importing firebase utils
 import {reactToPost} from '../../utils/firebase.js';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const {width} = Dimensions.get('screen');
 

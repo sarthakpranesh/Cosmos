@@ -10,7 +10,6 @@ import {Provider as PaperProvider, DarkTheme} from 'react-native-paper';
 import AddPictureIcon from './src/components/icons/AddPictureIcon/index.js';
 import HomeIcon from './src/components/icons/HomeIcon/index.js';
 import ProfileIcon from './src/components/icons/ProfileIcon/index.js';
-import SettingsIcon from './src/components/icons/SettingsIcon/index.js';
 
 // importing Screens
 import LandingScreen from './src/screens/LandingScreen/index.js';
@@ -22,6 +21,26 @@ import PostViewScreen from './src/screens/PostViewScreen';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
+
+class PostViewProfileStack extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <Stack.Navigator
+        initialRouteName="ProfileScreen"
+        keyboardHandlingEnabled={true}
+        mode="modal"
+        headerMode="none">
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen name="Postview" component={PostViewScreen} />
+        <Stack.Screen name="Setting" component={MainSettingsScreen} />
+      </Stack.Navigator>
+    );
+  }
+}
 
 class PostViewStack extends Component {
   constructor(props) {
@@ -95,14 +114,7 @@ class MainAppStack extends Component {
               tabBarIcon: ({focused}) => <ProfileIcon focused={focused} />,
             }}
             name="Profile"
-            component={ProfileScreen}
-          />
-          <Tab.Screen
-            options={{
-              tabBarIcon: ({focused}) => <SettingsIcon focused={focused} />,
-            }}
-            name="Setting"
-            component={MainSettingsScreen}
+            component={PostViewProfileStack}
           />
         </Tab.Navigator>
       );

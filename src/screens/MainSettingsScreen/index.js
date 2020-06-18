@@ -1,19 +1,15 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, ScrollView, TextInput, Image, Alert} from 'react-native';
-import {Text, ActivityIndicator} from 'react-native-paper';
+import {View, ScrollView, Image, Alert, TouchableOpacity} from 'react-native';
+import {Text, Button, TextInput} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-community/google-signin';
 
 // importing styles
 import styles from './styles';
-import Styles from '../../Styles';
 
 // importing firebase utils
 import {updateDisplayName} from '../../utils/firebase';
-
-// importing components
-import ButtonLarge from '../../components/ButtonLarge';
 
 class MainSettingsScreen extends Component {
   constructor(props) {
@@ -22,8 +18,7 @@ class MainSettingsScreen extends Component {
     this.state = {
       user: auth().currentUser,
       username: auth().currentUser.displayName,
-      isLoading: false,
-      opacity: 1,
+      isUpdateDisabled: true,
     };
   }
 
@@ -44,16 +39,9 @@ class MainSettingsScreen extends Component {
 
   checkForChange = () => {
     const {username, user} = this.state;
-    if (user.username !== username) {
-      this.setState({
-        opacity: 0.2,
-      });
-      return;
-    }
-    this.setState({
-      opacity: 1,
+    return this.setState({
+      isUpdateDisabled: user.displayName.trim() === username.trim(),
     });
-    return;
   };
 
   invalidInput = () => {
@@ -83,7 +71,7 @@ class MainSettingsScreen extends Component {
     updateDisplayName(username)
       .then(() => {
         this.setState({
-          opacity: 1,
+          isUpdateDisabled: true,
         });
         Alert.alert(
           'Account Updated',
@@ -119,57 +107,50 @@ class MainSettingsScreen extends Component {
   render() {
     const {username, user} = this.state;
 
-    if (this.state.isLoading) {
-      return (
-        <View style={[Styles.container, Styles.mainContainerBackgroundColor]}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-
     return (
-      <View
-        style={[
-          Styles.container,
-          Styles.mainContainerBackgroundColor,
-          {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingTop: 60,
-          },
-        ]}>
+      <View style={styles.settingContainer}>
         <ScrollView>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.goBack()}
+            style={styles.goBackIcon}>
+            <Icon name="arrow-left" size={30} color="white" />
+          </TouchableOpacity>
           <Image
             source={{uri: auth().currentUser.photoURL}}
             style={styles.userImage}
           />
-          <View style={{marginVertical: 2}}>
-            <Text style={[styles.label]}>Username</Text>
+          <View style={styles.inputChangeContainer}>
+            <Text style={styles.label}>Username</Text>
             <TextInput
+              mode="outlined"
+              placeholder="Username"
               value={username}
-              style={Styles.inAppTextInput}
+              style={styles.inAppTextInput}
               onChangeText={(newUsername) => this.setUsername(newUsername)}
               onKeyPress={() => this.checkForChange()}
-              placeholder="Username"
             />
           </View>
-          <View style={{marginVertical: 2}}>
-            <Text style={[styles.label]}>Email</Text>
+          <View style={styles.inputChangeContainer}>
+            <Text style={styles.label}>Email</Text>
             <TextInput
+              mode="outlined"
+              disabled={true}
+              placeholder="Email"
               value={user.email}
-              style={[Styles.inAppTextInput, {opacity: 0.4}]}
+              style={styles.inAppTextInput}
               editable={false}
             />
           </View>
           <View style={styles.btnWrapper}>
-            <ButtonLarge
+            <Button
+              mode="contained"
               onPress={this.onSubmit}
-              title="Update"
-              opacity={this.state.opacity}
-            />
-            <ButtonLarge onPress={this.onSignOut} title="Sign Out" />
+              disabled={this.state.isUpdateDisabled}>
+              Update
+            </Button>
+            <Button mode="contained" onPress={this.onSignOut}>
+              Log Out
+            </Button>
           </View>
         </ScrollView>
       </View>

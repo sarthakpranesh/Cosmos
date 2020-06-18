@@ -1,15 +1,15 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {
   View,
-  StyleSheet,
   Image,
   ScrollView,
-  Dimensions,
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import {Text, ActivityIndicator, DarkTheme} from 'react-native-paper';
+import {Text, ActivityIndicator, Headline} from 'react-native-paper';
 import ActionSheet from 'react-native-actionsheet';
+import Icon from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
@@ -21,9 +21,7 @@ import {deletePosts} from '../../utils/firebase.js';
 
 // importing global styles
 import Styles from '../../Styles';
-
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SCREEN_WIDTH = Dimensions.get('window').width;
+import styles from './styles.js';
 
 class ProfileScreen extends Component {
   constructor(props) {
@@ -98,6 +96,11 @@ class ProfileScreen extends Component {
     });
   };
 
+  handleOpenPost = (index) => {
+    const {posts} = this.state;
+    return this.props.navigation.navigate('Postview', {post: posts[index]});
+  };
+
   handleCardLongPress = (cardIndex) => {
     this.setState({
       actionSheetIndex: cardIndex,
@@ -144,6 +147,8 @@ class ProfileScreen extends Component {
         {posts.map((i, index) => {
           return (
             <TouchableOpacity
+              key={index}
+              onPress={() => this.handleOpenPost(index)}
               onLongPress={() => this.handleCardLongPress(index)}>
               <CacheImage
                 key={i.name}
@@ -160,32 +165,35 @@ class ProfileScreen extends Component {
   render() {
     const {user, posts} = this.state;
     return (
-      <View style={[Styles.mainContainerBackgroundColor]}>
+      <View style={styles.profileContainer}>
         <View style={styles.fixedTopHeader}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Setting')}
+            style={styles.fixedEditIcon}>
+            <Icon name="edit-2" size={24} color="white" />
+          </TouchableOpacity>
           <Image
             source={{uri: auth().currentUser.photoURL}}
             alt="User Image"
             style={styles.userImage}
           />
-          <Text style={[Styles.textMedium, styles.headerUsername]}>
-            {user.displayName}
-          </Text>
+          <Headline>{user.displayName}</Headline>
           <View style={styles.fixedTopHeaderInnerSection}>
             <View style={styles.fixedTopHeaderCards}>
-              <Text style={styles.postResp}>{posts.length}</Text>
-              <Text style={[Styles.textSmall, styles.postResp]}>Posts</Text>
+              <Text>{posts.length}</Text>
+              <Text style={styles.postResp}>POSTS</Text>
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text style={styles.postResp}>{this.state.love}</Text>
-              <Text style={[Styles.textSmall, styles.postResp]}>Lovers</Text>
+              <Text style={{color: 'red'}}>{this.state.love}</Text>
+              <Icon name="heart" size={24} color="red" />
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text style={styles.postResp}>{this.state.meh}</Text>
-              <Text style={[Styles.textSmall, styles.postResp]}>Mehs</Text>
+              <Text style={{color: 'green'}}>{this.state.meh}</Text>
+              <Icon name="meh" size={24} color="green" />
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text style={styles.postResp}>{this.state.sad}</Text>
-              <Text style={[Styles.textSmall, styles.postResp]}>Sads</Text>
+              <Text style={{color: 'yellow'}}>{this.state.sad}</Text>
+              <Icon name="frown" size={24} color="yellow" />
             </View>
           </View>
         </View>
@@ -204,63 +212,5 @@ class ProfileScreen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  fixedTopHeader: {
-    height: SCREEN_HEIGHT / 3,
-
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: DarkTheme.colors.background,
-    paddingTop: 10,
-  },
-  userImage: {
-    height: SCREEN_WIDTH / 4,
-    width: SCREEN_WIDTH / 4,
-    borderRadius: 50,
-  },
-  headerUsername: {
-    marginTop: 10,
-    fontWeight: 'bold',
-  },
-  fixedTopHeaderInnerSection: {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT / 9,
-    margin: 0,
-
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-
-    paddingHorizontal: 60,
-  },
-  fixedTopHeaderCards: {
-    height: SCREEN_HEIGHT / 9,
-    width: SCREEN_WIDTH / 3 - 40,
-
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  postResp: {},
-  scrollBottomView: {
-    height: (2 * SCREEN_HEIGHT) / 3 - 60,
-  },
-  postContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  postImageCard: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    width: SCREEN_WIDTH / 3 - 0.8,
-    height: SCREEN_WIDTH / 3 - 0.8,
-    borderColor: 'white',
-    borderWidth: 0.4,
-  },
-});
 
 export default ProfileScreen;
