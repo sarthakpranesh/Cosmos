@@ -1,16 +1,19 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, StyleSheet, FlatList, ToastAndroid} from 'react-native';
+import {View, FlatList, ToastAndroid} from 'react-native';
 import {Text, ActivityIndicator, Divider} from 'react-native-paper';
+import ActionSheet from 'react-native-actionsheet';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
 // importing component
 import Post from '../../components/Post/index.js';
 
+// importing firebase utils
+import {getUserDetails, deletePosts} from '../../utils/firebase.js';
+
 // importing styles
-import Styles from '../../Styles';
-import {getUserDetails} from '../../utils/firebase.js';
+import styles from './styles.js';
 
 class Main extends Component {
   constructor(props) {
@@ -20,12 +23,18 @@ class Main extends Component {
       isLoading: true,
       user: auth().currentUser,
       posts: [],
+      actionSheetIndex: -1,
     };
+    this.ActionSheet = null;
   }
 
   componentDidMount() {
     const {user} = this.state;
-    getUserDetails(user.uid);
+    getUserDetails(user.uid); // initialises user in rtdb if user record nor present
+    this.onFirebaseFetchPosts();
+  }
+
+  onFirebaseFetchPosts = () => {
     database()
       .ref('posts/')
       .on('value', (snap) => {
@@ -49,7 +58,7 @@ class Main extends Component {
           );
         }
       });
-  }
+  };
 
   setPosts = (posts) => {
     this.setState({
@@ -63,20 +72,43 @@ class Main extends Component {
     });
   };
 
-  onSwipedAll = async (i) => {
-    this.setState({
-      isLoading: true,
-    });
-    this.loadPosts();
-  };
-
   onTabCard = (cardIndex) => {
     const {posts} = this.state;
     this.props.navigation.navigate('PostViewScreen', {card: posts[cardIndex]});
   };
 
+  handlePostOptions = (postIndex) => {
+    this.setState({
+      actionSheetIndex: postIndex,
+    });
+    this.ActionSheet.show();
+  };
+
+  handleActionPress = async (index) => {
+    const {actionSheetIndex, posts} = this.state;
+    // if index is 0 - handle delete
+    if (index === 0) {
+      await deletePosts(posts[actionSheetIndex].name);
+      ToastAndroid.showWithGravity(
+        'Post Deleted Successfully',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+    }
+
+    // if index is 1 - handle cancel
+    if (index === 1) {
+      console.log('Cancelling the Action Sheet');
+    }
+
+    this.setState({
+      actionSheetIndex: -1,
+    });
+    return;
+  };
+
   renderPosts = () => {
-    const {isLoading, posts} = this.state;
+    const {isLoading, posts, user} = this.state;
 
     if (isLoading) {
       return <ActivityIndicator />;
@@ -84,15 +116,7 @@ class Main extends Component {
 
     if (posts.length === 0) {
       return (
-        <Text
-          style={[
-            Styles.textMedium,
-            {
-              flexWrap: 'wrap',
-              textAlign: 'center',
-              marginHorizontal: 10,
-            },
-          ]}>
+        <Text style={styles.noPostYetText}>
           Waiting For Someone to Upload Something Interesting 🎨
         </Text>
       );
@@ -102,7 +126,13 @@ class Main extends Component {
       <FlatList
         data={posts}
         renderItem={({item, index}) => {
-          return <Post item={item} />;
+          return (
+            <Post
+              item={item}
+              uid={user.uid}
+              postOptions={() => this.handlePostOptions(index)}
+            />
+          );
         }}
         keyExtractor={(item) => item.name}
         ItemSeparatorComponent={() => (
@@ -113,17 +143,20 @@ class Main extends Component {
   };
 
   render() {
-    return <View style={styles.mainContainer}>{this.renderPosts()}</View>;
+    return (
+      <View style={styles.mainContainer}>
+        {this.renderPosts()}
+        <ActionSheet
+          ref={(o) => (this.ActionSheet = o)}
+          title={'What do you wanna do?'}
+          options={['Delete', 'Cancel']}
+          cancelButtonIndex={1}
+          destructiveButtonIndex={1}
+          onPress={(index) => this.handleActionPress(index)}
+        />
+      </View>
+    );
   }
 }
-
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default Main;
