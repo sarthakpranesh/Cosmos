@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Feather';
 
 // importing firebase utils
 import {reactToPost} from '../../utils/firebase.js';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const {width} = Dimensions.get('screen');
 
@@ -25,7 +26,7 @@ const RightContent = (props) => {
   return null;
 };
 
-const Post = ({item, uid, postOptions}) => {
+const Post = ({item, uid, postOptions, handleOpenPost}) => {
   const hasReacted = (reactionType) => {
     if (Object.keys(item).includes(reactionType)) {
       return item[reactionType].find((u) => u === uid);
@@ -49,7 +50,9 @@ const Post = ({item, uid, postOptions}) => {
           </Button>
         )}
       />
-      <Card.Cover style={styles.postImage} source={{uri: item.postURL}} />
+      <TouchableOpacity onPress={handleOpenPost}>
+        <Card.Cover style={styles.postImage} source={{uri: item.postURL}} on />
+      </TouchableOpacity>
       <Card.Actions style={{marginVertical: 0, paddingVertical: 0}}>
         <Caption>Love:{item.love ? item.love.length : 0} </Caption>
         <Caption>Meh:{item.meh ? item.meh.length : 0} </Caption>
@@ -83,11 +86,13 @@ const Post = ({item, uid, postOptions}) => {
         </Button>
       </Card.Actions>
       <Card.Content>
-        <Paragraph>
-          {item.postCaption.length > 60
-            ? `${item.postCaption.slice(0, 60)}... See More`
-            : item.postCaption}
-        </Paragraph>
+        <TouchableOpacity onPress={handleOpenPost}>
+          <Paragraph>
+            {item.postCaption.length > 60
+              ? `${item.postCaption.slice(0, 60)}... See More`
+              : item.postCaption}
+          </Paragraph>
+        </TouchableOpacity>
       </Card.Content>
     </Card>
   );

@@ -1,51 +1,43 @@
 import {StyleSheet, Dimensions} from 'react-native';
-
-// importing colors for default theme
-import {colors} from '../../Constants';
+import {DarkTheme} from 'react-native-paper';
 
 const {height, width} = Dimensions.get('window');
 
 export default StyleSheet.create({
   postContainer: {
-    backgroundColor: colors.darkTheme.backgroundColor,
-    height: height - 60,
-    width: width,
+    ...StyleSheet.absoluteFill,
+    backgroundColor: DarkTheme.colors.background,
   },
   closeBtn: {
     position: 'absolute',
     top: 20,
     zIndex: 100,
     left: width / 2 - 12 - 1,
-
-    backgroundColor: colors.darkTheme.backgroundColor,
+    backgroundColor: DarkTheme.colors.primary,
     borderRadius: 50,
     padding: 2,
   },
   postImage: {
-    width: width,
-    height: height - 60,
+    ...StyleSheet.absoluteFill,
   },
   postTextContainer: {
-    position: 'absolute',
-    height: height,
-    width: width - 20,
+    ...StyleSheet.absoluteFill,
     paddingHorizontal: 10,
     top: 0,
+    alignSelf: 'center',
   },
   innerContentContainer: {
     top: 40,
     paddingVertical: height / 3,
   },
   postText: {
+    color: DarkTheme.colors.notification,
     textAlign: 'justify',
-    color: colors.darkTheme.secondaryText,
     textShadowColor: 'black',
     textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 2,
-    fontWeight: 'bold',
   },
   mainHeader: {
     marginTop: height / 3,
-    fontSize: width / 10,
   },
 });

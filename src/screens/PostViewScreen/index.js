@@ -1,11 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, TouchableOpacity, Animated} from 'react-native';
-import {Text} from 'react-native-paper';
+import {Headline, Subheading, Title} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Feather';
 import {ScrollView, TapGestureHandler} from 'react-native-gesture-handler';
 
 // importing components
-import CloseIcon from '../../components/icons/CloseIcon';
 import CacheImage from '../../components/CacheImage';
 
 // importing styles
@@ -15,11 +15,9 @@ import styles from './styles';
 class PostViewScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isOwner: false,
-      card: this.props.navigation.getParam('card'),
-      isVisible: true,
-    };
+
+    this.post = props.route.params.post;
+
     this.imageOpacity = new Animated.Value(0);
     this.textOpacity = new Animated.Value(0);
 
@@ -31,39 +29,30 @@ class PostViewScreen extends Component {
       }).start();
     };
 
-    this.fadeOut = () => {
-      this.textOpacity.setValue(1);
-    };
-
-    this.starting = () => {
-      Animated.timing(this.imageOpacity, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start(() => {
-        this.fadeIn();
-      });
-    };
-
     this.scale = this.imageOpacity.interpolate({
       inputRange: [0.5, 1],
       outputRange: [1, 1.02],
+      extrapolate: 'clamp',
     });
   }
 
   componentDidMount() {
-    this.starting();
+    Animated.timing(this.imageOpacity, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start(() => {
+      this.fadeIn();
+    });
   }
 
   render() {
-    const {card} = this.state;
-
     return (
       <View style={styles.postContainer}>
         <TouchableOpacity
           style={[styles.closeBtn]}
           onPress={() => this.props.navigation.goBack()}>
-          <CloseIcon />
+          <Icon name="x" color="white" size={24} />
         </TouchableOpacity>
         <Animated.View
           style={{
@@ -72,7 +61,7 @@ class PostViewScreen extends Component {
             scaleY: this.scale,
             scaleX: this.scale,
           }}>
-          <CacheImage uri={card.downloadURL} style={{flex: 1, zIndex: 10}} />
+          <CacheImage uri={this.post.postURL} style={{flex: 1, zIndex: 10}} />
         </Animated.View>
         <TapGestureHandler onHandlerStateChange={this.fadeOut}>
           <Animated.View
@@ -80,13 +69,12 @@ class PostViewScreen extends Component {
             <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.innerContentContainer}>
-              <Text
-                style={[Styles.textLarge, styles.postText, styles.mainHeader]}>
-                {card.name}
-              </Text>
-              <Text style={[Styles.textMedium, styles.postText]}>
-                {card.caption}
-              </Text>
+              <Headline style={[styles.postText, styles.mainHeader]}>
+                {this.post.createdBy}
+              </Headline>
+              <Subheading style={[styles.postText]}>
+                {this.post.postCaption}
+              </Subheading>
             </ScrollView>
           </Animated.View>
         </TapGestureHandler>

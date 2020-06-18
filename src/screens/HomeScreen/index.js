@@ -77,6 +77,11 @@ class Main extends Component {
     this.props.navigation.navigate('PostViewScreen', {card: posts[cardIndex]});
   };
 
+  handleOpenPost = (index) => {
+    const {posts} = this.state;
+    return this.props.navigation.navigate('Postview', {post: posts[index]});
+  };
+
   handlePostOptions = (postIndex) => {
     this.setState({
       actionSheetIndex: postIndex,
@@ -131,6 +136,7 @@ class Main extends Component {
               item={item}
               uid={user.uid}
               postOptions={() => this.handlePostOptions(index)}
+              handleOpenPost={() => this.handleOpenPost(index)}
             />
           );
         }}

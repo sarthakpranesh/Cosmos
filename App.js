@@ -18,10 +18,28 @@ import AddImageScreen from './src/screens/AddImageScreen/index.js';
 import HomeScreen from './src/screens/HomeScreen/index.js';
 import ProfileScreen from './src/screens/ProfileScreen/index.js';
 import MainSettingsScreen from './src/screens/MainSettingsScreen/index.js';
-// import PostViewScreen from './src/screens/PostViewScreen';
+import PostViewScreen from './src/screens/PostViewScreen';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
+
+class PostViewStack extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <Stack.Navigator
+        initialRouteName="HomeScreen"
+        keyboardHandlingEnabled={true}
+        headerMode="none">
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="Postview" component={PostViewScreen} />
+      </Stack.Navigator>
+    );
+  }
+}
 
 class MainAppStack extends Component {
   constructor(props) {
@@ -70,7 +88,7 @@ class MainAppStack extends Component {
               tabBarIcon: ({focused}) => <HomeIcon focused={focused} />,
             }}
             name="HomeScreen"
-            component={HomeScreen}
+            component={PostViewStack}
           />
           <Tab.Screen
             options={{
