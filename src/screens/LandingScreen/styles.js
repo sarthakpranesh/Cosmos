@@ -1,25 +1,13 @@
-import {StyleSheet, Dimensions} from 'react-native';
-import {DarkTheme} from 'react-native-paper';
+import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   landingContainer: {
-    flex: 1,
-    backgroundColor: DarkTheme.colors.background,
-    display: 'flex',
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'black',
     flexDirection: 'column',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'flex-start',
     padding: 20,
-  },
-  headerTextContainer: {
-    marginTop: Dimensions.get('screen').height / 4,
-  },
-  subHeaderTextContainer: {
-    marginTop: 40,
-  },
-  subHeaderText: {
-    textAlign: 'justify',
-    fontSize: 16 * Dimensions.get('screen').fontScale,
   },
   googleBtn: {
     position: 'absolute',

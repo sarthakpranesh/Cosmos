@@ -49,46 +49,46 @@ class MainAppStack extends Component {
           <Stack.Screen name="Starting" component={LandingScreen} />
         </Stack.Navigator>
       );
+    } else {
+      return (
+        <Tab.Navigator
+          initialRouteName="HomeScreen"
+          backBehavior="initialRoute"
+          labeled={false}
+          shifting={false}
+          barStyle={{backgroundColor: DarkTheme.colors.background}}
+          lazy={false}>
+          <Tab.Screen
+            options={{
+              tabBarIcon: ({focused}) => <AddPictureIcon focused={focused} />,
+            }}
+            name="Add"
+            component={AddImageScreen}
+          />
+          <Tab.Screen
+            options={{
+              tabBarIcon: ({focused}) => <HomeIcon focused={focused} />,
+            }}
+            name="HomeScreen"
+            component={HomeScreen}
+          />
+          <Tab.Screen
+            options={{
+              tabBarIcon: ({focused}) => <ProfileIcon focused={focused} />,
+            }}
+            name="Profile"
+            component={ProfileScreen}
+          />
+          <Tab.Screen
+            options={{
+              tabBarIcon: ({focused}) => <SettingsIcon focused={focused} />,
+            }}
+            name="Setting"
+            component={MainSettingsScreen}
+          />
+        </Tab.Navigator>
+      );
     }
-
-    return (
-      <Tab.Navigator
-        initialRouteName="HomeScreen"
-        backBehavior="initialRoute"
-        labeled={false}
-        shifting={false}
-        barStyle={{backgroundColor: DarkTheme.colors.background}}
-        lazy={false}>
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({focused}) => <AddPictureIcon focused={focused} />,
-          }}
-          name="Add"
-          component={AddImageScreen}
-        />
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({focused}) => <HomeIcon focused={focused} />,
-          }}
-          name="HomeScreen"
-          component={HomeScreen}
-        />
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({focused}) => <ProfileIcon focused={focused} />,
-          }}
-          name="Profile"
-          component={ProfileScreen}
-        />
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({focused}) => <SettingsIcon focused={focused} />,
-          }}
-          name="Setting"
-          component={MainSettingsScreen}
-        />
-      </Tab.Navigator>
-    );
   }
 }
 

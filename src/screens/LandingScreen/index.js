@@ -1,12 +1,7 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, Dimensions, Animated, ToastAndroid} from 'react-native';
-import {Text, Headline} from 'react-native-paper';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-community/google-signin';
+import {Text, Headline, Button} from 'react-native-paper';
+import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
 
 GoogleSignin.configure({
@@ -25,13 +20,15 @@ class LandingScreen extends Component {
     this.start = new Animated.Value(0);
 
     this.headlineTranslateX = this.start.interpolate({
-      inputRange: [0, 1],
+      inputRange: [0, 0.8],
       outputRange: [-width, 0],
+      extrapolate: 'clamp',
     });
 
     this.opacity = this.start.interpolate({
       inputRange: [0, 1],
       outputRange: [0, 1],
+      extrapolate: 'clamp',
     });
   }
 
@@ -84,7 +81,6 @@ class LandingScreen extends Component {
       <View style={styles.landingContainer}>
         <Animated.View
           style={[
-            styles.headerTextContainer,
             {
               opacity: this.opacity,
               transform: [{translateX: this.headlineTranslateX}],
@@ -94,21 +90,22 @@ class LandingScreen extends Component {
         </Animated.View>
         <Animated.View
           style={[
-            styles.subHeaderTextContainer,
             {
               opacity: this.opacity,
             },
           ]}>
-          <Text style={styles.subHeaderText}>
+          <Text>
             We are a open source project made and maintained by the community.
             The project is driven by the support of artists, photographers, etc
             throughout the world. Come be a part of our growing community 🙂
           </Text>
         </Animated.View>
-        <GoogleSigninButton
+        <Button
+          mode="contained"
           style={styles.googleBtn}
-          onPress={this.continueWithGoogle}
-        />
+          onPress={this.continueWithGoogle}>
+          Continue With Google
+        </Button>
       </View>
     );
   }
