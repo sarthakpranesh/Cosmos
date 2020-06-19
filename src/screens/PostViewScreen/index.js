@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import ActionSheet from 'react-native-actionsheet';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 // importing components
 import Post from '../../components/Post/index.js';
@@ -18,13 +19,39 @@ import styles from './styles';
 class PostViewScreen extends Component {
   constructor(props) {
     super(props);
-    this.post = props.route.params.post;
+
     this.state = {
+      post: props.route.params.post,
       user: auth().currentUser,
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const {post} = this.state;
+
+    database()
+      .ref('posts/')
+      .child(post.name.split('.')[0])
+      .on('value', async (snap) => {
+        try {
+          const p = await snap.val();
+          if (p === null) {
+            throw new Error('The post might be deleted!');
+          }
+          return this.setState({
+            post: p,
+          });
+        } catch (err) {
+          console.log(err);
+          ToastAndroid.showWithGravity(
+            err.message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+          this.props.navigation.goBack();
+        }
+      });
+  }
 
   handlePostOptions = (postIndex) => {
     this.setState({
@@ -57,7 +84,7 @@ class PostViewScreen extends Component {
   };
 
   render() {
-    const {user} = this.state;
+    const {user, post} = this.state;
 
     return (
       <View style={styles.postContainer}>
@@ -71,7 +98,7 @@ class PostViewScreen extends Component {
         </TouchableOpacity>
         <ScrollView>
           <Post
-            item={this.post}
+            item={post}
             uid={user.uid}
             postOptions={this.handlePostOptions}
             fullPost={true}

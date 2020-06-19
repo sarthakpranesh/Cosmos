@@ -33,6 +33,7 @@ class PostViewProfileStack extends Component {
         initialRouteName="ProfileScreen"
         keyboardHandlingEnabled={true}
         mode="modal"
+        lazy={true}
         headerMode="none">
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
         <Stack.Screen name="Postview" component={PostViewScreen} />
@@ -52,6 +53,7 @@ class PostViewStack extends Component {
       <Stack.Navigator
         initialRouteName="HomeScreen"
         keyboardHandlingEnabled={true}
+        lazy={true}
         headerMode="none">
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="Postview" component={PostViewScreen} />
