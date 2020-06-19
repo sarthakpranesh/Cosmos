@@ -1,8 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, FlatList, ToastAndroid} from 'react-native';
-import {Text, ActivityIndicator, Divider} from 'react-native-paper';
+import {Text, ActivityIndicator, Divider, Headline} from 'react-native-paper';
 import ActionSheet from 'react-native-actionsheet';
+import SplashScreen from 'react-native-splash-screen';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
@@ -30,6 +31,7 @@ class Main extends Component {
 
   componentDidMount() {
     const {user} = this.state;
+    SplashScreen.hide();
     getUserDetails(user.uid); // initialises user in rtdb if user record nor present
     this.onFirebaseFetchPosts();
   }
@@ -121,9 +123,9 @@ class Main extends Component {
 
     if (posts.length === 0) {
       return (
-        <Text style={styles.noPostYetText}>
+        <Headline style={styles.noPostYetText}>
           Waiting For Someone to Upload Something Interesting 🎨
-        </Text>
+        </Headline>
       );
     }
 

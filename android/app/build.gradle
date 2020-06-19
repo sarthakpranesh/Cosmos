@@ -227,6 +227,7 @@ dependencies {
     }
 
     implementation 'com.android.support:multidex:1.0.3'
+    compile project(':react-native-splash-screen')
 }
 
 // Run this once to be able to run the application with BUCK
