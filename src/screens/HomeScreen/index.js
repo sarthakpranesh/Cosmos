@@ -1,9 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, FlatList, ToastAndroid} from 'react-native';
-import {Text, ActivityIndicator, Divider, Headline} from 'react-native-paper';
+import {ActivityIndicator, Divider, Headline} from 'react-native-paper';
 import ActionSheet from 'react-native-actionsheet';
-import SplashScreen from 'react-native-splash-screen';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
@@ -31,7 +30,6 @@ class Main extends Component {
 
   componentDidMount() {
     const {user} = this.state;
-    SplashScreen.hide();
     getUserDetails(user.uid); // initialises user in rtdb if user record nor present
     this.onFirebaseFetchPosts();
   }

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {StatusBar} from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
@@ -67,11 +68,18 @@ class MainAppStack extends Component {
     super(props);
     this.state = {
       isLoggedIn: false,
+      isStarting: true,
     };
   }
 
   componentDidMount() {
     auth().onAuthStateChanged((user) => {
+      if (this.state.isStarting) {
+        SplashScreen.hide();
+        this.setState({
+          isStarting: false,
+        });
+      }
       this.setState({
         isLoggedIn: user ? true : false,
       });
