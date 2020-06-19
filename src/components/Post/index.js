@@ -1,31 +1,24 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
-import {Avatar, Button, Card, Paragraph, Caption} from 'react-native-paper';
+import {Button, Card, Paragraph, Caption} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
+
+// importing components
+import LeftContent from '../LeftContent/index.js';
 
 // importing firebase utils
 import {reactToPost} from '../../utils/firebase.js';
 
 const {width} = Dimensions.get('screen');
 
-const LeftContent = (props) => {
-  if (!props.src) {
-    return (
-      <Avatar.Icon size={props.size} icon={props.src ? props.src : 'folder'} />
-    );
-  }
-  return <Avatar.Image size={props.size} source={{uri: props.src}} />;
-};
-
-const RightContent = (props) => {
-  if (props.isOwner) {
-    return <Icon name="more-vertical" size={props.size} color="white" />;
-  }
-  return null;
-};
-
-const Post = ({item, uid, postOptions, handleOpenPost}) => {
+const Post = ({
+  item,
+  uid,
+  postOptions,
+  handleOpenPost = null,
+  fullPost = false,
+}) => {
   const hasReacted = (reactionType) => {
     if (Object.keys(item).includes(reactionType)) {
       return item[reactionType].find((u) => u === uid);
@@ -43,15 +36,30 @@ const Post = ({item, uid, postOptions, handleOpenPost}) => {
             src={item.createdByPhoto ? item.createdByPhoto : null}
           />
         )}
-        right={({size}) => (
-          <Button onPress={postOptions}>
-            <RightContent size={size} isOwner={item.uid === uid} />
-          </Button>
-        )}
+        right={({size}) => {
+          if (item.uid === uid) {
+            return (
+              <TouchableOpacity
+                style={styles.rightOptions}
+                onPress={postOptions}>
+                <Icon name="more-vertical" size={size} color="white" />
+              </TouchableOpacity>
+            );
+          }
+          return null;
+        }}
       />
-      <TouchableOpacity onPress={handleOpenPost}>
+      {handleOpenPost === null ? (
         <Card.Cover style={styles.postImage} source={{uri: item.postURL}} on />
-      </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={handleOpenPost}>
+          <Card.Cover
+            style={styles.postImage}
+            source={{uri: item.postURL}}
+            on
+          />
+        </TouchableOpacity>
+      )}
       <Card.Actions style={{marginVertical: 0, paddingVertical: 0}}>
         <Caption>Love:{item.love ? item.love.length : 0} </Caption>
         <Caption>Meh:{item.meh ? item.meh.length : 0} </Caption>
@@ -85,13 +93,29 @@ const Post = ({item, uid, postOptions, handleOpenPost}) => {
         </Button>
       </Card.Actions>
       <Card.Content>
-        <TouchableOpacity onPress={handleOpenPost}>
-          <Paragraph>
-            {item.postCaption.length > 60
-              ? `${item.postCaption.slice(0, 60)}... See More`
-              : item.postCaption}
-          </Paragraph>
-        </TouchableOpacity>
+        {handleOpenPost === null ? (
+          fullPost ? (
+            <Paragraph>{item.postCaption}</Paragraph>
+          ) : (
+            <Paragraph>
+              {item.postCaption.length > 60
+                ? `${item.postCaption.slice(0, 60)}... See More`
+                : item.postCaption}
+            </Paragraph>
+          )
+        ) : (
+          <TouchableOpacity onPress={handleOpenPost}>
+            {fullPost ? (
+              <Paragraph>{item.postCaption}</Paragraph>
+            ) : (
+              <Paragraph>
+                {item.postCaption.length > 60
+                  ? `${item.postCaption.slice(0, 60)}... See More`
+                  : item.postCaption}
+              </Paragraph>
+            )}
+          </TouchableOpacity>
+        )}
       </Card.Content>
     </Card>
   );
@@ -108,11 +132,12 @@ const styles = StyleSheet.create({
     marginVertical: 0,
     paddingVertical: 0,
   },
+  rightOptions: {
+    right: 10,
+  },
   postImage: {
     width: width - 0.8,
     height: width - 0.8,
-    borderWidth: 0.4,
-    borderColor: 'white',
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
   },
 });

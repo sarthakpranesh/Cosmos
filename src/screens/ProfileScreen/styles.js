@@ -40,7 +40,6 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  postResp: {},
   scrollBottomView: {
     height: (2 * height) / 3 - 60,
   },
@@ -52,7 +51,7 @@ export default StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
     width: width / 3 - 0.8,
     height: width / 3 - 0.8,
-    borderColor: 'white',
+    borderColor: 'black',
     borderWidth: 0.4,
   },
 });

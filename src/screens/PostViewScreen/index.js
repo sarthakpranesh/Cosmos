@@ -1,12 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, TouchableOpacity, Animated} from 'react-native';
-import {Headline, Subheading} from 'react-native-paper';
+import {View, ToastAndroid} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import {ScrollView, TapGestureHandler} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
+import ActionSheet from 'react-native-actionsheet';
+import auth from '@react-native-firebase/auth';
 
 // importing components
-import CacheImage from '../../components/CacheImage';
+import Post from '../../components/Post/index.js';
+
+// importing firebase utils
+import {deletePosts} from '../../utils/firebase.js';
 
 // importing styles
 import styles from './styles';
@@ -14,69 +18,71 @@ import styles from './styles';
 class PostViewScreen extends Component {
   constructor(props) {
     super(props);
-
     this.post = props.route.params.post;
-
-    this.imageOpacity = new Animated.Value(0);
-    this.textOpacity = new Animated.Value(0);
-
-    this.fadeIn = () => {
-      Animated.timing(this.textOpacity, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start();
+    this.state = {
+      user: auth().currentUser,
     };
-
-    this.scale = this.imageOpacity.interpolate({
-      inputRange: [0.5, 1],
-      outputRange: [1, 1.02],
-      extrapolate: 'clamp',
-    });
   }
 
-  componentDidMount() {
-    Animated.timing(this.imageOpacity, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start(() => {
-      this.fadeIn();
+  componentDidMount() {}
+
+  handlePostOptions = (postIndex) => {
+    this.setState({
+      actionSheetIndex: postIndex,
     });
-  }
+    this.ActionSheet.show();
+  };
+
+  handleActionPress = async (index) => {
+    const {actionSheetIndex, posts} = this.state;
+    // if index is 0 - handle delete
+    if (index === 0) {
+      await deletePosts(posts[actionSheetIndex].name);
+      ToastAndroid.showWithGravity(
+        'Post Deleted Successfully',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+    }
+
+    // if index is 1 - handle cancel
+    if (index === 1) {
+      console.log('Cancelling the Action Sheet');
+    }
+
+    this.setState({
+      actionSheetIndex: -1,
+    });
+    return;
+  };
 
   render() {
+    const {user} = this.state;
+
     return (
       <View style={styles.postContainer}>
-        <TouchableOpacity
-          style={[styles.closeBtn]}
-          onPress={() => this.props.navigation.goBack()}>
-          <Icon name="x" color="white" size={24} />
-        </TouchableOpacity>
-        <Animated.View
-          style={{
-            flex: 1,
-            opacity: this.imageOpacity,
-            scaleY: this.scale,
-            scaleX: this.scale,
-          }}>
-          <CacheImage uri={this.post.postURL} style={{flex: 1, zIndex: 10}} />
-        </Animated.View>
-        <TapGestureHandler onHandlerStateChange={this.fadeOut}>
-          <Animated.View
-            style={[styles.postTextContainer, {opacity: this.textOpacity}]}>
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.innerContentContainer}>
-              <Headline style={[styles.postText, styles.mainHeader]}>
-                {this.post.createdBy}
-              </Headline>
-              <Subheading style={[styles.postText]}>
-                {this.post.postCaption}
-              </Subheading>
-            </ScrollView>
-          </Animated.View>
-        </TapGestureHandler>
+        <Icon
+          style={styles.backBtn}
+          name="arrow-left"
+          size={30}
+          color="white"
+        />
+        <ScrollView>
+          <Post
+            item={this.post}
+            uid={user.uid}
+            postOptions={this.handlePostOptions}
+            fullPost={true}
+          />
+        </ScrollView>
+        <ActionSheet
+          ref={(o) => (this.ActionSheet = o)}
+          title={'What do you wanna do?'}
+          options={['Delete', 'Cancel']}
+          cancelButtonIndex={1}
+          destructiveButtonIndex={1}
+          onPress={(index) => this.handleActionPress(index)}
+        />
       </View>
     );
   }
