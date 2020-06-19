@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {View, ToastAndroid} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import {ScrollView} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import ActionSheet from 'react-native-actionsheet';
 import auth from '@react-native-firebase/auth';
 
@@ -61,12 +61,14 @@ class PostViewScreen extends Component {
 
     return (
       <View style={styles.postContainer}>
-        <Icon
-          style={styles.backBtn}
-          name="arrow-left"
-          size={30}
-          color="white"
-        />
+        <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+          <Icon
+            style={styles.backBtn}
+            name="arrow-left"
+            size={30}
+            color="white"
+          />
+        </TouchableOpacity>
         <ScrollView>
           <Post
             item={this.post}

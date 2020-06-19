@@ -94,7 +94,7 @@ class MainAppStack extends Component {
           labeled={false}
           shifting={false}
           barStyle={{backgroundColor: DarkTheme.colors.background}}
-          lazy={false}>
+          lazy={true}>
           <Tab.Screen
             options={{
               tabBarIcon: ({focused}) => <AddPictureIcon focused={focused} />,

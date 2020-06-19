@@ -3,46 +3,42 @@ import {StyleSheet, Dimensions} from 'react-native';
 const {width, height} = Dimensions.get('window');
 
 export default StyleSheet.create({
-  mainAddImageContainer: {
-    flex: 1,
-    display: 'flex',
+  addContainer: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'black',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  loadedImageContainer: {
-    backgroundColor: 'white',
+  optionsContainer: {
     width: width,
-    height: 2 * (height / 3),
-    borderWidth: 2,
-    borderColor: 'black',
-  },
-  loadedImage: {
-    width: width - 4,
-    height: 2 * (height / 3) - 4,
-    resizeMode: 'stretch',
-  },
-  aboutImageContainer: {
-    width: width,
-    height: height / 3,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 10,
-    paddingHorizontal: 20,
-  },
-  aboutImageHeader: {
-    width: width - 40,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
   },
-  textInputCaption: {
+  optionContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadedImage: {
     width: width,
-    height: '50%',
-    borderWidth: 0,
-    marginVertical: 10,
+    height: width,
+    resizeMode: 'cover',
+  },
+  captionContaier: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  captionHeaderText: {
+    alignSelf: 'flex-start',
+    marginVertical: 20,
+  },
+  textInputCaption: {
+    width: width - 40,
+    marginBottom: 20,
   },
 });

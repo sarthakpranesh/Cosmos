@@ -6,8 +6,7 @@ export default StyleSheet.create({
     backgroundColor: 'black',
   },
   backBtn: {
-    position: 'absolute',
-    top: 16,
-    left: 16,
+    marginVertical: 16,
+    marginLeft: 16,
   },
 });

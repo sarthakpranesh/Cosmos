@@ -29,7 +29,7 @@
     "react-native-actionsheet": "^2.4.2",
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.6.1",
-    "react-native-image-crop-picker": "^0.28.0",
+    "react-native-image-crop-picker": "0.32.0",
     "react-native-paper": "^3.10.1",
     "react-native-reanimated": "^1.9.0",
     "react-native-safe-area-context": "^3.0.3",

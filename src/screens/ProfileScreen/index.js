@@ -20,7 +20,6 @@ import CacheImage from '../../components/CacheImage';
 import {deletePosts} from '../../utils/firebase.js';
 
 // importing global styles
-import Styles from '../../Styles';
 import styles from './styles.js';
 
 class ProfileScreen extends Component {
@@ -135,11 +134,7 @@ class ProfileScreen extends Component {
     const {posts, isLoading} = this.state;
 
     if (isLoading) {
-      return (
-        <View style={[Styles.mainContainerBackgroundColor]}>
-          <ActivityIndicator />
-        </View>
-      );
+      return <ActivityIndicator />;
     }
 
     return (
