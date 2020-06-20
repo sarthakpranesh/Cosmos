@@ -41,6 +41,7 @@ class Main extends Component {
         try {
           const postsObj = snap.val();
           if (postsObj === null) {
+            this.setPosts([]);
             this.setLoading(false);
             return;
           }

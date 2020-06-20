@@ -15,10 +15,13 @@ import ProfileIcon from './src/components/icons/ProfileIcon/index.js';
 // importing Screens
 import LandingScreen from './src/screens/LandingScreen/index.js';
 import AddImageScreen from './src/screens/AddImageScreen/index.js';
+import ListCirclesScreen from './src/screens/ListCirclesScreen/index.js';
 import HomeScreen from './src/screens/HomeScreen/index.js';
 import ProfileScreen from './src/screens/ProfileScreen/index.js';
 import MainSettingsScreen from './src/screens/MainSettingsScreen/index.js';
 import PostViewScreen from './src/screens/PostViewScreen';
+
+import AppHeader from './src/components/AppBar/index.js';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -55,9 +58,34 @@ class PostViewStack extends Component {
         initialRouteName="HomeScreen"
         keyboardHandlingEnabled={true}
         lazy={true}
-        headerMode="none">
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
-        <Stack.Screen name="Postview" component={PostViewScreen} />
+        headerMode="float">
+        <Stack.Screen
+          options={{
+            header: ({navigation}) => {
+              return (
+                <AppHeader navigation={navigation} routeName="HomeScreen" />
+              );
+            },
+          }}
+          name="HomeScreen"
+          component={HomeScreen}
+        />
+        <Stack.Screen
+          options={{
+            header: ({navigation}) => {
+              return (
+                <AppHeader navigation={navigation} routeName="ListCircle" />
+              );
+            },
+          }}
+          name="ListCircle"
+          component={ListCirclesScreen}
+        />
+        <Stack.Screen
+          options={{header: null}}
+          name="Postview"
+          component={PostViewScreen}
+        />
       </Stack.Navigator>
     );
   }
@@ -104,7 +132,7 @@ class MainAppStack extends Component {
           labeled={false}
           shifting={false}
           barStyle={{backgroundColor: DarkTheme.colors.background}}
-          lazy={true}>
+          lazy={false}>
           <Tab.Screen
             options={{
               tabBarIcon: ({focused}) => <AddPictureIcon focused={focused} />,
