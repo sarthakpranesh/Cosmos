@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {StatusBar} from 'react-native';
+import {Appbar} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Feather';
 import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -38,10 +40,61 @@ class PostViewProfileStack extends Component {
         keyboardHandlingEnabled={true}
         mode="modal"
         lazy={true}
-        headerMode="none">
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-        <Stack.Screen name="Postview" component={PostViewScreen} />
-        <Stack.Screen name="Setting" component={MainSettingsScreen} />
+        headerMode="screen">
+        <Stack.Screen
+          options={{
+            header: ({navigation}) => {
+              return (
+                <Appbar.Header style={{flexDirection: 'row-reverse'}}>
+                  <Appbar.Action
+                    icon={({color, size}) => (
+                      <Icon name="edit-2" size={size} color={color} />
+                    )}
+                    onPress={() => navigation.navigate('Setting')}
+                  />
+                </Appbar.Header>
+              );
+            },
+          }}
+          name="ProfileScreen"
+          component={ProfileScreen}
+        />
+        <Stack.Screen
+          options={{
+            header: ({navigation}) => {
+              return (
+                <Appbar.Header>
+                  <Appbar.Action
+                    icon={({color, size}) => (
+                      <Icon name="arrow-left" size={size} color={color} />
+                    )}
+                    onPress={() => navigation.goBack()}
+                  />
+                </Appbar.Header>
+              );
+            },
+          }}
+          name="Postview"
+          component={PostViewScreen}
+        />
+        <Stack.Screen
+          options={{
+            header: ({navigation}) => {
+              return (
+                <Appbar.Header>
+                  <Appbar.Action
+                    icon={({color, size}) => (
+                      <Icon name="arrow-left" size={size} color={color} />
+                    )}
+                    onPress={() => navigation.goBack()}
+                  />
+                </Appbar.Header>
+              );
+            },
+          }}
+          name="Setting"
+          component={MainSettingsScreen}
+        />
       </Stack.Navigator>
     );
   }
@@ -58,12 +111,20 @@ class PostViewStack extends Component {
         initialRouteName="HomeScreen"
         keyboardHandlingEnabled={true}
         lazy={true}
-        headerMode="float">
+        headerMode="screen">
         <Stack.Screen
           options={{
             header: ({navigation}) => {
               return (
-                <AppHeader navigation={navigation} routeName="HomeScreen" />
+                <Appbar.Header>
+                  <Appbar.Content title="Cosmos" />
+                  <Appbar.Action
+                    icon={({color, size}) => (
+                      <Icon name="box" size={size} color={color} />
+                    )}
+                    onPress={() => navigation.navigate('ListCircle')}
+                  />
+                </Appbar.Header>
               );
             },
           }}
@@ -74,7 +135,14 @@ class PostViewStack extends Component {
           options={{
             header: ({navigation}) => {
               return (
-                <AppHeader navigation={navigation} routeName="ListCircle" />
+                <Appbar.Header>
+                  <Appbar.Action
+                    icon={({color, size}) => (
+                      <Icon name="arrow-left" size={size} color={color} />
+                    )}
+                    onPress={() => navigation.goBack()}
+                  />
+                </Appbar.Header>
               );
             },
           }}
@@ -82,7 +150,20 @@ class PostViewStack extends Component {
           component={ListCirclesScreen}
         />
         <Stack.Screen
-          options={{header: () => {}}}
+          options={{
+            header: ({navigation}) => {
+              return (
+                <Appbar.Header>
+                  <Appbar.Action
+                    icon={({color, size}) => (
+                      <Icon name="arrow-left" size={size} color={color} />
+                    )}
+                    onPress={() => navigation.goBack()}
+                  />
+                </Appbar.Header>
+              );
+            },
+          }}
           name="Postview"
           component={PostViewScreen}
         />

@@ -170,11 +170,6 @@ class ProfileScreen extends Component {
     return (
       <View style={styles.profileContainer}>
         <View style={styles.fixedTopHeader}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Setting')}
-            style={styles.fixedEditIcon}>
-            <Icon name="edit-2" size={24} color="white" />
-          </TouchableOpacity>
           <Image
             source={{uri: auth().currentUser.photoURL}}
             alt="User Image"

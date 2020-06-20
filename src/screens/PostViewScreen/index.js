@@ -1,8 +1,6 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, ToastAndroid} from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 import ActionSheet from 'react-native-actionsheet';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
@@ -88,14 +86,6 @@ class PostViewScreen extends Component {
 
     return (
       <View style={styles.postContainer}>
-        <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-          <Icon
-            style={styles.backBtn}
-            name="arrow-left"
-            size={30}
-            color="white"
-          />
-        </TouchableOpacity>
         <ScrollView>
           <Post
             item={post}

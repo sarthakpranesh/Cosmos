@@ -110,11 +110,6 @@ class MainSettingsScreen extends Component {
     return (
       <View style={styles.settingContainer}>
         <ScrollView>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.goBack()}
-            style={styles.goBackIcon}>
-            <Icon name="arrow-left" size={30} color="white" />
-          </TouchableOpacity>
           <Image
             source={{uri: auth().currentUser.photoURL}}
             style={styles.userImage}

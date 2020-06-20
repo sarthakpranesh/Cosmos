@@ -87,10 +87,10 @@ const Post = ({
             color={hasReacted('sad') ? 'yellow' : 'white'}
           />
         </Button>
-        <Button
+        {/* <Button
           style={{alignSelf: 'flex-end', position: 'absolute', right: 10}}>
           <Icon name="message-square" size={24} />
-        </Button>
+        </Button> */}
       </Card.Actions>
       <Card.Content>
         {handleOpenPost === null ? (
