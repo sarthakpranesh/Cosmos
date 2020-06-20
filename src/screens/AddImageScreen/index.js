@@ -109,8 +109,8 @@ class AddImageScreen extends Component {
       this.setState({
         isLoading: true,
       });
-      const uploadedImage = await uploadImage(uid, fileBlog, image);
-      await updatePosts(uid, uploadedImage, imageCaption);
+      const uploadedImage = await uploadImage(fileBlog, image);
+      await updatePosts(uploadedImage, imageCaption);
       ToastAndroid.showWithGravity(
         'Post Uploaded Successfully',
         ToastAndroid.SHORT,

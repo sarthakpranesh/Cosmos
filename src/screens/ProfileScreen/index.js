@@ -12,6 +12,7 @@ import ActionSheet from 'react-native-actionsheet';
 import Icon from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import firestore from '@react-native-firebase/firestore';
 
 // importing components
 import CacheImage from '../../components/CacheImage';
@@ -40,13 +41,13 @@ class ProfileScreen extends Component {
 
   componentDidMount() {
     const {user} = this.state;
-    database()
-      .ref('users/')
-      .child(user.uid)
-      .on('value', (snap) => {
+    firestore()
+      .collection('Users')
+      .doc(user.uid)
+      .onSnapshot((snap) => {
         try {
-          const u = snap.val();
-          if (u === null) {
+          const u = snap.data();
+          if (u === undefined) {
             throw new Error('User not found, Your account might be deleted!');
           }
           this.setState({

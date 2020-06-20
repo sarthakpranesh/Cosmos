@@ -82,7 +82,7 @@ class PostViewStack extends Component {
           component={ListCirclesScreen}
         />
         <Stack.Screen
-          options={{header: null}}
+          options={{header: () => {}}}
           name="Postview"
           component={PostViewScreen}
         />

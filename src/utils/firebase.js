@@ -10,9 +10,13 @@ export const updateDisplayName = (username) => {
     var user = auth().currentUser;
     user
       .updateProfile({displayName: username})
-      .then((resp) => {
-        resolve(true);
+      .then(() => {
+        return firestore()
+          .collection('Users')
+          .doc(user.uid)
+          .update({name: username});
       })
+      .then(() => resolve())
       .catch((err) => {
         reject(err);
       });
@@ -21,22 +25,25 @@ export const updateDisplayName = (username) => {
 
 export const setUpNewUser = () => {
   const {uid, displayName, photoURL} = auth().currentUser;
-  database().ref('users/').child(uid).set({
+  firestore().collection('Users').doc(uid).set({
     uid,
     name: displayName,
-    photoUrl: photoURL,
+    photoURL: photoURL,
+    love: 0,
+    meh: 0,
+    sad: 0,
   });
 };
 
 export const getUserDetails = (uid) => {
   return new Promise((resolve, reject) => {
-    database()
-      .ref('users/')
-      .child(uid)
-      .once('value')
-      .then(async (userobj) => {
-        const user = await userobj.val();
-        if (user === null) {
+    firestore()
+      .collection('Users')
+      .doc(uid)
+      .get()
+      .then((snap) => {
+        const user = snap.data();
+        if (user === undefined) {
           setUpNewUser();
         }
 
@@ -51,43 +58,40 @@ export const getUserDetails = (uid) => {
 
 export const setUserDetails = (uid, user) => {
   return new Promise((resolve, reject) => {
-    database()
-      .ref(`users/`)
-      .child(uid)
-      .set(user)
+    firestore()
+      .collection('Users')
+      .doc(uid)
+      .update(user)
       .then(() => resolve())
       .catch((err) => reject(err));
   });
 };
 
-export const updatePosts = (uid, uploadedImage, postCaption) => {
+export const updatePosts = (uploadedImage, postCaption) => {
   return new Promise(async (resolve, reject) => {
-    try {
-      await database()
-        .ref(`posts/${uploadedImage.name.split('.')[0]}`)
-        .set({
-          postURL: uploadedImage.url,
-          name: uploadedImage.name,
-          love: [],
-          meh: [],
-          sad: [],
-          comments: [],
-          postCaption,
-          uid,
-          createdBy: auth().currentUser.displayName,
-          createdByPhoto: auth().currentUser.photoURL,
-        });
-      resolve();
-    } catch (e) {
-      console.log(e.message);
-      reject(e);
-    }
+    database()
+      .ref('posts/')
+      .child(`${uploadedImage.name.split('.')[0]}`)
+      .set({
+        postURL: uploadedImage.url,
+        name: uploadedImage.name,
+        postCaption,
+        uid: auth().currentUser.uid,
+        createdBy: auth().currentUser.displayName,
+        createdByPhoto: auth().currentUser.photoURL,
+      })
+      .then(() => resolve())
+      .catch((e) => {
+        console.log(e);
+        reject(e);
+      });
   });
 };
 
-export const uploadImage = (uid, file, image) => {
+export const uploadImage = (file, image) => {
   return new Promise(async (resolve, reject) => {
     try {
+      const {uid} = auth().currentUser;
       const path = `posts/${uid}-${shorthash.unique(
         image.uri,
       )}.${image.uri.split('.').pop()}`;
