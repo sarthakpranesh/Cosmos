@@ -46,6 +46,9 @@ class ProfileScreen extends Component {
       .on('value', (snap) => {
         try {
           const u = snap.val();
+          if (u === null) {
+            throw new Error('User not found, Your account might be deleted!');
+          }
           this.setState({
             love: u.love ? u.love : 0,
             meh: u.meh ? u.meh : 0,
@@ -66,6 +69,9 @@ class ProfileScreen extends Component {
       .on('value', (snap) => {
         try {
           const postsObj = snap.val();
+          if (postsObj === null) {
+            throw new Error('No Posts here today!');
+          }
           const posts = Object.keys(postsObj).map((key) => {
             return postsObj[key];
           });
@@ -74,6 +80,7 @@ class ProfileScreen extends Component {
           this.setLoading(false);
         } catch (err) {
           console.log(err);
+          this.setLoading(false);
           ToastAndroid.showWithGravity(
             err.message,
             ToastAndroid.SHORT,
