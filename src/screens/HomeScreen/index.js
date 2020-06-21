@@ -3,19 +3,27 @@ import React, {Component} from 'react';
 import {View, FlatList, ToastAndroid} from 'react-native';
 import {ActivityIndicator, Divider, Headline} from 'react-native-paper';
 import ActionSheet from 'react-native-actionsheet';
+import SplashScreen from 'react-native-splash-screen';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
 // importing component
 import Post from '../../components/Post/index.js';
 
+//importing Context
+import {Context as UserContext} from '../../contexts/UserContext.js';
+
 // importing firebase utils
 import {getUserDetails, deletePosts} from '../../utils/firebase.js';
+
+// importing async utils
+import {getData} from '../../utils/asyncStorageHelper.js';
 
 // importing styles
 import styles from './styles.js';
 
 class Main extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -24,11 +32,21 @@ class Main extends Component {
       user: auth().currentUser,
       posts: [],
       actionSheetIndex: -1,
+      noBox: false,
     };
     this.ActionSheet = null;
   }
 
   componentDidMount() {
+    const {state} = this.context;
+    getData('BOX').then((box) => {
+      if (box === '') {
+        this.setState({
+          noBox: true,
+        });
+      }
+      SplashScreen.hide();
+    });
     const {user} = this.state;
     getUserDetails(user.uid); // initialises user in rtdb if user record nor present
     this.onFirebaseFetchPosts();

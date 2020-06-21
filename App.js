@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {StatusBar} from 'react-native';
 import {Appbar} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
-import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
@@ -23,7 +22,11 @@ import ProfileScreen from './src/screens/ProfileScreen/index.js';
 import MainSettingsScreen from './src/screens/MainSettingsScreen/index.js';
 import PostViewScreen from './src/screens/PostViewScreen';
 
-import AppHeader from './src/components/AppBar/index.js';
+// importing User provider
+import {
+  Provider as UserProvider,
+  Context as UserContext,
+} from './src/contexts/UserContext.js';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -177,18 +180,12 @@ class MainAppStack extends Component {
     super(props);
     this.state = {
       isLoggedIn: false,
-      isStarting: true,
+      box: '',
     };
   }
 
   componentDidMount() {
     auth().onAuthStateChanged((user) => {
-      if (this.state.isStarting) {
-        SplashScreen.hide();
-        this.setState({
-          isStarting: false,
-        });
-      }
       this.setState({
         isLoggedIn: user ? true : false,
       });
@@ -244,13 +241,21 @@ class MainAppStack extends Component {
 export default function App() {
   return (
     <PaperProvider theme={DarkTheme}>
-      <NavigationContainer>
-        <StatusBar
-          backgroundColor={DarkTheme.colors.background}
-          barStyle="light-content"
-        />
-        <MainAppStack />
-      </NavigationContainer>
+      <UserProvider>
+        <UserContext.Consumer>
+          {(value) => {
+            return (
+              <NavigationContainer>
+                <StatusBar
+                  backgroundColor={DarkTheme.colors.background}
+                  barStyle="light-content"
+                />
+                <MainAppStack />
+              </NavigationContainer>
+            );
+          }}
+        </UserContext.Consumer>
+      </UserProvider>
     </PaperProvider>
   );
 }

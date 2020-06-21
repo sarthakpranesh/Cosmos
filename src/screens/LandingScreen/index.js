@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Dimensions, Animated, ToastAndroid} from 'react-native';
 import {Text, Headline, Button} from 'react-native-paper';
+import SplashScreen from 'react-native-splash-screen';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
 
@@ -33,6 +34,7 @@ class LandingScreen extends Component {
   }
 
   componentDidMount() {
+    SplashScreen.hide();
     Animated.timing(this.start, {
       toValue: 1,
       duration: 2000,
