@@ -8,6 +8,9 @@ import database from '@react-native-firebase/database';
 // importing components
 import Post from '../../components/Post/index.js';
 
+// importing Context
+import {Context as UserContext} from '../../contexts/UserContext.js';
+
 // importing firebase utils
 import {deletePosts} from '../../utils/firebase.js';
 
@@ -15,6 +18,7 @@ import {deletePosts} from '../../utils/firebase.js';
 import styles from './styles';
 
 class PostViewScreen extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
 
@@ -26,9 +30,10 @@ class PostViewScreen extends Component {
 
   componentDidMount() {
     const {post} = this.state;
+    const {state} = this.context;
 
     database()
-      .ref('posts/')
+      .ref(state.box)
       .child(post.name.split('.')[0])
       .on('value', async (snap) => {
         try {
@@ -51,23 +56,24 @@ class PostViewScreen extends Component {
       });
   }
 
-  handlePostOptions = (postIndex) => {
-    this.setState({
-      actionSheetIndex: postIndex,
-    });
+  handlePostOptions = () => {
     this.ActionSheet.show();
   };
 
   handleActionPress = async (index) => {
-    const {actionSheetIndex, posts} = this.state;
+    const {post} = this.state;
+    const {state} = this.context;
     // if index is 0 - handle delete
     if (index === 0) {
-      await deletePosts(posts[actionSheetIndex].name);
+      console.log(state);
+      console.log('post name: ', post.name);
+      await deletePosts(state.box, post.name);
       ToastAndroid.showWithGravity(
         'Post Deleted Successfully',
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
+      this.props.navigation.goBack();
     }
 
     // if index is 1 - handle cancel

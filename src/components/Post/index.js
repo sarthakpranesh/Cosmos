@@ -1,11 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import {Button, Card, Paragraph, Caption} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 
 // importing components
 import LeftContent from '../LeftContent/index.js';
+
+// importing Context
+import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing firebase utils
 import {reactToPost} from '../../utils/firebase.js';
@@ -19,6 +22,7 @@ const Post = ({
   handleOpenPost = null,
   fullPost = false,
 }) => {
+  const {state} = useContext(UserContext);
   const hasReacted = (reactionType) => {
     if (Object.keys(item).includes(reactionType)) {
       return item[reactionType].find((u) => u === uid);
@@ -66,21 +70,21 @@ const Post = ({
         <Caption>Sad:{item.sad ? item.sad.length : 0}</Caption>
       </Card.Actions>
       <Card.Actions style={{marginVertical: 0, paddingVertical: 0}}>
-        <Button onPress={() => reactToPost(item.name, 'love')}>
+        <Button onPress={() => reactToPost(state.box, item.name, 'love')}>
           <Icon
             name="heart"
             size={24}
             color={hasReacted('love') ? 'red' : 'white'}
           />
         </Button>
-        <Button onPress={() => reactToPost(item.name, 'meh')}>
+        <Button onPress={() => reactToPost(state.box, item.name, 'meh')}>
           <Icon
             name="meh"
             size={24}
             color={hasReacted('meh') ? 'green' : 'white'}
           />
         </Button>
-        <Button onPress={() => reactToPost(item.name, 'sad')}>
+        <Button onPress={() => reactToPost(state.box, item.name, 'sad')}>
           <Icon
             name="frown"
             size={24}

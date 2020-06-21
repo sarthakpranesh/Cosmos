@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, FlatList, ToastAndroid} from 'react-native';
+import {View, FlatList, ToastAndroid, Alert} from 'react-native';
 import {ActivityIndicator, Divider, Headline} from 'react-native-paper';
 import ActionSheet from 'react-native-actionsheet';
 import SplashScreen from 'react-native-splash-screen';
@@ -32,29 +32,48 @@ class Main extends Component {
       user: auth().currentUser,
       posts: [],
       actionSheetIndex: -1,
-      noBox: false,
     };
     this.ActionSheet = null;
   }
 
   componentDidMount() {
-    const {state} = this.context;
-    getData('BOX').then((box) => {
-      if (box === '') {
-        this.setState({
-          noBox: true,
-        });
-      }
-      SplashScreen.hide();
-    });
     const {user} = this.state;
-    getUserDetails(user.uid); // initialises user in rtdb if user record nor present
-    this.onFirebaseFetchPosts();
+    const {currentBox} = this.context;
+    // initialises user in rtdb if user record nor present
+    Promise.all([getUserDetails(user.uid), getData('BOX')])
+      .then(async ([userObj, box]) => {
+        if (['', undefined, null].includes(box)) {
+          if (userObj.enrolledBoxes.length !== 0) {
+            console.log('User had enrolled before, setting init box');
+            await currentBox(userObj.enrolledBoxes[0]);
+            this.onFirebaseFetchPosts();
+          } else {
+            console.log('User did not enroll before, starting box selection');
+            this.handleNoBoxSet();
+          }
+          this.setState({
+            isLoading: false,
+          });
+        } else {
+          await currentBox(box);
+          this.onFirebaseFetchPosts();
+        }
+        SplashScreen.hide();
+      })
+      .catch((err) => {
+        console.log(err);
+        ToastAndroid.showWithGravity(
+          err.message,
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
+      });
   }
 
   onFirebaseFetchPosts = () => {
+    const {state} = this.context;
     database()
-      .ref('posts/')
+      .ref(state.box)
       .on('value', (snap) => {
         try {
           const postsObj = snap.val();
@@ -79,6 +98,24 @@ class Main extends Component {
       });
   };
 
+  handleNoBoxSet = () => {
+    Alert.alert(
+      'Join Box',
+      'To get started you need to join a Box or create your own Box',
+      [
+        {
+          text: 'Next',
+          onPress: () => {
+            this.props.navigation.navigate('ListCircle');
+          },
+        },
+      ],
+      {
+        cancelable: false,
+      },
+    );
+  };
+
   setPosts = (posts) => {
     this.setState({
       posts,
@@ -89,11 +126,6 @@ class Main extends Component {
     this.setState({
       isLoading: bool,
     });
-  };
-
-  onTabCard = (cardIndex) => {
-    const {posts} = this.state;
-    this.props.navigation.navigate('PostViewScreen', {card: posts[cardIndex]});
   };
 
   handleOpenPost = (index) => {
@@ -110,9 +142,10 @@ class Main extends Component {
 
   handleActionPress = async (index) => {
     const {actionSheetIndex, posts} = this.state;
+    const {state} = this.context;
     // if index is 0 - handle delete
     if (index === 0) {
-      await deletePosts(posts[actionSheetIndex].name);
+      await deletePosts(state.box, posts[actionSheetIndex].name);
       ToastAndroid.showWithGravity(
         'Post Deleted Successfully',
         ToastAndroid.SHORT,

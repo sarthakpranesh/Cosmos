@@ -67,10 +67,11 @@ export const setUserDetails = (uid, user) => {
   });
 };
 
-export const updatePosts = (uploadedImage, postCaption) => {
+export const updatePosts = (uploadedImage, postCaption, box) => {
   return new Promise(async (resolve, reject) => {
+    console.log(box);
     database()
-      .ref('posts/')
+      .ref(box)
       .child(`${uploadedImage.name.split('.')[0]}`)
       .set({
         postURL: uploadedImage.url,
@@ -105,10 +106,10 @@ export const uploadImage = (file, image) => {
   });
 };
 
-export const getPost = (name) => {
+export const getPost = (box, name) => {
   return new Promise((resolve, reject) => {
     database()
-      .ref('posts/')
+      .ref(box)
       .child(name)
       .once('value')
       .then((snap) => snap.val())
@@ -117,10 +118,10 @@ export const getPost = (name) => {
   });
 };
 
-export const setPost = (name, post) => {
+export const setPost = (box, name, post) => {
   return new Promise((resolve, reject) => {
     database()
-      .ref('posts/')
+      .ref(box)
       .child(name)
       .set(post)
       .then(() => resolve())
@@ -151,7 +152,7 @@ export const reactToUser = (uid, reactiontype, dif) => {
   });
 };
 
-export const reactToPost = (postName, reactiontype) => {
+export const reactToPost = (box, postName, reactiontype) => {
   return new Promise(async (resolve, reject) => {
     try {
       const isReactionValid = ['love', 'meh', 'sad'].find(
@@ -162,23 +163,23 @@ export const reactToPost = (postName, reactiontype) => {
       }
       const uid = auth().currentUser.uid;
       const name = postName.split('.')[0];
-      const post = await getPost(name);
+      const post = await getPost(box, name);
       if (Object.keys(post).includes(reactiontype)) {
         const alreadyReacted = post[reactiontype].find((u) => u === uid);
         if (alreadyReacted) {
           post[reactiontype] = post[reactiontype].filter((u) => u !== uid);
-          await setPost(name, post);
+          await setPost(box, name, post);
           await reactToUser(post.uid, reactiontype, -1);
           return resolve();
         } else {
           post[reactiontype] = [...post[reactiontype], uid];
-          await setPost(name, post);
+          await setPost(box, name, post);
           await reactToUser(post.uid, reactiontype, 1);
           return resolve();
         }
       } else {
         post[reactiontype] = [uid];
-        await setPost(name, post);
+        await setPost(box, name, post);
         await reactToUser(post.uid, reactiontype, 1);
         return resolve();
       }
@@ -194,11 +195,11 @@ export const reactToPost = (postName, reactiontype) => {
   });
 };
 
-export const deletePosts = (postName) => {
+export const deletePosts = (box, postName) => {
   return new Promise((resolve, reject) => {
     const name = postName.split('.')[0];
     database()
-      .ref('posts/')
+      .ref(box)
       .child(name)
       .set({})
       .then(() => resolve())

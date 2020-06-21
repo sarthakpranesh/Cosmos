@@ -12,6 +12,9 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
 
+//importing Context
+import {Context as UserContext} from '../../contexts/UserContext.js';
+
 // importing helper functions
 import {uploadImage, updatePosts} from '../../utils/firebase.js';
 
@@ -19,6 +22,7 @@ import {uploadImage, updatePosts} from '../../utils/firebase.js';
 import styles from './styles';
 
 class AddImageScreen extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
 
@@ -100,7 +104,8 @@ class AddImageScreen extends Component {
   };
 
   onPostUpload = async () => {
-    const {uid, imageCaption, image, fileBlog} = this.state;
+    const {imageCaption, image, fileBlog} = this.state;
+    const {state} = this.context;
     if (!imageCaption) {
       Alert.alert("Can't Upload", 'Caption is required!', [{text: 'Ok'}]);
       return;
@@ -110,7 +115,7 @@ class AddImageScreen extends Component {
         isLoading: true,
       });
       const uploadedImage = await uploadImage(fileBlog, image);
-      await updatePosts(uploadedImage, imageCaption);
+      await updatePosts(uploadedImage, imageCaption, state.box);
       ToastAndroid.showWithGravity(
         'Post Uploaded Successfully',
         ToastAndroid.SHORT,

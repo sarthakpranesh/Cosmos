@@ -17,6 +17,9 @@ import firestore from '@react-native-firebase/firestore';
 // importing components
 import CacheImage from '../../components/CacheImage';
 
+// importing Context
+import {Context as UserContext} from '../../contexts/UserContext.js';
+
 // importing firebase utils
 import {deletePosts} from '../../utils/firebase.js';
 
@@ -24,6 +27,7 @@ import {deletePosts} from '../../utils/firebase.js';
 import styles from './styles.js';
 
 class ProfileScreen extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -65,8 +69,9 @@ class ProfileScreen extends Component {
         }
       });
 
+    const {state} = this.context;
     database()
-      .ref('posts/')
+      .ref(state.box)
       .on('value', (snap) => {
         try {
           const postsObj = snap.val();

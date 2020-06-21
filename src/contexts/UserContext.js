@@ -6,7 +6,7 @@ const UserContext = (UserSet, action) => {
     case 'currentBox':
       storeData('BOX', action.payload.box);
       return {
-        box: action.payload.token,
+        box: action.payload.box,
       };
     default:
       return {
@@ -16,8 +16,8 @@ const UserContext = (UserSet, action) => {
 };
 
 const currentBox = (dispatch) => {
-  return (token) => {
-    dispatch({type: 'currentBox', payload: {token}});
+  return (box) => {
+    dispatch({type: 'currentBox', payload: {box}});
   };
 };
 
