@@ -104,11 +104,13 @@ class PostViewProfileStack extends Component {
 }
 
 class PostViewStack extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
   }
 
   render() {
+    const {state} = this.context;
     return (
       <Stack.Navigator
         initialRouteName="HomeScreen"
@@ -120,7 +122,9 @@ class PostViewStack extends Component {
             header: ({navigation}) => {
               return (
                 <Appbar.Header>
-                  <Appbar.Content title="Cosmos" />
+                  <Appbar.Content
+                    title={state.box === '' ? 'Cosmos' : state.box}
+                  />
                   <Appbar.Action
                     icon={({color, size}) => (
                       <Icon name="box" size={size} color={color} />
