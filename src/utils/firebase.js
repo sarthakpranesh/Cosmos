@@ -206,3 +206,62 @@ export const deletePosts = (box, postName) => {
       .catch(() => reject());
   });
 };
+
+export const getBox = (boxName) => {
+  return new Promise((resolve, reject) => {
+    firestore()
+      .collection('Boxes')
+      .doc(boxName)
+      .get()
+      .then((snap) => snap.data())
+      .then((box) => resolve(box))
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      });
+  });
+};
+
+export const addToBox = (username, uid, boxName) => {
+  return new Promise(async (resolve, reject) => {
+    const box = await getBox(boxName);
+    box.enrolledBy = [...box.enrolledBy, {name: username, uid}];
+    firestore()
+      .collection('Boxes')
+      .doc(boxName)
+      .set(box)
+      .then(() => resolve())
+      .catch((err) => reject(err));
+  });
+};
+
+export const addUserToBox = (email, boxName) => {
+  return new Promise((resolve, reject) => {
+    firestore()
+      .collection('Users')
+      .where('email', '==', email)
+      .limit(1)
+      .get()
+      .then((querySnap) => {
+        let u;
+        querySnap.forEach((user, index) => {
+          if (index === 0) {
+            u = user.data();
+          }
+        });
+        return u;
+      })
+      .then((u) => {
+        u.enrolledBoxes = [...u.enrolledBoxes, boxName];
+        return Promise.all([
+          setUserDetails(u.uid, u),
+          addToBox(u.name, u.uid, boxName),
+        ]);
+      })
+      .then(() => resolve())
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      });
+  });
+};

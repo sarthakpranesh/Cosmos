@@ -17,6 +17,7 @@ import ProfileIcon from './src/components/icons/ProfileIcon/index.js';
 import LandingScreen from './src/screens/LandingScreen/index.js';
 import AddImageScreen from './src/screens/AddImageScreen/index.js';
 import ListCirclesScreen from './src/screens/ListCirclesScreen/index.js';
+import BoxScreen from './src/screens/BoxScreen/index.js';
 import HomeScreen from './src/screens/HomeScreen/index.js';
 import ProfileScreen from './src/screens/ProfileScreen/index.js';
 import MainSettingsScreen from './src/screens/MainSettingsScreen/index.js';
@@ -123,6 +124,11 @@ class PostViewStack extends Component {
               return (
                 <Appbar.Header>
                   <Appbar.Content
+                    onPress={() => {
+                      if (state.box !== '') {
+                        navigation.navigate('BoxScreen', {boxName: state.box});
+                      }
+                    }}
                     title={state.box === '' ? 'Cosmos' : state.box}
                   />
                   <Appbar.Action
@@ -137,6 +143,27 @@ class PostViewStack extends Component {
           }}
           name="HomeScreen"
           component={HomeScreen}
+        />
+        <Stack.Screen
+          options={{
+            header: ({navigation}) => {
+              return (
+                <Appbar.Header>
+                  <Appbar.Action
+                    icon={({color, size}) => (
+                      <Icon name="arrow-left" size={size} color={color} />
+                    )}
+                    onPress={() => navigation.goBack()}
+                  />
+                  <Appbar.Content
+                    title={state.box === '' ? 'Cosmos' : state.box}
+                  />
+                </Appbar.Header>
+              );
+            },
+          }}
+          name="BoxScreen"
+          component={BoxScreen}
         />
         <Stack.Screen
           options={{
