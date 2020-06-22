@@ -69,6 +69,13 @@ class ListCircleScreen extends Component {
         />
         <Divider />
         <FlatList
+          ListHeaderComponent={() => {
+            return <Text>Your enrolled Boxes</Text>;
+          }}
+          ListHeaderComponentStyle={{margin: 10}}
+          ListEmptyComponent={() => {
+            return <Text>Please Search & Enroll Into a Box</Text>;
+          }}
           style={styles.CardList}
           data={enrolledBoxes}
           keyExtractor={(item) => item}
