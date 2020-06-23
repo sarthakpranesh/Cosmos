@@ -12,9 +12,10 @@ import {
   ActivityIndicator,
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
+import ActionSheet from 'react-native-actionsheet';
 
 // importing firebase utils
-import {getBox, addUserToBox} from '../../utils/firebase.js';
+import {getBox, addUserToBox, removeUserFromBox} from '../../utils/firebase.js';
 
 // importing styles
 import styles from './styles.js';
@@ -28,6 +29,7 @@ class BoxScreen extends Component {
       enrolledBy: [],
       auth: [],
       email: '',
+      actionSheetIndex: -1,
     };
   }
 
@@ -79,6 +81,46 @@ class BoxScreen extends Component {
       });
   };
 
+  handleUserClick = (userIndex) => {
+    this.setState({
+      actionSheetIndex: userIndex,
+    });
+    this.ActionSheet.show();
+  };
+
+  handleActionPress = async (index) => {
+    const {actionSheetIndex, enrolledBy} = this.state;
+    // if index is 0 - handle remove user from box
+    if (index === 0) {
+      removeUserFromBox(enrolledBy[actionSheetIndex].uid, this.boxName)
+        .then(() => {
+          this.fetchEnrolledUsers();
+          ToastAndroid.showWithGravity(
+            'User removed from the box',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+        })
+        .catch((err) => {
+          ToastAndroid.showWithGravity(
+            err.message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+        });
+    }
+
+    // if index is 1 - handle cancel
+    if (index === 1) {
+      console.log('Cancelling the Action Sheet');
+    }
+
+    this.setState({
+      actionSheetIndex: -1,
+    });
+    return;
+  };
+
   render() {
     const {enrolledBy} = this.state;
 
@@ -111,14 +153,24 @@ class BoxScreen extends Component {
           }}
           data={enrolledBy}
           keyExtractor={(item) => item.uid}
-          renderItem={({item}) => {
+          renderItem={({item, index}) => {
             return (
-              <Card style={styles.card}>
+              <Card
+                style={styles.card}
+                onPress={() => this.handleUserClick(index)}>
                 <Card.Title title={item.name} />
               </Card>
             );
           }}
           ItemSeparatorComponent={() => <Divider style={styles.Divider} />}
+        />
+        <ActionSheet
+          ref={(o) => (this.ActionSheet = o)}
+          title={'What do you wanna do?'}
+          options={['Remove User', 'Cancel']}
+          cancelButtonIndex={1}
+          destructiveButtonIndex={1}
+          onPress={(index) => this.handleActionPress(index)}
         />
       </View>
     );

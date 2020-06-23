@@ -235,6 +235,19 @@ export const addToBox = (username, uid, boxName) => {
   });
 };
 
+export const removeFromBox = (uid, boxName) => {
+  return new Promise(async (resolve, reject) => {
+    const box = await getBox(boxName);
+    box.enrolledBy = box.enrolledBy.filter((u) => u.uid !== uid);
+    firestore()
+      .collection('Boxes')
+      .doc(boxName)
+      .set(box)
+      .then(() => resolve())
+      .catch((err) => reject(err));
+  });
+};
+
 export const addUserToBox = (email, boxName) => {
   return new Promise((resolve, reject) => {
     firestore()
@@ -256,6 +269,24 @@ export const addUserToBox = (email, boxName) => {
         return Promise.all([
           setUserDetails(u.uid, u),
           addToBox(u.name, u.uid, boxName),
+        ]);
+      })
+      .then(() => resolve())
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      });
+  });
+};
+
+export const removeUserFromBox = (uid, boxName) => {
+  return new Promise((resolve, reject) => {
+    getUserDetails(uid)
+      .then((u) => {
+        u.enrolledBoxes = u.enrolledBoxes.filter((bn) => bn !== boxName);
+        return Promise.all([
+          setUserDetails(u.uid, u),
+          removeFromBox(u.uid, boxName),
         ]);
       })
       .then(() => resolve())
