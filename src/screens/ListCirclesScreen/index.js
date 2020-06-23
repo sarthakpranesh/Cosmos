@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, FlatList, ToastAndroid} from 'react-native';
 import {Text, Card, Searchbar, Divider} from 'react-native-paper';

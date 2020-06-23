@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {View, ScrollView, Image, Alert, TouchableOpacity} from 'react-native';
+import {View, ScrollView, Image, Alert} from 'react-native';
 import {Text, Button, TextInput} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-community/google-signin';
 

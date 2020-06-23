@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {StatusBar} from 'react-native';
 import {Appbar} from 'react-native-paper';
