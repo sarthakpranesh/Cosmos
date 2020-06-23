@@ -224,7 +224,7 @@ export const createBox = (boxName) => {
       .set({
         author_name: displayName,
         author_uid: uid,
-        enrolledBy: [],
+        enrolledBy: [{name: displayName, uid}],
       })
       .then(() => setUserDetails(uid, user))
       .then(() => resolve())

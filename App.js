@@ -150,7 +150,7 @@ class PostViewStack extends Component {
             },
           }}
           name="HomeScreen"
-          component={HomeScreen}
+          component={(props) => <HomeScreen {...props} boxName={state.box} />}
         />
         <Stack.Screen
           options={{

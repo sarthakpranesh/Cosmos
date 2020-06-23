@@ -38,7 +38,6 @@ class Main extends Component {
 
   onFirebaseFetchPosts = () => {
     const {state} = this.context;
-    console.log(state);
     database()
       .ref(state.box)
       .on('value', (snap) => {
