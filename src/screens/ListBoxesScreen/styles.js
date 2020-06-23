@@ -9,8 +9,12 @@ export default StyleSheet.create({
     margin: 10,
     textAlign: 'justify',
   },
-  searchBar: {
-    margin: 10,
+  addPartConatiner: {
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
+  textInput: {
+    marginBottom: 10,
   },
   CardList: {
     marginTop: 10,
@@ -19,5 +23,9 @@ export default StyleSheet.create({
     borderRadius: 0,
     shadowOpacity: 0,
     padding: 16,
+  },
+  Divider: {
+    height: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
   },
 });

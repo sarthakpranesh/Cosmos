@@ -1,21 +1,29 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, FlatList, ToastAndroid} from 'react-native';
-import {Text, Card, Searchbar, Divider} from 'react-native-paper';
+import {Text, Card, TextInput, Divider, Button} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+
+// importing firebase utils
+import {createBox} from '../../utils/firebase.js';
+
+// importing context
+import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing styles
 import styles from './styles.js';
 
 class ListCircleScreen extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
 
     this.state = {
       user: auth().currentUser,
       enrolledBoxes: [],
-      searchQuery: '',
+      newBoxName: '',
     };
   }
 
@@ -47,27 +55,55 @@ class ListCircleScreen extends Component {
       });
   }
 
-  _onChangeSearch = (searchQuery) => {
+  setNewBoxName = (nb) => {
     this.setState({
-      searchQuery,
+      newBoxName: nb,
     });
   };
 
+  handleCreateBox = () => {
+    const {newBoxName} = this.state;
+    createBox(newBoxName)
+      .then(() => {
+        this.handleSelectBox(newBoxName);
+      })
+      .catch((err) => {
+        ToastAndroid.showWithGravity(
+          err.message,
+          ToastAndroid.LONG,
+          ToastAndroid.CENTER,
+        );
+      });
+  };
+
+  handleSelectBox = (boxName) => {
+    const {currentBox} = this.context;
+    currentBox(boxName);
+    this.props.navigation.goBack();
+  };
+
   render() {
-    const {enrolledBoxes, searchQuery} = this.state;
+    const {enrolledBoxes, newBoxName} = this.state;
     return (
       <View style={styles.listCircleContainer}>
         <Text style={styles.helpText}>
           Boxes are your personal Friend/Family/Work groups where you share
           relevant posts which interest a perticular group. You can either join
-          or create a group.
+          an existing group or create a new group.
         </Text>
-        <Searchbar
-          style={styles.searchBar}
-          placeholder="Search"
-          onChangeText={this._onChangeSearch}
-          value={searchQuery}
-        />
+        <View style={styles.addPartConatiner}>
+          <Text>Create New Box</Text>
+          <TextInput
+            style={styles.textInput}
+            mode="outlined"
+            label="Box Name"
+            value={newBoxName}
+            onChangeText={(nb) => this.setNewBoxName(nb)}
+          />
+          <Button onPress={() => this.handleCreateBox()}>
+            <Icon name="plus" size={24} color="white" />
+          </Button>
+        </View>
         <Divider />
         <FlatList
           ListHeaderComponent={() => {
@@ -82,11 +118,14 @@ class ListCircleScreen extends Component {
           keyExtractor={(item) => item}
           renderItem={({item, index}) => {
             return (
-              <Card key={index} style={styles.card}>
+              <Card
+                onPress={() => this.handleSelectBox(item)}
+                style={styles.card}>
                 <Card.Title title={item} />
               </Card>
             );
           }}
+          ItemSeparatorComponent={() => <Divider style={styles.Divider} />}
         />
       </View>
     );

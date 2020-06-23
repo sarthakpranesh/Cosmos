@@ -207,6 +207,34 @@ export const deletePosts = (box, postName) => {
   });
 };
 
+export const createBox = (boxName) => {
+  return new Promise(async (resolve, reject) => {
+    const {displayName, uid} = auth().currentUser;
+    const [box, user] = await Promise.all([
+      getBox(boxName),
+      getUserDetails(uid),
+    ]);
+    if (box !== undefined || user === undefined) {
+      return reject(new Error('Box with that name already exists'));
+    }
+    user.enrolledBoxes = [...user.enrolledBoxes, boxName];
+    firestore()
+      .collection('Boxes')
+      .doc(boxName)
+      .set({
+        author_name: displayName,
+        author_uid: uid,
+        enrolledBy: [],
+      })
+      .then(() => setUserDetails(uid, user))
+      .then(() => resolve())
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      });
+  });
+};
+
 export const getBox = (boxName) => {
   return new Promise((resolve, reject) => {
     firestore()

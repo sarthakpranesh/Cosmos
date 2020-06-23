@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import {View, FlatList, ToastAndroid, Alert} from 'react-native';
 import {ActivityIndicator, Divider, Headline} from 'react-native-paper';
 import ActionSheet from 'react-native-actionsheet';
-import SplashScreen from 'react-native-splash-screen';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
@@ -14,10 +13,7 @@ import Post from '../../components/Post/index.js';
 import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing firebase utils
-import {getUserDetails, deletePosts} from '../../utils/firebase.js';
-
-// importing async utils
-import {getData} from '../../utils/asyncStorageHelper.js';
+import {deletePosts} from '../../utils/firebase.js';
 
 // importing styles
 import styles from './styles.js';
@@ -37,41 +33,12 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    const {user} = this.state;
-    const {currentBox} = this.context;
-    // initialises user in rtdb if user record nor present
-    Promise.all([getUserDetails(user.uid), getData('BOX')])
-      .then(async ([userObj, box]) => {
-        if (['', undefined, null].includes(box)) {
-          if (userObj.enrolledBoxes.length !== 0) {
-            console.log('User had enrolled before, setting init box');
-            await currentBox(userObj.enrolledBoxes[0]);
-            this.onFirebaseFetchPosts();
-          } else {
-            console.log('User did not enroll before, starting box selection');
-            this.handleNoBoxSet();
-          }
-          this.setState({
-            isLoading: false,
-          });
-        } else {
-          await currentBox(box);
-          this.onFirebaseFetchPosts();
-        }
-        SplashScreen.hide();
-      })
-      .catch((err) => {
-        console.log(err);
-        ToastAndroid.showWithGravity(
-          err.message,
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
-      });
+    this.onFirebaseFetchPosts();
   }
 
   onFirebaseFetchPosts = () => {
     const {state} = this.context;
+    console.log(state);
     database()
       .ref(state.box)
       .on('value', (snap) => {
@@ -88,7 +55,7 @@ class Main extends Component {
           this.setPosts(posts);
           this.setLoading(false);
         } catch (err) {
-          console.log(err);
+          // console.log(err);
           ToastAndroid.showWithGravity(
             err.message,
             ToastAndroid.SHORT,
@@ -96,24 +63,6 @@ class Main extends Component {
           );
         }
       });
-  };
-
-  handleNoBoxSet = () => {
-    Alert.alert(
-      'Join Box',
-      'To get started you need to join a Box or create your own Box',
-      [
-        {
-          text: 'Next',
-          onPress: () => {
-            this.props.navigation.navigate('ListCircle');
-          },
-        },
-      ],
-      {
-        cancelable: false,
-      },
-    );
   };
 
   setPosts = (posts) => {
