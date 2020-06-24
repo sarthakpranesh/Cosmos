@@ -7,13 +7,13 @@ const UserContext = (UserSet, action) => {
       storeData('BOX', action.payload.box);
       return {
         box: action.payload.box,
-        isLogged: UserSet.uid,
+        uid: UserSet.uid,
       };
     case 'setUid': {
       storeData('UID', action.payload.uid);
       return {
         box: UserSet.box,
-        isLogged: action.payload.uid,
+        uid: action.payload.uid,
       };
     }
     default:

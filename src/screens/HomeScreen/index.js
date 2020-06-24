@@ -13,7 +13,7 @@ import Post from '../../components/Post/index.js';
 import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing firebase utils
-import {deletePosts} from '../../utils/firebase.js';
+import {deletePosts, getUserDetails} from '../../utils/firebase.js';
 
 // importing styles
 import styles from './styles.js';
@@ -33,9 +33,24 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    const {state} = this.context;
+    const {state, currentBox} = this.context;
+    console.log(state);
     if (state.box === '') {
-      this.handleNoBoxSet();
+      getUserDetails(state.uid)
+        .then(async (u) => {
+          if (u.enrolledBoxes.length === 0) {
+            this.handleNoBoxSet();
+          } else {
+            currentBox(u.enrolledBoxes[0]);
+          }
+        })
+        .catch((err) => {
+          ToastAndroid.showWithGravity(
+            err.message,
+            ToastAndroid.LONG,
+            ToastAndroid.CENTER,
+          );
+        });
     } else {
       this.onFirebaseFetchPosts();
     }
@@ -59,7 +74,6 @@ class Main extends Component {
           this.setPosts(posts);
           this.setLoading(false);
         } catch (err) {
-          // console.log(err);
           ToastAndroid.showWithGravity(
             err.message,
             ToastAndroid.SHORT,

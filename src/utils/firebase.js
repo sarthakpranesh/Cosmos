@@ -23,8 +23,8 @@ export const updateDisplayName = (username) => {
   });
 };
 
-export const setUpNewUser = () => {
-  const {uid, displayName, photoURL} = auth().currentUser;
+export const setUpNewUser = (uid) => {
+  const {displayName, photoURL} = auth().currentUser;
   firestore().collection('Users').doc(uid).set({
     uid,
     name: displayName,
@@ -32,6 +32,7 @@ export const setUpNewUser = () => {
     love: 0,
     meh: 0,
     sad: 0,
+    enrolledBoxes: [],
   });
 };
 
@@ -44,7 +45,7 @@ export const getUserDetails = (uid) => {
       .then((snap) => {
         const user = snap.data();
         if (user === undefined) {
-          setUpNewUser();
+          setUpNewUser(uid);
         }
 
         resolve(user);

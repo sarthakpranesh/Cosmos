@@ -1,13 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {StatusBar, ToastAndroid, Alert} from 'react-native';
+import {StatusBar} from 'react-native';
 import {Appbar} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import auth from '@react-native-firebase/auth';
 import {Provider as PaperProvider, DarkTheme} from 'react-native-paper';
 
 // importing icons
@@ -30,9 +29,6 @@ import {
   Provider as UserProvider,
   Context as UserContext,
 } from './src/contexts/UserContext.js';
-
-// importing firebase utils
-import {getUserDetails} from './src/utils/firebase.js';
 
 // importing async utils
 import {getData} from './src/utils/asyncStorageHelper.js';
@@ -150,7 +146,7 @@ class PostViewStack extends Component {
             },
           }}
           name="HomeScreen"
-          component={(props) => <HomeScreen {...props} boxName={state.box} />}
+          component={(props) => <HomeScreen {...props} />}
         />
         <Stack.Screen
           options={{
@@ -219,91 +215,62 @@ class MainAppStack extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false,
       isStarting: true,
-      box: '',
     };
   }
 
   async componentDidMount() {
-    const {currentBox, setUid, state} = this.context;
-    const [boxName, userUid] = await Promise.all([
-      getData('BOX'),
-      getData('UID'),
-    ]);
-    console.log(userUid, boxName);
-    if (userUid !== '') {
-      await Promise.all([currentBox(boxName), setUid(userUid)]);
-      this.setLoggedIn(true);
-    }
-
-    auth().onAuthStateChanged(async (user) => {
-      if (user && (state.box === '' || state.uid === '')) {
-        const u = await getUserDetails(user.uid);
-        await Promise.all([
-          currentBox(u.enrolledBoxes[0] ? u.enrolledBoxes[0] : ''),
-          setUid(user.uid),
-        ]);
-        return this.setLoggedIn(true);
-      } else {
+    const {currentBox, setUid} = this.context;
+    Promise.all([getData('BOX'), getData('UID')])
+      .then(async ([boxName, userUid]) => {
         if (userUid !== '') {
-          return;
+          await Promise.all([currentBox(boxName), setUid(userUid)]);
         }
-        this.setLoggedIn(false);
-      }
-    });
-    SplashScreen.hide();
+        SplashScreen.hide();
+      })
+      .catch((err) => console.log(err));
   }
 
-  setLoggedIn = (bool) => {
-    this.setState({
-      isLoggedIn: bool,
-    });
-  };
-
   render() {
-    if (!this.state.isLoggedIn) {
-      return (
-        <Stack.Navigator
-          initialRouteName="Starting"
-          keyboardHandlingEnabled={true}
-          headerMode="none">
-          <Stack.Screen name="Starting" component={LandingScreen} />
-        </Stack.Navigator>
-      );
-    } else {
-      return (
-        <Tab.Navigator
-          initialRouteName="HomeScreen"
-          backBehavior="initialRoute"
-          labeled={false}
-          shifting={false}
-          barStyle={{backgroundColor: DarkTheme.colors.background}}
-          lazy={false}>
-          <Tab.Screen
-            options={{
-              tabBarIcon: ({focused}) => <AddPictureIcon focused={focused} />,
-            }}
-            name="Add"
-            component={AddImageScreen}
-          />
-          <Tab.Screen
-            options={{
-              tabBarIcon: ({focused}) => <HomeIcon focused={focused} />,
-            }}
-            name="HomeScreen"
-            component={PostViewStack}
-          />
-          <Tab.Screen
-            options={{
-              tabBarIcon: ({focused}) => <ProfileIcon focused={focused} />,
-            }}
-            name="Profile"
-            component={PostViewProfileStack}
-          />
-        </Tab.Navigator>
-      );
-    }
+    const {state} = this.context;
+    return state.uid === '' ? (
+      <Stack.Navigator
+        initialRouteName="Starting"
+        keyboardHandlingEnabled={true}
+        headerMode="none">
+        <Stack.Screen name="Starting" component={LandingScreen} />
+      </Stack.Navigator>
+    ) : (
+      <Tab.Navigator
+        initialRouteName="HomeScreen"
+        backBehavior="initialRoute"
+        labeled={false}
+        shifting={false}
+        barStyle={{backgroundColor: DarkTheme.colors.background}}
+        lazy={false}>
+        <Tab.Screen
+          options={{
+            tabBarIcon: ({focused}) => <AddPictureIcon focused={focused} />,
+          }}
+          name="Add"
+          component={AddImageScreen}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: ({focused}) => <HomeIcon focused={focused} />,
+          }}
+          name="HomeScreen"
+          component={PostViewStack}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: ({focused}) => <ProfileIcon focused={focused} />,
+          }}
+          name="Profile"
+          component={PostViewProfileStack}
+        />
+      </Tab.Navigator>
+    );
   }
 }
 

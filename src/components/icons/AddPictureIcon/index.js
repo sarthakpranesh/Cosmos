@@ -10,7 +10,7 @@ const SvgComponent = (props) => {
       fill="none"
       stroke="white"
       strokeWidth={props.focused ? 2 : 1}
-      opacity={props.focused ? 1 : 0.2}
+      opacity={props.focused ? 1 : 0.4}
       strokeLinecap="round"
       strokeLinejoin="round"
       {...props}>

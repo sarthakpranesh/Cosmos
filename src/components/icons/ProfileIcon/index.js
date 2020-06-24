@@ -8,7 +8,7 @@ const ProfileIcon = (props) => {
       height={24}
       viewBox="0 0 24 24"
       stroke="white"
-      opacity={props.focused ? 1 : 0.2}
+      opacity={props.focused ? 1 : 0.4}
       strokeWidth={props.focused ? 2 : 1}
       {...props}>
       <Path

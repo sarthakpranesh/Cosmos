@@ -4,6 +4,8 @@ import {Text, Headline, Button} from 'react-native-paper';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
 
+import {Context as UserContext} from '../../contexts/UserContext.js';
+
 // importing common styles
 import styles from './styles.js';
 
@@ -15,6 +17,7 @@ GoogleSignin.configure({
 const {width} = Dimensions.get('screen');
 
 class LandingScreen extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.start = new Animated.Value(0);
@@ -42,11 +45,14 @@ class LandingScreen extends Component {
 
   async continueWithGoogle() {
     try {
+      const {setUid} = this.context;
       await GoogleSignin.hasPlayServices();
       const {idToken} = await GoogleSignin.signIn();
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      return auth().signInWithCredential(googleCredential);
+      const resp = await auth().signInWithCredential(googleCredential);
+      return resp.user.uid;
     } catch (error) {
+      console.log('Error on Landing Screen');
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         ToastAndroid.showWithGravity(
           'user cancelled the login flow',
@@ -103,7 +109,11 @@ class LandingScreen extends Component {
         <Button
           mode="contained"
           style={styles.googleBtn}
-          onPress={this.continueWithGoogle}>
+          onPress={async () => {
+            const {setUid} = this.context;
+            const uid = await this.continueWithGoogle();
+            setUid(uid);
+          }}>
           Continue With Google
         </Button>
       </View>
