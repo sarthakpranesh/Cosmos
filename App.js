@@ -225,59 +225,40 @@ class MainAppStack extends Component {
     };
   }
 
-  componentDidMount() {
-    const {isStarting} = this.state;
+  async componentDidMount() {
+    const {currentBox, setUid, state} = this.context;
+    const [boxName, userUid] = await Promise.all([
+      getData('BOX'),
+      getData('UID'),
+    ]);
+    console.log(userUid, boxName);
+    if (userUid !== '') {
+      await Promise.all([currentBox(boxName), setUid(userUid)]);
+      this.setLoggedIn(true);
+    }
+
     auth().onAuthStateChanged(async (user) => {
-      console.log('Auth change');
-
-      if (isStarting && user) {
-        const {currentBox} = this.context;
-        const [userObj, box] = await Promise.all([
-          getUserDetails(user.uid),
-          getData('BOX'),
+      if (user && (state.box === '' || state.uid === '')) {
+        const u = await getUserDetails(user.uid);
+        await Promise.all([
+          currentBox(u.enrolledBoxes[0] ? u.enrolledBoxes[0] : ''),
+          setUid(user.uid),
         ]);
-        if (['', undefined, null].includes(box)) {
-          if (userObj.enrolledBoxes.length !== 0) {
-            await currentBox(userObj.enrolledBoxes[0]);
-          } else {
-            this.handleNoBoxSet();
-          }
-        } else {
-          await currentBox(box);
+        return this.setLoggedIn(true);
+      } else {
+        if (userUid !== '') {
+          return;
         }
-        SplashScreen.hide();
-        return this.setState({
-          isStarting: false,
-          isLoggedIn: user ? true : false,
-        });
-      }
-
-      if (isStarting) {
-        SplashScreen.hide();
-        return this.setState({
-          isStarting: false,
-          isLoggedIn: user ? true : false,
-        });
+        this.setLoggedIn(false);
       }
     });
+    SplashScreen.hide();
   }
 
-  handleNoBoxSet = () => {
-    Alert.alert(
-      'Join Box',
-      'To get started you need to join a Box or create your own Box',
-      [
-        {
-          text: 'Next',
-          onPress: () => {
-            this.props.navigation.navigate('ListCircle');
-          },
-        },
-      ],
-      {
-        cancelable: false,
-      },
-    );
+  setLoggedIn = (bool) => {
+    this.setState({
+      isLoggedIn: bool,
+    });
   };
 
   render() {

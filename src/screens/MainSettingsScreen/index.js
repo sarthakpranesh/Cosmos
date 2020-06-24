@@ -4,6 +4,9 @@ import {Text, Button, TextInput} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-community/google-signin';
 
+// importing User provider
+import {Context as UserContext} from '../../contexts/UserContext.js';
+
 // importing styles
 import styles from './styles';
 
@@ -11,6 +14,7 @@ import styles from './styles';
 import {updateDisplayName} from '../../utils/firebase';
 
 class MainSettingsScreen extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
 
@@ -85,6 +89,7 @@ class MainSettingsScreen extends Component {
   };
 
   onSignOut = () => {
+    const {currentBox, setUid} = this.context;
     Alert.alert(
       'Log Out',
       'Are you sure, you want to log out?',
@@ -94,8 +99,12 @@ class MainSettingsScreen extends Component {
           text: 'Sign Out',
           onPress: async () => {
             await GoogleSignin.revokeAccess();
-            await GoogleSignin.signOut();
-            auth().signOut();
+            await Promise.all([
+              GoogleSignin.signOut(),
+              auth().signOut(),
+              currentBox(''),
+              setUid(''),
+            ]);
           },
         },
       ],

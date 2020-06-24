@@ -33,7 +33,12 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    this.onFirebaseFetchPosts();
+    const {state} = this.context;
+    if (state.box === '') {
+      this.handleNoBoxSet();
+    } else {
+      this.onFirebaseFetchPosts();
+    }
   }
 
   onFirebaseFetchPosts = () => {
@@ -74,6 +79,24 @@ class Main extends Component {
     this.setState({
       isLoading: bool,
     });
+  };
+
+  handleNoBoxSet = () => {
+    Alert.alert(
+      'Join Box',
+      'To get started you need to join a Box or create your own Box',
+      [
+        {
+          text: 'Next',
+          onPress: () => {
+            this.props.navigation.navigate('ListCircle');
+          },
+        },
+      ],
+      {
+        cancelable: false,
+      },
+    );
   };
 
   handleOpenPost = (index) => {

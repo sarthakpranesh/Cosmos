@@ -7,11 +7,17 @@ const UserContext = (UserSet, action) => {
       storeData('BOX', action.payload.box);
       return {
         box: action.payload.box,
+        isLogged: UserSet.uid,
       };
-    default:
+    case 'setUid': {
+      storeData('UID', action.payload.uid);
       return {
         box: UserSet.box,
+        isLogged: action.payload.uid,
       };
+    }
+    default:
+      return UserSet;
   }
 };
 
@@ -21,12 +27,20 @@ const currentBox = (dispatch) => {
   };
 };
 
+const setUid = (dispatch) => {
+  return (uid) => {
+    dispatch({type: 'setUid', payload: {uid}});
+  };
+};
+
 export const {Context, Provider} = createDataContext(
   UserContext,
   {
     currentBox,
+    setUid,
   },
   {
     box: '',
+    uid: '',
   },
 );

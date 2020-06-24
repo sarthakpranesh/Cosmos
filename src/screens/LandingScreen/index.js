@@ -4,15 +4,15 @@ import {Text, Headline, Button} from 'react-native-paper';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
 
+// importing common styles
+import styles from './styles.js';
+
 GoogleSignin.configure({
   webClientId:
     '340048764527-9nt30qgc4rj3p0hmhos5kkdfpb0cj8ta.apps.googleusercontent.com',
 });
 
 const {width} = Dimensions.get('screen');
-
-// importing common styles
-import styles from './styles.js';
 
 class LandingScreen extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class LandingScreen extends Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     Animated.timing(this.start, {
       toValue: 1,
       duration: 2000,
