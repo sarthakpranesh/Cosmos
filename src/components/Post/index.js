@@ -12,6 +12,17 @@ import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing firebase utils
 import {reactToPost} from '../../utils/firebase.js';
+import {PinchGestureHandler, State} from 'react-native-gesture-handler';
+import Animated, {useCode, block, cond, eq, set} from 'react-native-reanimated';
+import {
+  onGestureEvent,
+  vec,
+  transformOrigin,
+  timing,
+  translate,
+  pinchBegan,
+  pinchActive,
+} from 'react-native-redash';
 
 const {width} = Dimensions.get('screen');
 
@@ -22,6 +33,37 @@ const Post = ({
   handleOpenPost = null,
   fullPost = false,
 }) => {
+  const state2 = new Animated.Value(State.UNDETERMINED);
+  const scale = new Animated.Value(1);
+  const origin = vec.createValue(0, 0);
+  const focal = vec.createValue(0, 0);
+  const pinch = vec.createValue(0, 0);
+  const numberOfPointers = new Animated.Value(0);
+  const pinchGestureHandler = onGestureEvent({
+    numberOfPointers,
+    state: state2,
+    scale,
+    focalX: focal.x,
+    focalY: focal.y,
+  });
+  const adjustFocal = vec.add({x: -width / 2, y: -width / 2}, focal);
+  const zIndex = cond(eq(state2, State.ACTIVE), 100, 1);
+  useCode(
+    () =>
+      block([
+        cond(pinchBegan(state2), vec.set(origin, adjustFocal)),
+        cond(
+          pinchActive(state2, numberOfPointers),
+          vec.set(pinch, vec.minus(vec.sub(origin, adjustFocal))),
+        ),
+        cond(eq(state2, State.END), [
+          set(pinch.x, timing({from: pinch.x, to: 0})),
+          set(pinch.y, timing({from: pinch.y, to: 0})),
+          set(scale, timing({from: scale, to: 1})),
+        ]),
+      ]),
+    [adjustFocal, origin, state2, pinch, numberOfPointers, scale],
+  );
   const {state} = useContext(UserContext);
   const hasReacted = (reactionType) => {
     if (Object.keys(item).includes(reactionType)) {
@@ -53,18 +95,23 @@ const Post = ({
           return null;
         }}
       />
-      {handleOpenPost === null ? (
-        <Card.Cover style={styles.postImage} source={{uri: item.postURL}} on />
-      ) : (
-        <TouchableOpacity onPress={handleOpenPost}>
-          <Card.Cover
-            style={styles.postImage}
+      <PinchGestureHandler {...pinchGestureHandler}>
+        <Animated.View style={[styles.postImage, {zIndex}]}>
+          <Animated.Image
+            style={[
+              styles.postImage,
+              {
+                transform: [
+                  ...translate(pinch),
+                  ...transformOrigin(origin, {scale}),
+                ],
+              },
+            ]}
             source={{uri: item.postURL}}
-            on
           />
-        </TouchableOpacity>
-      )}
-      <Card.Actions style={{marginVertical: 0, paddingVertical: 0}}>
+        </Animated.View>
+      </PinchGestureHandler>
+      <Card.Actions style={{marginVertical: 0, paddingVertical: 0, zIndex: 2}}>
         <Caption>Love:{item.love ? item.love.length : 0} </Caption>
         <Caption>Meh:{item.meh ? item.meh.length : 0} </Caption>
         <Caption>Sad:{item.sad ? item.sad.length : 0}</Caption>
@@ -140,9 +187,10 @@ const styles = StyleSheet.create({
     right: 10,
   },
   postImage: {
-    width: width - 0.8,
-    height: width - 0.8,
+    width: width,
+    height: width,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    resizeMode: 'cover',
   },
 });
 
