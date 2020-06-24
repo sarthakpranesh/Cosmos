@@ -23,7 +23,6 @@ class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      index: 0,
       isLoading: true,
       user: auth().currentUser,
       posts: [],
@@ -58,6 +57,10 @@ class Main extends Component {
 
   onFirebaseFetchPosts = () => {
     const {state} = this.context;
+    if (state.box === '') {
+      this.setLoading(false);
+      return;
+    }
     database()
       .ref(state.box)
       .on('value', (snap) => {
@@ -151,6 +154,15 @@ class Main extends Component {
 
   renderPosts = () => {
     const {isLoading, posts, user} = this.state;
+    const {state} = this.context;
+
+    if (state.box === '') {
+      return (
+        <Headline style={styles.noPostYetText}>
+          Please create or ask a friend to add you to a box!
+        </Headline>
+      );
+    }
 
     if (isLoading) {
       return <ActivityIndicator />;

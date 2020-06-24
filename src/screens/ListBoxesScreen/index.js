@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, FlatList, ToastAndroid} from 'react-native';
+import {View, FlatList, ToastAndroid, Alert} from 'react-native';
 import {Text, Card, TextInput, Divider, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
@@ -14,8 +14,9 @@ import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing styles
 import styles from './styles.js';
+import BoxScreen from '../BoxScreen/index.js';
 
-class ListCircleScreen extends Component {
+class ListBoxesScreen extends Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
@@ -28,17 +29,20 @@ class ListCircleScreen extends Component {
   }
 
   componentDidMount() {
-    const {user} = this.state;
+    const {state} = this.context;
 
     firestore()
       .collection('Users')
-      .doc(user.uid)
+      .doc(state.uid)
       .get()
       .then((snap) => {
         const u = snap.data();
         if (u.enrolledBoxes.length === 0) {
-          throw new Error(
-            'Please start with either creating or joinging a Box!',
+          Alert.alert(
+            'Join Box',
+            'Please start with either creating or asking a friend to add you in there box!',
+            [{text: 'Ok'}],
+            {cancelable: true},
           );
         }
         this.setState({
@@ -79,7 +83,7 @@ class ListCircleScreen extends Component {
   handleSelectBox = (boxName) => {
     const {currentBox} = this.context;
     currentBox(boxName);
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('HomeScreen', {boxName});
   };
 
   render() {
@@ -132,4 +136,4 @@ class ListCircleScreen extends Component {
   }
 }
 
-export default ListCircleScreen;
+export default ListBoxesScreen;

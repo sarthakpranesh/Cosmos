@@ -70,6 +70,10 @@ class ProfileScreen extends Component {
       });
 
     const {state} = this.context;
+    if (state.box === '') {
+      this.setLoading(false);
+      return;
+    }
     database()
       .ref(state.box)
       .on('value', (snap) => {

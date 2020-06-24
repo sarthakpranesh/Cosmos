@@ -141,6 +141,7 @@ class AddImageScreen extends Component {
 
   render() {
     const {image, imageCaption, isLoading} = this.state;
+    const {state} = this.context;
 
     if (isLoading) {
       return (
@@ -201,13 +202,31 @@ class AddImageScreen extends Component {
         <View style={styles.optionsContainer}>
           <TouchableOpacity
             style={styles.optionContainer}
-            onPress={this.openImagePicker}>
+            onPress={() => {
+              if (state.box === '') {
+                return ToastAndroid.showWithGravity(
+                  'No Box selected!',
+                  ToastAndroid.SHORT,
+                  ToastAndroid.CENTER,
+                );
+              }
+              this.openImagePicker();
+            }}>
             <Icon size={30} name="plus" color="white" />
             <Text>Open Gallary</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.optionContainer}
-            onPress={this.openImageCamera}>
+            onPress={() => {
+              if (state.box === '') {
+                return ToastAndroid.showWithGravity(
+                  'No Box selected!',
+                  ToastAndroid.SHORT,
+                  ToastAndroid.CENTER,
+                );
+              }
+              this.openImageCamera();
+            }}>
             <Icon size={30} name="camera" color="white" />
             <Text>Open Camera</Text>
           </TouchableOpacity>

@@ -118,6 +118,7 @@ class PostViewStack extends Component {
     const {state} = this.context;
     return (
       <Stack.Navigator
+        key={state.box}
         initialRouteName="HomeScreen"
         keyboardHandlingEnabled={true}
         lazy={true}
@@ -146,7 +147,7 @@ class PostViewStack extends Component {
             },
           }}
           name="HomeScreen"
-          component={(props) => <HomeScreen {...props} />}
+          component={HomeScreen}
         />
         <Stack.Screen
           options={{
