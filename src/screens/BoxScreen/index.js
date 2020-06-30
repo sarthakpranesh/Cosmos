@@ -11,7 +11,6 @@ import {
   TextInput,
   ActivityIndicator,
 } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Feather';
 import ActionSheet from 'react-native-actionsheet';
 
 // importing firebase utils
@@ -32,6 +31,7 @@ class BoxScreen extends Component {
       auth: [],
       email: '',
       actionSheetIndex: -1,
+      btnLoading: false,
     };
   }
 
@@ -57,6 +57,12 @@ class BoxScreen extends Component {
       });
   };
 
+  setBtnLoading = (bool) => {
+    this.setState({
+      btnLoading: bool,
+    });
+  };
+
   setAddParticipant = (email) => {
     this.setState({
       email: email,
@@ -65,6 +71,14 @@ class BoxScreen extends Component {
 
   handleAddUser = () => {
     const {email} = this.state;
+    if (email.trim() === '') {
+      return ToastAndroid.showWithGravity(
+        "You didn't type an email!!! 🤣",
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+    }
+    this.setBtnLoading(true);
     const {state} = this.context;
     addUserToBox(email, state.box)
       .then(() => {
@@ -75,6 +89,7 @@ class BoxScreen extends Component {
           ToastAndroid.CENTER,
         );
         this.setState({email: ''});
+        this.setBtnLoading(false);
       })
       .catch((err) => {
         ToastAndroid.showWithGravity(
@@ -82,6 +97,7 @@ class BoxScreen extends Component {
           ToastAndroid.SHORT,
           ToastAndroid.CENTER,
         );
+        this.setBtnLoading(false);
       });
   };
 
@@ -108,7 +124,7 @@ class BoxScreen extends Component {
         .then(() => {
           this.fetchEnrolledUsers();
           ToastAndroid.showWithGravity(
-            'User removed from the box',
+            'User removed from the box 😖',
             ToastAndroid.SHORT,
             ToastAndroid.CENTER,
           );
@@ -134,7 +150,7 @@ class BoxScreen extends Component {
   };
 
   render() {
-    const {enrolledBy} = this.state;
+    const {enrolledBy, btnLoading} = this.state;
 
     return (
       <View style={styles.boxScreenContainer}>
@@ -149,10 +165,14 @@ class BoxScreen extends Component {
             mode="outlined"
             placeholder="Email"
             value={this.state.email}
+            dense={true}
             onChangeText={(email) => this.setAddParticipant(email)}
           />
-          <Button onPress={() => this.handleAddUser()}>
-            <Icon name="plus" size={24} color="white" />
+          <Button
+            loading={btnLoading}
+            icon="plus"
+            onPress={() => this.handleAddUser()}>
+            Add Member
           </Button>
         </View>
         <FlatList

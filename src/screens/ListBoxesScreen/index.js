@@ -25,6 +25,7 @@ class ListBoxesScreen extends Component {
       user: auth().currentUser,
       enrolledBoxes: [],
       newBoxName: '',
+      btnLoading: false,
     };
   }
 
@@ -59,6 +60,12 @@ class ListBoxesScreen extends Component {
       });
   }
 
+  setBtnLoading = (bool) => {
+    this.setState({
+      btnLoading: bool,
+    });
+  };
+
   setNewBoxName = (nb) => {
     this.setState({
       newBoxName: nb,
@@ -66,10 +73,12 @@ class ListBoxesScreen extends Component {
   };
 
   handleCreateBox = () => {
+    this.setBtnLoading(true);
     const {newBoxName} = this.state;
     createBox(newBoxName)
       .then(() => {
         this.handleSelectBox(newBoxName);
+        this.setBtnLoading(false);
       })
       .catch((err) => {
         ToastAndroid.showWithGravity(
@@ -77,6 +86,7 @@ class ListBoxesScreen extends Component {
           ToastAndroid.LONG,
           ToastAndroid.CENTER,
         );
+        this.setBtnLoading(false);
       });
   };
 
@@ -87,7 +97,7 @@ class ListBoxesScreen extends Component {
   };
 
   render() {
-    const {enrolledBoxes, newBoxName} = this.state;
+    const {enrolledBoxes, newBoxName, btnLoading} = this.state;
     return (
       <View style={styles.listCircleContainer}>
         <Text style={styles.helpText}>
@@ -100,12 +110,16 @@ class ListBoxesScreen extends Component {
           <TextInput
             style={styles.textInput}
             mode="outlined"
-            label="Box Name"
+            placeholder="Box Name"
+            dense={true}
             value={newBoxName}
             onChangeText={(nb) => this.setNewBoxName(nb)}
           />
-          <Button onPress={() => this.handleCreateBox()}>
-            <Icon name="plus" size={24} color="white" />
+          <Button
+            loading={btnLoading}
+            icon="plus"
+            onPress={() => this.handleCreateBox()}>
+            Create Box
           </Button>
         </View>
         <Divider />

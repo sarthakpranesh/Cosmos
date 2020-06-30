@@ -22,6 +22,8 @@ class MainSettingsScreen extends Component {
       user: auth().currentUser,
       username: auth().currentUser.displayName,
       isUpdateDisabled: true,
+      loggingOut: false,
+      updating: false,
     };
   }
 
@@ -33,6 +35,18 @@ class MainSettingsScreen extends Component {
     }
     return;
   }
+
+  setBtnUpdate = (bool) => {
+    this.setState({
+      updating: bool,
+    });
+  };
+
+  setBtnLogout = (bool) => {
+    this.setState({
+      loggingOut: bool,
+    });
+  };
 
   setUsername = (username) => {
     this.setState({
@@ -56,6 +70,7 @@ class MainSettingsScreen extends Component {
   };
 
   onSubmit = async () => {
+    this.setBtnUpdate(true);
     const {username} = this.state;
     if (this.state.user.username === username) {
       return;
@@ -81,20 +96,22 @@ class MainSettingsScreen extends Component {
           'Your Username/Name was successfully updated',
           [{text: 'ok'}],
         );
-        return;
+        this.setBtnUpdate(false);
       })
       .catch((err) => {
         Alert.alert('Account Error', err.message, [{text: 'ok'}]);
+        this.setBtnUpdate(false);
       });
   };
 
   onSignOut = () => {
+    this.setBtnLogout(true);
     const {currentBox, setUid} = this.context;
     Alert.alert(
       'Log Out',
       'Are you sure, you want to log out?',
       [
-        {text: 'Cancel'},
+        {text: 'Cancel', onPress: () => this.setBtnLogout(false)},
         {
           text: 'Sign Out',
           onPress: async () => {
@@ -108,12 +125,12 @@ class MainSettingsScreen extends Component {
           },
         },
       ],
-      {cancelable: true},
+      {cancelable: false},
     );
   };
 
   render() {
-    const {username, user} = this.state;
+    const {username, user, loggingOut, updating: updating} = this.state;
 
     return (
       <View style={styles.settingContainer}>
@@ -146,12 +163,18 @@ class MainSettingsScreen extends Component {
           </View>
           <View style={styles.btnWrapper}>
             <Button
+              loading={updating}
               mode="contained"
+              icon="update"
               onPress={this.onSubmit}
               disabled={this.state.isUpdateDisabled}>
               Update
             </Button>
-            <Button mode="contained" onPress={this.onSignOut}>
+            <Button
+              loading={loggingOut}
+              icon="logout"
+              mode="contained"
+              onPress={this.onSignOut}>
               Log Out
             </Button>
           </View>

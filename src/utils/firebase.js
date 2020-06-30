@@ -291,8 +291,11 @@ export const addUserToBox = (email, boxName) => {
             u = user.data();
           }
         });
+        if (u === undefined) {
+          throw new Error('No User with that email found 😕');
+        }
         if (u.enrolledBoxes.includes(boxName)) {
-          throw new Error('User already enrolled!');
+          throw new Error('User already enrolled! 😜');
         }
         return u;
       })

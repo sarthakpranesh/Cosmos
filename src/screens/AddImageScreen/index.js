@@ -63,12 +63,13 @@ class AddImageScreen extends Component {
         return;
       })
       .catch((err) => {
-        console.log(err.message);
-        ToastAndroid.showWithGravity(
-          err.message,
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
+        if (err.code === 'E_PICKER_CANCELLED') {
+          ToastAndroid.showWithGravity(
+            "You don't wanna upload? 🙁",
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+        }
       });
   };
 
@@ -94,12 +95,13 @@ class AddImageScreen extends Component {
         return;
       })
       .catch((err) => {
-        console.log(err.message);
-        ToastAndroid.showWithGravity(
-          err.message,
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
+        if (err.code === 'E_PICKER_CANCELLED') {
+          ToastAndroid.showWithGravity(
+            "You don't wanna upload? 🙁",
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+        }
       });
   };
 
@@ -117,7 +119,7 @@ class AddImageScreen extends Component {
       const uploadedImage = await uploadImage(fileBlog, image);
       await updatePosts(uploadedImage, imageCaption, state.box);
       ToastAndroid.showWithGravity(
-        'Post Uploaded Successfully',
+        'Post Uploaded Successfully 🥳',
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );

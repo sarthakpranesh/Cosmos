@@ -89,13 +89,8 @@ class ProfileScreen extends Component {
           this.setPosts(userPosts);
           this.setLoading(false);
         } catch (err) {
-          console.log(err);
+          console.log(err).message;
           this.setLoading(false);
-          ToastAndroid.showWithGravity(
-            err.message,
-            ToastAndroid.SHORT,
-            ToastAndroid.CENTER,
-          );
         }
       });
   }

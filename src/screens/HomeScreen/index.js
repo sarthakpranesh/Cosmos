@@ -76,11 +76,7 @@ class Main extends Component {
           this.setPosts(posts);
           this.setLoading(false);
         } catch (err) {
-          ToastAndroid.showWithGravity(
-            err.message,
-            ToastAndroid.SHORT,
-            ToastAndroid.CENTER,
-          );
+          console.log(err.message);
         }
       });
   };

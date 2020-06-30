@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
   postTitleContainer: {
     marginVertical: 0,
     paddingVertical: 0,
-    minHeight: 50,
   },
   rightOptions: {
     right: 10,
