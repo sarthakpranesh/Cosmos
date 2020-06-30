@@ -222,6 +222,13 @@ class PostViewStack extends Component {
         />
         <Stack.Screen
           options={{
+            gestureDirection: 'horizontal',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            transitionSpec: {
+              animation: 'spring',
+              open: TransitionSpecs.TransitionIOSSpec,
+              close: TransitionSpecs.TransitionIOSSpec,
+            },
             header: ({navigation}) => {
               return (
                 <Appbar.Header>

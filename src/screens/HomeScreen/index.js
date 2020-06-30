@@ -33,7 +33,6 @@ class Main extends Component {
 
   componentDidMount() {
     const {state, currentBox} = this.context;
-    console.log(state);
     if (state.box === '') {
       getUserDetails(state.uid)
         .then(async (u) => {

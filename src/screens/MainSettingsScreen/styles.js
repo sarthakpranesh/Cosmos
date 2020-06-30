@@ -5,7 +5,7 @@ export default StyleSheet.create({
   settingContainer: {
     ...StyleSheet.absoluteFill,
     backgroundColor: 'black',
-    padding: 16,
+    paddingHorizontal: 16,
   },
   goBackIcon: {
     position: 'absolute',
