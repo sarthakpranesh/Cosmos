@@ -5,7 +5,11 @@ import {Appbar} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  TransitionSpecs,
+  CardStyleInterpolators,
+} from '@react-navigation/stack';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {Provider as PaperProvider, DarkTheme} from 'react-native-paper';
 
@@ -69,6 +73,13 @@ class PostViewProfileStack extends Component {
         />
         <Stack.Screen
           options={{
+            gestureDirection: 'horizontal',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            transitionSpec: {
+              animation: 'spring',
+              open: TransitionSpecs.TransitionIOSSpec,
+              close: TransitionSpecs.TransitionIOSSpec,
+            },
             header: ({navigation}) => {
               return (
                 <Appbar.Header>
@@ -87,6 +98,13 @@ class PostViewProfileStack extends Component {
         />
         <Stack.Screen
           options={{
+            gestureDirection: 'horizontal',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            transitionSpec: {
+              animation: 'spring',
+              open: TransitionSpecs.TransitionIOSSpec,
+              close: TransitionSpecs.TransitionIOSSpec,
+            },
             header: ({navigation}) => {
               return (
                 <Appbar.Header>
@@ -151,6 +169,13 @@ class PostViewStack extends Component {
         />
         <Stack.Screen
           options={{
+            gestureDirection: 'horizontal',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            transitionSpec: {
+              animation: 'spring',
+              open: TransitionSpecs.TransitionIOSSpec,
+              close: TransitionSpecs.TransitionIOSSpec,
+            },
             header: ({navigation}) => {
               return (
                 <Appbar.Header>
@@ -172,6 +197,13 @@ class PostViewStack extends Component {
         />
         <Stack.Screen
           options={{
+            gestureDirection: 'horizontal',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            transitionSpec: {
+              animation: 'spring',
+              open: TransitionSpecs.TransitionIOSSpec,
+              close: TransitionSpecs.TransitionIOSSpec,
+            },
             header: ({navigation}) => {
               return (
                 <Appbar.Header>

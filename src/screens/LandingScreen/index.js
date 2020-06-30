@@ -59,12 +59,13 @@ class LandingScreen extends Component {
   }
 
   async continueWithGoogle() {
+    const {setUid} = this.context;
     try {
       await GoogleSignin.hasPlayServices();
       const {idToken} = await GoogleSignin.signIn();
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       const resp = await auth().signInWithCredential(googleCredential);
-      return resp.user.uid;
+      return setUid(resp.user.uid);
     } catch (error) {
       console.log('Error on Landing Screen');
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -107,11 +108,7 @@ class LandingScreen extends Component {
           <Button
             mode="contained"
             style={styles.googleBtn}
-            onPress={async () => {
-              const {setUid} = this.context;
-              const uid = await this.continueWithGoogle();
-              setUid(uid);
-            }}>
+            onPress={() => this.continueWithGoogle()}>
             Continue With Google
           </Button>
         ) : null}
