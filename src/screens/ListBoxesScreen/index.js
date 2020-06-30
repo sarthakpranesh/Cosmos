@@ -73,8 +73,15 @@ class ListBoxesScreen extends Component {
   };
 
   handleCreateBox = () => {
-    this.setBtnLoading(true);
     const {newBoxName} = this.state;
+    if (newBoxName.trim() === '') {
+      return ToastAndroid.showWithGravity(
+        "You didn't type an box name!!! 🤣",
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+      );
+    }
+    this.setBtnLoading(true);
     createBox(newBoxName)
       .then(() => {
         this.handleSelectBox(newBoxName);
