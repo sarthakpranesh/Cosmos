@@ -98,6 +98,7 @@ class Main extends Component {
   };
 
   handleNoBoxSet = () => {
+    this.setLoading(false);
     Alert.alert(
       'Join Box',
       'To get started you need to join a Box or create your own Box',
@@ -155,16 +156,16 @@ class Main extends Component {
     const {isLoading, posts, user} = this.state;
     const {state} = this.context;
 
+    if (isLoading) {
+      return <ActivityIndicator />;
+    }
+
     if (state.box === '') {
       return (
         <Headline style={styles.noPostYetText}>
           Please create or ask a friend to add you to a box!
         </Headline>
       );
-    }
-
-    if (isLoading) {
-      return <ActivityIndicator />;
     }
 
     if (posts.length === 0) {

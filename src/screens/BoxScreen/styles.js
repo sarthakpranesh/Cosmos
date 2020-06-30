@@ -7,6 +7,7 @@ export default StyleSheet.create({
   },
   authorContainer: {
     padding: 10,
+    paddingVertical: 20,
   },
   addPartConatiner: {
     marginBottom: 10,

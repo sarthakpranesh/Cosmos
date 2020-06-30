@@ -266,7 +266,9 @@ class MainAppStack extends Component {
         if (userUid !== '') {
           await Promise.all([currentBox(boxName), setUid(userUid)]);
         }
-        SplashScreen.hide();
+        setTimeout(() => {
+          SplashScreen.hide();
+        }, 100);
       })
       .catch((err) => console.log(err));
   }

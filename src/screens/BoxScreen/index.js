@@ -17,14 +17,16 @@ import ActionSheet from 'react-native-actionsheet';
 // importing firebase utils
 import {getBox, addUserToBox, removeUserFromBox} from '../../utils/firebase.js';
 
+// importing context
+import {Context as UserContext} from '../../contexts/UserContext.js';
+
 // importing styles
 import styles from './styles.js';
 
 class BoxScreen extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
-    this.boxName = props.route.params.boxName;
-
     this.state = {
       enrolledBy: [],
       auth: [],
@@ -38,11 +40,12 @@ class BoxScreen extends Component {
   }
 
   fetchEnrolledUsers = () => {
-    getBox(this.boxName)
+    const {state} = this.context;
+    getBox(state.box)
       .then((box) => {
         this.setState({
           enrolledBy: box.enrolledBy,
-          auth: box.author_name,
+          auth: [box.author_name, box.author_uid],
         });
       })
       .catch((err) => {
@@ -62,7 +65,8 @@ class BoxScreen extends Component {
 
   handleAddUser = () => {
     const {email} = this.state;
-    addUserToBox(email, this.boxName)
+    const {state} = this.context;
+    addUserToBox(email, state.box)
       .then(() => {
         this.fetchEnrolledUsers();
         ToastAndroid.showWithGravity(
@@ -89,10 +93,18 @@ class BoxScreen extends Component {
   };
 
   handleActionPress = async (index) => {
-    const {actionSheetIndex, enrolledBy} = this.state;
+    const {actionSheetIndex, enrolledBy, auth} = this.state;
+    const {state} = this.context;
     // if index is 0 - handle remove user from box
     if (index === 0) {
-      removeUserFromBox(enrolledBy[actionSheetIndex].uid, this.boxName)
+      if (enrolledBy[actionSheetIndex].uid === auth[1]) {
+        return ToastAndroid.showWithGravity(
+          "You serious? Author can't leave group 😬",
+          ToastAndroid.LONG,
+          ToastAndroid.CENTER,
+        );
+      }
+      removeUserFromBox(enrolledBy[actionSheetIndex].uid, state.box)
         .then(() => {
           this.fetchEnrolledUsers();
           ToastAndroid.showWithGravity(
@@ -128,14 +140,14 @@ class BoxScreen extends Component {
       <View style={styles.boxScreenContainer}>
         <View style={styles.authorContainer}>
           <Caption>Author of Box</Caption>
-          <Headline>{this.state.auth}</Headline>
+          <Headline>{this.state.auth[0]}</Headline>
         </View>
         <View style={styles.addPartConatiner}>
           <Text>Add Participant</Text>
           <TextInput
             style={styles.textInput}
             mode="outlined"
-            label="Email"
+            placeholder="Email"
             value={this.state.email}
             onChangeText={(email) => this.setAddParticipant(email)}
           />

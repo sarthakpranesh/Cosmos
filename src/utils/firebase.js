@@ -291,6 +291,9 @@ export const addUserToBox = (email, boxName) => {
             u = user.data();
           }
         });
+        if (u.enrolledBoxes.includes(boxName)) {
+          throw new Error('User already enrolled!');
+        }
         return u;
       })
       .then((u) => {

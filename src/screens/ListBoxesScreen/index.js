@@ -115,7 +115,11 @@ class ListBoxesScreen extends Component {
           }}
           ListHeaderComponentStyle={{margin: 10}}
           ListEmptyComponent={() => {
-            return <Text>Please Search & Enroll Into a Box</Text>;
+            return (
+              <Text style={{marginHorizontal: 10}}>
+                Please Ask a Friend to Enroll you in a Box or create a Box
+              </Text>
+            );
           }}
           style={styles.CardList}
           data={enrolledBoxes}
