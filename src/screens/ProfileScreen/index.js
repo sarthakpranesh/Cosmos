@@ -30,8 +30,10 @@ class ProfileScreen extends Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
+    const params = props.route.params;
     this.state = {
-      user: auth().currentUser,
+      name: params === undefined ? auth().currentUser.displayName : 'Username',
+      photoUrl: '',
       posts: [],
       love: 0,
       meh: 0,
@@ -40,14 +42,18 @@ class ProfileScreen extends Component {
       actionSheetIndex: -1,
     };
 
+    if (params === undefined) {
+      this.uid = auth().currentUser.uid;
+    } else {
+      this.uid = params.uid ? params.uid : auth().currentUser.uid;
+    }
     this.ActionSheet = null;
   }
 
   componentDidMount() {
-    const {user} = this.state;
     firestore()
       .collection('Users')
-      .doc(user.uid)
+      .doc(this.uid)
       .onSnapshot((snap) => {
         try {
           const u = snap.data();
@@ -55,6 +61,8 @@ class ProfileScreen extends Component {
             throw new Error('User not found, Your account might be deleted!');
           }
           this.setState({
+            name: u.name,
+            photoURL: u.photoURL,
             love: u.love ? u.love : 0,
             meh: u.meh ? u.meh : 0,
             sad: u.sad ? u.sad : 0,
@@ -80,7 +88,7 @@ class ProfileScreen extends Component {
           const posts = Object.keys(postsObj).map((key) => {
             return postsObj[key];
           });
-          const userPosts = posts.filter(({uid}) => uid === user.uid);
+          const userPosts = posts.filter(({uid}) => uid === this.uid);
           this.setPosts(userPosts);
           this.setLoading(false);
         } catch (err) {
@@ -165,31 +173,31 @@ class ProfileScreen extends Component {
   };
 
   render() {
-    const {user, posts} = this.state;
+    const {name, posts, photoURL, love, meh, sad} = this.state;
     return (
       <View style={styles.profileContainer}>
         <View style={styles.fixedTopHeader}>
           <Image
-            source={{uri: auth().currentUser.photoURL}}
+            source={{uri: photoURL}}
             alt="User Image"
             style={styles.userImage}
           />
-          <Headline>{user.displayName}</Headline>
+          <Headline>{name}</Headline>
           <View style={styles.fixedTopHeaderInnerSection}>
             <View style={styles.fixedTopHeaderCards}>
               <Text>{posts.length}</Text>
               <Text style={styles.postResp}>POSTS</Text>
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text style={{color: 'red'}}>{this.state.love}</Text>
+              <Text style={{color: 'red'}}>{love}</Text>
               <Icon name="heart" size={24} color="red" />
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text style={{color: 'green'}}>{this.state.meh}</Text>
+              <Text style={{color: 'green'}}>{meh}</Text>
               <Icon name="meh" size={24} color="green" />
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text style={{color: 'yellow'}}>{this.state.sad}</Text>
+              <Text style={{color: 'yellow'}}>{sad}</Text>
               <Icon name="frown" size={24} color="yellow" />
             </View>
           </View>

@@ -117,6 +117,10 @@ class Main extends Component {
     return this.props.navigation.navigate('Postview', {post: posts[index]});
   };
 
+  handleOpenAccount = (userUid) => {
+    return this.props.navigation.navigate('ProfileScreen', {uid: userUid});
+  };
+
   handlePostOptions = (postIndex) => {
     this.setState({
       actionSheetIndex: postIndex,
@@ -182,6 +186,7 @@ class Main extends Component {
               uid={user.uid}
               postOptions={() => this.handlePostOptions(index)}
               handleOpenPost={() => this.handleOpenPost(index)}
+              handleOpenAccount={() => this.handleOpenAccount(item.uid)}
             />
           );
         }}

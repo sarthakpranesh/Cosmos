@@ -248,6 +248,34 @@ class PostViewStack extends Component {
           name="Postview"
           component={PostViewScreen}
         />
+        <Stack.Screen
+          options={{
+            gestureDirection: 'horizontal',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            transitionSpec: {
+              animation: 'spring',
+              open: TransitionSpecs.TransitionIOSSpec,
+              close: TransitionSpecs.TransitionIOSSpec,
+            },
+            header: ({navigation}) => {
+              return (
+                <Appbar.Header>
+                  <Appbar.Action
+                    icon={({color, size}) => (
+                      <Icon name="arrow-left" size={size} color={color} />
+                    )}
+                    onPress={() => navigation.goBack()}
+                  />
+                  <Appbar.Content
+                    title={state.box === '' ? 'Cosmos' : state.box}
+                  />
+                </Appbar.Header>
+              );
+            },
+          }}
+          name="ProfileScreen"
+          component={ProfileScreen}
+        />
       </Stack.Navigator>
     );
   }

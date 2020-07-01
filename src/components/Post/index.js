@@ -20,6 +20,7 @@ const Post = ({
   uid,
   postOptions,
   handleOpenPost = null,
+  handleOpenAccount = null,
   fullPost = false,
 }) => {
   const {state} = useContext(UserContext);
@@ -34,12 +35,24 @@ const Post = ({
       <Card.Title
         style={styles.postTitleContainer}
         title={item.createdBy ? item.createdBy : 'Name'}
-        left={({size}) => (
-          <LeftContent
-            size={size}
-            src={item.createdByPhoto ? item.createdByPhoto : null}
-          />
-        )}
+        left={({size}) => {
+          if (handleOpenAccount === null) {
+            return (
+              <LeftContent
+                size={size}
+                src={item.createdByPhoto ? item.createdByPhoto : null}
+              />
+            );
+          }
+          return (
+            <TouchableOpacity onPress={handleOpenAccount}>
+              <LeftContent
+                size={size}
+                src={item.createdByPhoto ? item.createdByPhoto : null}
+              />
+            </TouchableOpacity>
+          );
+        }}
         right={({size}) => {
           if (item.uid === uid) {
             return (
