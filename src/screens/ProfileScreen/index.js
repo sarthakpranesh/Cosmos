@@ -60,12 +60,7 @@ class ProfileScreen extends Component {
             sad: u.sad ? u.sad : 0,
           });
         } catch (err) {
-          console.log(err);
-          ToastAndroid.showWithGravity(
-            err.message,
-            ToastAndroid.SHORT,
-            ToastAndroid.CENTER,
-          );
+          console.log(err.message);
         }
       });
 
@@ -89,7 +84,7 @@ class ProfileScreen extends Component {
           this.setPosts(userPosts);
           this.setLoading(false);
         } catch (err) {
-          console.log(err).message;
+          console.log(err.message);
           this.setLoading(false);
         }
       });

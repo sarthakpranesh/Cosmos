@@ -41,13 +41,16 @@ const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
 class PostViewProfileStack extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
   }
 
   render() {
+    const {state} = this.context;
     return (
       <Stack.Navigator
+        key={state.box}
         initialRouteName="ProfileScreen"
         keyboardHandlingEnabled={true}
         mode="modal"
