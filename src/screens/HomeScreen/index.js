@@ -121,6 +121,13 @@ class Main extends Component {
     return this.props.navigation.navigate('ProfileScreen', {uid: userUid});
   };
 
+  handleOpenComment = (index) => {
+    const {posts} = this.state;
+    return this.props.navigation.navigate('CommentScreen', {
+      post: posts[index],
+    });
+  };
+
   handlePostOptions = (postIndex) => {
     this.setState({
       actionSheetIndex: postIndex,
@@ -187,6 +194,7 @@ class Main extends Component {
               postOptions={() => this.handlePostOptions(index)}
               handleOpenPost={() => this.handleOpenPost(index)}
               handleOpenAccount={() => this.handleOpenAccount(item.uid)}
+              handleOpenComment={() => this.handleOpenComment(index)}
             />
           );
         }}

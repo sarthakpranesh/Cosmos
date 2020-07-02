@@ -21,6 +21,7 @@ const Post = ({
   postOptions,
   handleOpenPost = null,
   handleOpenAccount = null,
+  handleOpenComment = () => {},
   fullPost = false,
 }) => {
   const {state} = useContext(UserContext);
@@ -96,10 +97,11 @@ const Post = ({
             color={hasReacted('sad') ? 'yellow' : 'white'}
           />
         </Button>
-        {/* <Button
+        <Button
+          onPress={handleOpenComment}
           style={{alignSelf: 'flex-end', position: 'absolute', right: 10}}>
           <Icon name="message-square" size={24} />
-        </Button> */}
+        </Button>
       </Card.Actions>
       <Card.Content>
         {handleOpenPost === null ? (

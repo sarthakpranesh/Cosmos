@@ -60,6 +60,13 @@ class PostViewScreen extends Component {
     this.ActionSheet.show();
   };
 
+  handleOpenComment = () => {
+    const {post} = this.state;
+    return this.props.navigation.navigate('CommentScreen', {
+      post: post,
+    });
+  };
+
   handleActionPress = async (index) => {
     const {post} = this.state;
     const {state} = this.context;
@@ -97,6 +104,7 @@ class PostViewScreen extends Component {
             item={post}
             uid={user.uid}
             postOptions={this.handlePostOptions}
+            handleOpenComment={this.handleOpenComment}
             fullPost={true}
           />
         </ScrollView>

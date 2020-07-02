@@ -331,3 +331,43 @@ export const removeUserFromBox = (uid, boxName) => {
       });
   });
 };
+
+export const commentOnPost = (boxName, postName, comment) => {
+  return new Promise(async (resolve, reject) => {
+    const user = auth().currentUser;
+    const name = postName.split('.')[0];
+    getPost(boxName, name)
+      .then((post) => {
+        if (post.comment === undefined) {
+          post.comment = [{name: user.displayName, uid: user.uid, comment}];
+        } else {
+          post.comment = [
+            ...post.comment,
+            {name: user.displayName, uid: user.uid, comment},
+          ];
+        }
+        return setPost(boxName, name, post);
+      })
+      .then(() => resolve())
+      .catch((err) => reject(err));
+  });
+};
+
+export const deleteComment = (boxName, postName, commentIndex) => {
+  return new Promise((resolve, reject) => {
+    const name = postName.split('.')[0];
+    getPost(boxName, name)
+      .then((post) => {
+        if (post.comment === undefined) {
+          post.comment = [];
+        } else {
+          post.comment = post.comment.filter(
+            (_, index) => index !== commentIndex,
+          );
+        }
+        return setPost(boxName, name, post);
+      })
+      .then(() => resolve())
+      .catch((err) => reject(err));
+  });
+};

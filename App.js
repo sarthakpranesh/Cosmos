@@ -26,7 +26,8 @@ import BoxScreen from './src/screens/BoxScreen/index.js';
 import HomeScreen from './src/screens/HomeScreen/index.js';
 import ProfileScreen from './src/screens/ProfileScreen/index.js';
 import MainSettingsScreen from './src/screens/MainSettingsScreen/index.js';
-import PostViewScreen from './src/screens/PostViewScreen';
+import PostViewScreen from './src/screens/PostViewScreen/index.js';
+import CommentScreen from './src/screens/CommentScreen/index.js';
 
 // importing User provider
 import {
@@ -123,6 +124,31 @@ class PostViewProfileStack extends Component {
           }}
           name="Setting"
           component={MainSettingsScreen}
+        />
+        <Stack.Screen
+          options={{
+            gestureDirection: 'horizontal',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            transitionSpec: {
+              animation: 'spring',
+              open: TransitionSpecs.TransitionIOSSpec,
+              close: TransitionSpecs.TransitionIOSSpec,
+            },
+            header: ({navigation}) => {
+              return (
+                <Appbar.Header>
+                  <Appbar.Action
+                    icon={({color, size}) => (
+                      <Icon name="arrow-left" size={size} color={color} />
+                    )}
+                    onPress={() => navigation.goBack()}
+                  />
+                </Appbar.Header>
+              );
+            },
+          }}
+          name="CommentScreen"
+          component={CommentScreen}
         />
       </Stack.Navigator>
     );
@@ -266,8 +292,30 @@ class PostViewStack extends Component {
                     )}
                     onPress={() => navigation.goBack()}
                   />
-                  <Appbar.Content
-                    title={state.box === '' ? 'Cosmos' : state.box}
+                </Appbar.Header>
+              );
+            },
+          }}
+          name="CommentScreen"
+          component={CommentScreen}
+        />
+        <Stack.Screen
+          options={{
+            gestureDirection: 'horizontal',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            transitionSpec: {
+              animation: 'spring',
+              open: TransitionSpecs.TransitionIOSSpec,
+              close: TransitionSpecs.TransitionIOSSpec,
+            },
+            header: ({navigation}) => {
+              return (
+                <Appbar.Header>
+                  <Appbar.Action
+                    icon={({color, size}) => (
+                      <Icon name="arrow-left" size={size} color={color} />
+                    )}
+                    onPress={() => navigation.goBack()}
                   />
                 </Appbar.Header>
               );
