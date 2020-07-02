@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {View, FlatList, Alert} from 'react-native';
-import {TextInput, Button, Card, Divider, Title} from 'react-native-paper';
+import {View, FlatList, Alert, ToastAndroid} from 'react-native';
+import {TextInput, Button, Card, Divider, Text} from 'react-native-paper';
 import database from '@react-native-firebase/database';
 import ActionSheet from 'react-native-actionsheet';
 
@@ -50,6 +50,13 @@ class CommentScreen extends Component {
   }
 
   setComment(comment) {
+    if (comment.length >= 300) {
+      return ToastAndroid.showWithGravity(
+        'Sorry maximum comment length is 300 characters',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+    }
     this.setState({
       comment,
     });
@@ -58,12 +65,27 @@ class CommentScreen extends Component {
   comment() {
     const {comment, post} = this.state;
     const {state} = this.context;
-    try {
-      commentOnPost(state.box, post.name, comment);
-      this.setComment('');
-    } catch (err) {
-      console.log(err.message);
+    if (comment.length === 0) {
+      return ToastAndroid.showWithGravity(
+        'You forgot to write your comment 🤣',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
     }
+    this.setState({commenting: true});
+    commentOnPost(state.box, post.name, comment)
+      .then(() => {
+        this.setState({
+          comment: '',
+          commenting: false,
+        });
+      })
+      .catch((err) => {
+        console.log(err.message);
+        this.setState({
+          commenting: false,
+        });
+      });
   }
 
   handleCommentClick = (commentIndex) => {
@@ -103,7 +125,7 @@ class CommentScreen extends Component {
   };
 
   render() {
-    const {commenting, post} = this.state;
+    const {commenting, post, comment} = this.state;
     return (
       <View style={styles.commentScreen}>
         <FlatList
@@ -114,13 +136,13 @@ class CommentScreen extends Component {
               <Card
                 style={styles.card}
                 onPress={() => this.handleCommentClick(index)}>
-                <Title>{`${item.name}: ${item.comment}`}</Title>
+                <Text>{`${item.name}: ${item.comment}`}</Text>
               </Card>
             );
           }}
           ListEmptyComponent={() => (
             <View style={styles.emptyList}>
-              <Title>No Comments Yet</Title>
+              <Text>No Comments Yet</Text>
             </View>
           )}
           ItemSeparatorComponent={() => <Divider style={styles.Divider} />}
@@ -130,9 +152,9 @@ class CommentScreen extends Component {
             style={styles.textInput}
             mode="outlined"
             placeholder="Comment"
-            value={this.state.email}
+            value={comment}
             dense={true}
-            onChangeText={(comment) => this.setComment(comment)}
+            onChangeText={(c) => this.setComment(c)}
           />
           <Button
             loading={commenting}
