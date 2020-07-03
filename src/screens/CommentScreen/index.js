@@ -110,6 +110,12 @@ class CommentScreen extends Component {
         deleteComment(state.box, post.name, actionSheetIndex).catch((err) =>
           console.log(err.message),
         );
+      } else {
+        ToastAndroid.showWithGravity(
+          'Only author of post and comment can delete comments',
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
       }
     }
 
@@ -157,6 +163,7 @@ class CommentScreen extends Component {
             onChangeText={(c) => this.setComment(c)}
           />
           <Button
+            style={styles.commentBtn}
             loading={commenting}
             icon="send"
             onPress={() => this.comment()}>
@@ -166,7 +173,7 @@ class CommentScreen extends Component {
         <ActionSheet
           ref={(o) => (this.ActionSheet = o)}
           title={'What do you wanna do?'}
-          options={['Remove User', 'Cancel']}
+          options={['Remove Comment', 'Cancel']}
           cancelButtonIndex={1}
           destructiveButtonIndex={1}
           onPress={(index) => this.handleActionPress(index)}

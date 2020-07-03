@@ -27,4 +27,7 @@ export default StyleSheet.create({
     paddingHorizontal: 10,
     zIndex: 100,
   },
+  commentBtn: {
+    marginVertical: 10,
+  },
 });
