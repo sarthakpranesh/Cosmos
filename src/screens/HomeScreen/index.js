@@ -50,11 +50,7 @@ class Main extends Component {
           }
         })
         .catch((err) => {
-          ToastAndroid.showWithGravity(
-            err.message,
-            ToastAndroid.LONG,
-            ToastAndroid.CENTER,
-          );
+          console.log(err.message);
         });
     } else {
       this.onFirebaseFetchPosts();

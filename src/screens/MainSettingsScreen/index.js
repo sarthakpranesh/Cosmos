@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, ScrollView, Image, Alert} from 'react-native';
 import {Text, Button, TextInput} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 import {GoogleSignin} from '@react-native-community/google-signin';
 
 // importing User provider
@@ -25,15 +26,6 @@ class MainSettingsScreen extends Component {
       loggingOut: false,
       updating: false,
     };
-  }
-
-  componentDidMount() {
-    const {user} = this.state;
-    if (!user) {
-      this.props.navigation.navigate('userStartingStack');
-      return;
-    }
-    return;
   }
 
   setBtnUpdate = (bool) => {
@@ -106,7 +98,7 @@ class MainSettingsScreen extends Component {
 
   onSignOut = () => {
     this.setBtnLogout(true);
-    const {currentBox, setUid} = this.context;
+    const {currentBox, setUid, state} = this.context;
     Alert.alert(
       'Log Out',
       'Are you sure, you want to log out?',
@@ -115,6 +107,7 @@ class MainSettingsScreen extends Component {
         {
           text: 'Sign Out',
           onPress: async () => {
+            database().ref(state.box).off('value');
             await GoogleSignin.revokeAccess();
             await Promise.all([
               GoogleSignin.signOut(),
