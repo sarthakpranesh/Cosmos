@@ -164,6 +164,7 @@ class BoxScreen extends Component {
             style={styles.textInput}
             mode="outlined"
             placeholder="Email"
+            maxLength={50}
             value={this.state.email}
             dense={true}
             onChangeText={(email) => this.setAddParticipant(email)}

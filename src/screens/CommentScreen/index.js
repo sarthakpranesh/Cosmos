@@ -158,6 +158,7 @@ class CommentScreen extends Component {
             style={styles.textInput}
             mode="outlined"
             placeholder="Comment"
+            maxLength={300}
             value={comment}
             dense={true}
             onChangeText={(c) => this.setComment(c)}

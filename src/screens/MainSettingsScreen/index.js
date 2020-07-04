@@ -144,6 +144,7 @@ class MainSettingsScreen extends Component {
             <TextInput
               mode="outlined"
               placeholder="Username"
+              maxLength={40}
               value={username}
               style={styles.inAppTextInput}
               onChangeText={(newUsername) => this.setUsername(newUsername)}

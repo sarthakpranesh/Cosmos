@@ -46,11 +46,6 @@ class PostViewScreen extends Component {
           });
         } catch (err) {
           console.log(err);
-          ToastAndroid.showWithGravity(
-            err.message,
-            ToastAndroid.SHORT,
-            ToastAndroid.CENTER,
-          );
           this.props.navigation.goBack();
         }
       });

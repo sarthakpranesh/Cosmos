@@ -2,7 +2,6 @@
 import React, {Component} from 'react';
 import {View, FlatList, ToastAndroid, Alert} from 'react-native';
 import {Text, Card, TextInput, Divider, Button} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
@@ -14,7 +13,6 @@ import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing styles
 import styles from './styles.js';
-import BoxScreen from '../BoxScreen/index.js';
 
 class ListBoxesScreen extends Component {
   static contextType = UserContext;
@@ -52,11 +50,6 @@ class ListBoxesScreen extends Component {
       })
       .catch((err) => {
         console.log(err);
-        ToastAndroid.showWithGravity(
-          err.message,
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
       });
   }
 
@@ -118,6 +111,7 @@ class ListBoxesScreen extends Component {
             style={styles.textInput}
             mode="outlined"
             placeholder="Box Name"
+            maxLength={30}
             dense={true}
             value={newBoxName}
             onChangeText={(nb) => this.setNewBoxName(nb)}

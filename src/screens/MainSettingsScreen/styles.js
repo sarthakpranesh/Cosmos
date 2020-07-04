@@ -7,9 +7,6 @@ export default StyleSheet.create({
     backgroundColor: 'black',
     paddingHorizontal: 16,
   },
-  goBackIcon: {
-    position: 'absolute',
-  },
   userImage: {
     height: 100,
     width: 100,

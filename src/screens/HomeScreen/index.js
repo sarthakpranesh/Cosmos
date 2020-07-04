@@ -32,6 +32,13 @@ class Main extends Component {
   }
 
   componentDidMount() {
+    fetch('https://cosmos-backend.herokuapp.com/')
+      .then((resp) => {
+        console.log(resp.status);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     const {state, currentBox} = this.context;
     if (state.box === '') {
       getUserDetails(state.uid)
@@ -213,7 +220,7 @@ class Main extends Component {
         <ActionSheet
           ref={(o) => (this.ActionSheet = o)}
           title={'What do you wanna do?'}
-          options={['Delete', 'Cancel']}
+          options={['Delete Post', 'Cancel']}
           cancelButtonIndex={1}
           destructiveButtonIndex={1}
           onPress={(index) => this.handleActionPress(index)}
