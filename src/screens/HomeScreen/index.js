@@ -5,6 +5,7 @@ import {ActivityIndicator, Divider, Headline} from 'react-native-paper';
 import ActionSheet from 'react-native-actionsheet';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import firestore from '@react-native-firebase/firestore';
 
 // importing component
 import Post from '../../components/Post/index.js';
@@ -53,16 +54,49 @@ class Main extends Component {
           console.log(err.message);
         });
     } else {
-      this.onFirebaseFetchPosts();
+      if (state.box === '') {
+        this.setLoading(false);
+        return;
+      } else {
+        this.onFirebaseFetchPosts();
+
+        // listen to box changes
+        firestore()
+          .collection('Boxes')
+          .doc(state.box)
+          .onSnapshot((docSnap) => {
+            const boxData = docSnap.data();
+            const checkMembership = boxData.enrolledBy.some(
+              (user) => state.uid === user.uid,
+            );
+            console.log('Is user a member: ', checkMembership);
+            if (!checkMembership) {
+              firestore()
+                .collection('Users')
+                .doc(state.uid)
+                .get()
+                .then((doc) => {
+                  const userData = doc.data();
+                  if (userData.enrolledBoxes.length !== 0) {
+                    currentBox(userData.enrolledBoxes[0]);
+                    Alert.alert(
+                      'Oops',
+                      'Looks like the admin removed you from the box!',
+                      [{text: 'ok'}],
+                      {cancelable: true},
+                    );
+                  } else {
+                    currentBox('');
+                  }
+                });
+            }
+        });
+      }
     }
   }
 
   onFirebaseFetchPosts = () => {
     const {state} = this.context;
-    if (state.box === '') {
-      this.setLoading(false);
-      return;
-    }
     database()
       .ref(state.box)
       .on('value', (snap) => {

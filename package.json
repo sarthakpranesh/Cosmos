@@ -26,6 +26,7 @@
     "@react-navigation/material-bottom-tabs": "^5.2.10",
     "@react-navigation/native": "^5.5.1",
     "@react-navigation/stack": "^5.5.1",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "react": "16.11.0",
     "react-native": "0.62.1",
     "react-native-actionsheet": "^2.4.2",
