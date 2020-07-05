@@ -24,7 +24,7 @@ export const updateDisplayName = (username) => {
 };
 
 export const setUpNewUser = (uid) => {
-  const {displayName, photoURL} = auth().currentUser;
+  const {displayName, photoURL, email} = auth().currentUser;
   firestore().collection('Users').doc(uid).set({
     uid,
     name: displayName,
@@ -33,6 +33,7 @@ export const setUpNewUser = (uid) => {
     meh: 0,
     sad: 0,
     enrolledBoxes: [],
+    email: email,
   });
 };
 
