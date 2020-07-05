@@ -35,13 +35,13 @@ class CommentScreen extends Component {
       .on('value', (snap) => {
         const p = snap.val();
         if (p === null) {
-          Alert.alert(
-            'Error',
-            'Their is a problem with that Post! We have taken a note and will be fixing it soon.',
+          this.props.navigation.navigate('HomeScreen');
+          return Alert.alert(
+            'Oops',
+            'You were late, post was removed!',
             [{text: 'Ok'}],
             {cancelable: false},
           );
-          this.props.navigation.goBack();
         }
         this.setState({
           post: p,
