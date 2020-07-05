@@ -204,7 +204,11 @@ export const deletePosts = (box, postName) => {
       .ref(box)
       .child(name)
       .set({})
-      .then(() => resolve())
+      .then(() => {
+        console.log('Removing image: ', postName);
+        storage().ref('posts').child(postName).delete();
+        resolve();
+      })
       .catch(() => reject());
   });
 };
