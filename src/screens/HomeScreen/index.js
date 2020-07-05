@@ -90,7 +90,7 @@ class Main extends Component {
                   }
                 });
             }
-        });
+          });
       }
     }
   }
