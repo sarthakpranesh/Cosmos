@@ -50,6 +50,8 @@ class LandingScreen extends Component {
     this.state = {
       pageIndex: 0,
     };
+
+    this.flatList = null;
   }
 
   setIndex(index) {
@@ -67,32 +69,40 @@ class LandingScreen extends Component {
       const resp = await auth().signInWithCredential(googleCredential);
       return setUid(resp.user.uid);
     } catch (error) {
-      console.log('Error on Landing Screen');
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        ToastAndroid.showWithGravity(
-          'You dont like OAuth? 🙁',
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        ToastAndroid.showWithGravity(
-          'Hey we are signing you in, chill 😅',
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        ToastAndroid.showWithGravity(
-          'Hey the Play Service was not found or is outdated 😱',
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
-      } else {
-        console.log(error);
-        ToastAndroid.showWithGravity(
-          error.message,
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
+      console.log('Error while user clicked Continue With Google Button');
+      switch (error.code) {
+        case statusCodes.SIGN_IN_CANCELLED: {
+          ToastAndroid.showWithGravity(
+            'You dont like OAuth? 🙁',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+          break;
+        }
+        case statusCodes.IN_PROGRESS: {
+          ToastAndroid.showWithGravity(
+            'Hey we are signing you in, chill 😅',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+          break;
+        }
+        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE: {
+          ToastAndroid.showWithGravity(
+            'Hey the Play Service was not found or is outdated 😱',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+          break;
+        }
+        default: {
+          console.log(error.code);
+          ToastAndroid.showWithGravity(
+            error.message,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+        }
       }
     }
   }
@@ -104,14 +114,20 @@ class LandingScreen extends Component {
         <Image source={item.image} style={styles.illustration} />
         <Caption>{item.madeBy}</Caption>
         <Text style={{textAlign: 'justify', marginTop: 10}}>{item.body}</Text>
-        {index === data.length - 1 ? (
-          <Button
-            mode="contained"
-            style={styles.googleBtn}
-            onPress={() => this.continueWithGoogle()}>
-            Continue With Google
-          </Button>
-        ) : null}
+        <Button
+          mode="contained"
+          style={styles.googleBtn}
+          onPress={
+            index === data.length - 1
+              ? () => this.continueWithGoogle()
+              : () =>
+                  this.flatList.scrollToIndex({
+                    animated: true,
+                    index: index + 1,
+                  })
+          }>
+          {index === data.length - 1 ? 'Continue With Google' : 'Next'}
+        </Button>
       </View>
     );
   }
@@ -138,6 +154,7 @@ class LandingScreen extends Component {
           })}
         </View>
         <FlatList
+          ref={(r) => (this.flatList = r)}
           style={{}}
           contentContainerStyle={{
             alignItems: 'stretch',
@@ -157,6 +174,7 @@ class LandingScreen extends Component {
               this.setIndex(Math.round(nativeEvent.contentOffset.x / width));
             }
           }}
+          scrollToIn
         />
       </View>
     );
