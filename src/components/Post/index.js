@@ -1,6 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
+import {
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  Image,
+  Vibration,
+} from 'react-native';
 import {Button, Card, Paragraph, Caption} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -67,30 +73,46 @@ const Post = ({
           return null;
         }}
       />
-      <TouchableOpacity onPress={handleOpenPost}>
+      {fullPost ? (
         <Image style={[styles.postImage]} source={{uri: item.postURL}} />
-      </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={handleOpenPost}>
+          <Image style={[styles.postImage]} source={{uri: item.postURL}} />
+        </TouchableOpacity>
+      )}
       <Card.Actions style={{marginVertical: 0, paddingVertical: 0, zIndex: 2}}>
         <Caption>Love:{item.love ? item.love.length : 0} </Caption>
         <Caption>Meh:{item.meh ? item.meh.length : 0} </Caption>
         <Caption>Sad:{item.sad ? item.sad.length : 0}</Caption>
       </Card.Actions>
       <Card.Actions style={{marginVertical: 0, paddingVertical: 0}}>
-        <Button onPress={() => reactToPost(state.box, item.name, 'love')}>
+        <Button
+          onPress={() => {
+            Vibration.vibrate(50);
+            reactToPost(state.box, item.name, 'love');
+          }}>
           <Icon
             name="heart"
             size={24}
             color={hasReacted('love') ? 'red' : 'white'}
           />
         </Button>
-        <Button onPress={() => reactToPost(state.box, item.name, 'meh')}>
+        <Button
+          onPress={() => {
+            Vibration.vibrate(50);
+            reactToPost(state.box, item.name, 'meh');
+          }}>
           <Icon
             name="meh"
             size={24}
             color={hasReacted('meh') ? 'green' : 'white'}
           />
         </Button>
-        <Button onPress={() => reactToPost(state.box, item.name, 'sad')}>
+        <Button
+          onPress={() => {
+            Vibration.vibrate(50);
+            reactToPost(state.box, item.name, 'sad');
+          }}>
           <Icon
             name="frown"
             size={24}
