@@ -8,11 +8,20 @@
 [![GitHub](https://img.shields.io/github/license/sarthakpranesH/cosmos.ReactNative)](https://github.com/sarthakpranesh/cosmos.ReactNative/blob/master/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/sarthakpranesh/cosmos.ReactNative)](https://github.com/sarthakpranesh/cosmos.ReactNative/stargazers)
 [![GitHub All Releases](https://img.shields.io/github/downloads/sarthakpranesh/cosmos.ReactNative/total)](https://github.com/sarthakpranesh/cosmos.ReactNative/releases)
+
+|   |   |   |
+|:--------:|:--------:|:---------:|
+| <img src="./SocialAssets/2.jpg" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/3.jpg" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/4.jpg" alt="Cosmos Splash Screen" width="300">  |
+| <img src="./SocialAssets/5.png" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/6.png" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/7.png" alt="Cosmos Splash Screen" width="300">  |
+| <img src="./SocialAssets/8.png" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/9.png" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/1.png" alt="Cosmos Splash Screen" width="300">  |
+
 </div>
+
+<br/>
 
 ## What is Cosmos?
 <p>
-Cosmos is an open source project made and maintained by the community. The project aims to provide a dedicated platform for it's users to have there own personal dedicated social media for there friend and work circle. We achieve this by utilizing Boxes. Inside of each box you add users by there email that are relevant to that box. This helps you focus and share content in relevant groups to whom that information matters.
+Cosmos is an open source Social Media platform. The project aims to provide a dedicated box like platform for it's users where they can have dedicated spaces for their  friends, family, work circle, etc. We achieve this by utilizing Boxes. Inside of each box you add users by there email that are relevant to that box. This helps you focus and share content in groups (boxes) where that content would matter the most.
 </p>
 
 <br/>
@@ -27,7 +36,7 @@ Review the `Latest Build` and let us know where we can improve, see future plans
 
 |Feature Gist           |How to!            |Helps With         | 
 |---	|---	|---	|
-|None   |None    |None   |
+|Minimal Notifications   |The app would trigger notifications on specific events    |Lets the user know about the updates related to there posts   |
 
 <br/>
 
