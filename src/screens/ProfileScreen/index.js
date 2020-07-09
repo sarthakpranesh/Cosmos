@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ToastAndroid,
+  Vibration,
 } from 'react-native';
 import {Text, ActivityIndicator, Headline} from 'react-native-paper';
 import ActionSheet from 'react-native-actionsheet';
@@ -119,6 +120,7 @@ class ProfileScreen extends Component {
     this.setState({
       actionSheetIndex: cardIndex,
     });
+    Vibration.vibrate(50);
     this.ActionSheet.show();
   };
 
