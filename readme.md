@@ -10,7 +10,7 @@
 [![GitHub All Releases](https://img.shields.io/github/downloads/sarthakpranesh/cosmos.ReactNative/total)](https://github.com/sarthakpranesh/cosmos.ReactNative/releases)
 
 |   |   |   |
-|:--------:|:--------:|:---------:|
+|---|---|---|
 | <img src="./SocialAssets/2.jpg" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/3.jpg" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/4.jpg" alt="Cosmos Splash Screen" width="300">  |
 | <img src="./SocialAssets/5.png" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/6.png" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/7.png" alt="Cosmos Splash Screen" width="300">  |
 | <img src="./SocialAssets/8.png" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/9.png" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/1.png" alt="Cosmos Splash Screen" width="300">  |
@@ -37,6 +37,8 @@ Review the `Latest Build` and let us know where we can improve, see future plans
 |Feature Gist           |How to!            |Helps With         | 
 |---	|---	|---	|
 |Minimal Notifications   |The app would trigger notifications on specific events    |Lets the user know about the updates related to there posts   |
+|Deep linking   |The app will allow to open links shared through other platforms    |Would allow the users to share links to posts on other platforms as well, and these links will be handled in the Cosmos app   |
+|Sharing Api   |Call the standard share api provided by react native    |Will showcase multiple options to the user for sharing there posts on different platforms   |
 
 <br/>
 
