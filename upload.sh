@@ -1,6 +1,6 @@
 
 #!/bin/bash
-if [ "$TRAVIS_BRANCH" == "master" ]; then
+if [ "$TRAVIS_BRANCH" == "master" ] || [ "$TRAVIS_BRANCH" == "develop" ]; then
   mkdir $HOME/buildApk/
   mkdir $HOME/Github/
 
