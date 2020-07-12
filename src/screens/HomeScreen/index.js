@@ -13,8 +13,11 @@ import Post from '../../components/Post/index.js';
 //importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
 
-// importing firebase utils
+// importing utils
 import {deletePosts, getUserDetails} from '../../utils/firebase.js';
+import startNotificationListening, {
+  firebaseReactionNotify,
+} from '../../utils/Notifications/index.js';
 
 // importing styles
 import styles from './styles.js';
@@ -30,6 +33,7 @@ class Main extends Component {
       actionSheetIndex: -1,
     };
     this.ActionSheet = null;
+    startNotificationListening();
   }
 
   componentDidMount() {
@@ -107,10 +111,12 @@ class Main extends Component {
             this.setLoading(false);
             return;
           }
-          const posts = Object.keys(postsObj).map((key) => {
+          let p = Object.keys(postsObj).map((key) => {
             return postsObj[key];
           });
-          this.setPosts(posts);
+          p = p.sort((a, b) => b.date - a.date);
+          firebaseReactionNotify(this.state.posts, p);
+          this.setPosts(p);
           this.setLoading(false);
         } catch (err) {
           console.log(err.message);
