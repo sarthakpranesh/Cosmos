@@ -160,7 +160,7 @@ class LandingScreen extends Component {
             alignItems: 'stretch',
           }}
           data={data}
-          keyExtractor={(_, index) => index}
+          keyExtractor={(_, index) => `list-item-${index}`}
           horizontal
           pagingEnabled
           scrollEnabled
