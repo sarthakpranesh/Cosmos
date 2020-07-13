@@ -1,4 +1,5 @@
 import {Notifications} from 'react-native-notifications';
+import auth from '@react-native-firebase/auth';
 
 const startNotificationListening = () => {
   Notifications.registerRemoteNotifications();
@@ -23,11 +24,19 @@ const startNotificationListening = () => {
 export default startNotificationListening;
 
 export const firebaseReactionNotify = (previousPosts, newPosts) => {
+  const uid = auth().currentUser.uid;
   if ([undefined, null].includes(previousPosts) || previousPosts.length === 0) {
     return;
   }
 
   if (previousPosts.length < newPosts.length) {
+    const p = newPosts.filter((a) => {
+      return !previousPosts.find((b) => b.name === a.name);
+    });
+    if (p[0].uid === uid) {
+      // do not show the author any notification
+      return;
+    }
     // tell user someone posted in the box
     // assuming only one new post
     return Notifications.postLocalNotification(
