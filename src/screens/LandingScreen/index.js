@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, ToastAndroid, Image, FlatList, Dimensions} from 'react-native';
+import {View, ToastAndroid, FlatList, Dimensions, Animated} from 'react-native';
 import {Text, Headline, Button, Caption} from 'react-native-paper';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
@@ -47,17 +47,8 @@ class LandingScreen extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      pageIndex: 0,
-    };
-
     this.flatList = null;
-  }
-
-  setIndex(index) {
-    this.setState({
-      pageIndex: index,
-    });
+    this.index = new Animated.Value(0);
   }
 
   async continueWithGoogle() {
@@ -108,10 +99,31 @@ class LandingScreen extends Component {
   }
 
   renderScreen(item, index) {
+    const opacity = this.index.interpolate({
+      inputRange: [index - 1, index, index + 1],
+      outputRange: [0, 1, 0],
+      extrapolate: 'clamp',
+    });
+    const rotate = this.index.interpolate({
+      inputRange: [index - 1, index, index + 1],
+      outputRange: ['-30deg', '0deg', '30deg'],
+      extrapolate: 'clamp',
+    });
+    const scale = this.index.interpolate({
+      inputRange: [index - 1, index, index + 1],
+      outputRange: [0.5, 1, 0.5],
+      extrapolate: 'clamp',
+    });
     return (
       <View style={styles.innerView}>
         <Headline>{item.header}</Headline>
-        <Image source={item.image} style={styles.illustration} />
+        <Animated.Image
+          source={item.image}
+          style={[
+            styles.illustration,
+            {opacity, transform: [{rotate}, {scale}]},
+          ]}
+        />
         <Caption>{item.madeBy}</Caption>
         <Text style={{textAlign: 'justify', marginTop: 10}}>{item.body}</Text>
         <Button
@@ -133,16 +145,19 @@ class LandingScreen extends Component {
   }
 
   render() {
-    const {pageIndex} = this.state;
     return (
       <View style={styles.landingContainer}>
         <View style={styles.dotContainer}>
           {data.map((_, i) => {
             return (
-              <View
+              <Animated.View
                 key={i}
                 style={{
-                  opacity: i === this.state.pageIndex ? 1 : 0.3,
+                  opacity: this.index.interpolate({
+                    inputRange: [i - 1, i, i + 1],
+                    outputRange: [0.3, 1, 0.3],
+                    extrapolate: 'clamp',
+                  }),
                   height: 10,
                   width: 10,
                   backgroundColor: 'white',
@@ -170,11 +185,8 @@ class LandingScreen extends Component {
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => this.renderScreen(item, index)}
           onScroll={({nativeEvent}) => {
-            if (Math.round(nativeEvent.contentOffset.x / width) !== pageIndex) {
-              this.setIndex(Math.round(nativeEvent.contentOffset.x / width));
-            }
+            this.index.setValue(nativeEvent.contentOffset.x / width);
           }}
-          scrollToIn
         />
       </View>
     );
