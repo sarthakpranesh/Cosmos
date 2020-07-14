@@ -31,6 +31,15 @@ Latest Release: [Cosmos](https://github.com/sarthakpranesh/cosmos.ReactNative/re
 
 <br/>
 
+## Features Implemented
+|Feature Gist           |How to!            |Helps With         | 
+|---	|---	|---	|
+|Box |Created separate boxes filled with people who are interested in a common topic |As the main aim of the project is to try to provide a more professional social platform, it is necessary we take steps that lets a common audience see a particular set of content.  |
+|Reactions |React to posts by clicking icons as per your wish |Lets the users react to posts to showcase their agreement or disagreement from the post, currently there are three types of reaction a user can give (Like, Meh, Sad) |
+|Comments |Click the message/comment icon on the right of the post and start a discussion |Reactions sometime aren't able to disclose what an individual might have to share with others on the topic, hence they can leave a comment let other know what they feel or want to share |
+|Minimal Notification |Under development |Under development |
+
+
 ## Future Features Plans
 Review the `Latest Build` and let us know where we can improve, see future plans below and if you don't find your issue/feature request listed, open an issue.
 
