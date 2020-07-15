@@ -1,6 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, ToastAndroid, FlatList, Dimensions, Animated} from 'react-native';
+import {
+  View,
+  ToastAndroid,
+  FlatList,
+  Dimensions,
+  Animated,
+  Vibration,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {Text, Headline, Button, Caption} from 'react-native-paper';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
@@ -150,21 +158,26 @@ class LandingScreen extends Component {
         <View style={styles.dotContainer}>
           {data.map((_, i) => {
             return (
-              <Animated.View
+              <TouchableWithoutFeedback
                 key={i}
-                style={{
-                  opacity: this.index.interpolate({
-                    inputRange: [i - 1, i, i + 1],
-                    outputRange: [0.3, 1, 0.3],
-                    extrapolate: 'clamp',
-                  }),
-                  height: 10,
-                  width: 10,
-                  backgroundColor: 'white',
-                  margin: 6,
-                  borderRadius: 5,
-                }}
-              />
+                onPress={() =>
+                  this.flatList.scrollToIndex({animated: true, index: i})
+                }>
+                <Animated.View
+                  style={{
+                    opacity: this.index.interpolate({
+                      inputRange: [i - 1, i, i + 1],
+                      outputRange: [0.3, 1, 0.3],
+                      extrapolate: 'clamp',
+                    }),
+                    height: 10,
+                    width: 10,
+                    backgroundColor: 'white',
+                    margin: 6,
+                    borderRadius: 5,
+                  }}
+                />
+              </TouchableWithoutFeedback>
             );
           })}
         </View>
@@ -175,7 +188,7 @@ class LandingScreen extends Component {
             alignItems: 'stretch',
           }}
           data={data}
-          keyExtractor={(_, index) => `list-item-${index}`}
+          keyExtractor={(item) => item.header}
           horizontal
           pagingEnabled
           scrollEnabled
@@ -186,6 +199,7 @@ class LandingScreen extends Component {
           renderItem={({item, index}) => this.renderScreen(item, index)}
           onScroll={({nativeEvent}) => {
             this.index.setValue(nativeEvent.contentOffset.x / width);
+            Vibration.vibrate(6);
           }}
         />
       </View>
