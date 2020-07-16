@@ -6,6 +6,8 @@ export default StyleSheet.create({
     backgroundColor: 'black',
   },
   emptyList: {
+    ...StyleSheet.absoluteFill,
+    marginTop: -80,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',

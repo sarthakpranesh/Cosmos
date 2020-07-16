@@ -4,6 +4,9 @@ import {TextInput, Button, Card, Divider, Text} from 'react-native-paper';
 import database from '@react-native-firebase/database';
 import ActionSheet from 'react-native-actionsheet';
 
+// importing components
+import NoComment from '../../components/icons/NoComment';
+
 // importing firebase utils
 import {commentOnPost, deleteComment} from '../../utils/firebase.js';
 
@@ -130,34 +133,46 @@ class CommentScreen extends Component {
     return;
   };
 
+  renderComments = () => {
+    const {post} = this.state;
+
+    if ((post.comment ? post.comment.length : 0) === 0) {
+      return (
+        <View style={styles.emptyList}>
+          <NoComment />
+        </View>
+      );
+    }
+
+    return (
+      <FlatList
+        data={post.comment ? post.comment : []}
+        keyExtractor={(_, index) => index}
+        renderItem={({item, index}) => {
+          return (
+            <Card
+              style={styles.card}
+              onPress={() => this.handleCommentClick(index)}>
+              <Text>{`${item.name}: ${item.comment}`}</Text>
+            </Card>
+          );
+        }}
+        ItemSeparatorComponent={() => <Divider style={styles.Divider} />}
+      />
+    );
+  };
+
   render() {
-    const {commenting, post, comment} = this.state;
+    const {commenting, comment, post} = this.state;
+
     return (
       <View style={styles.commentScreen}>
-        <FlatList
-          data={post.comment ? post.comment : []}
-          keyExtractor={(_, index) => index}
-          renderItem={({item, index}) => {
-            return (
-              <Card
-                style={styles.card}
-                onPress={() => this.handleCommentClick(index)}>
-                <Text>{`${item.name}: ${item.comment}`}</Text>
-              </Card>
-            );
-          }}
-          ListEmptyComponent={() => (
-            <View style={styles.emptyList}>
-              <Text>No Comments Yet</Text>
-            </View>
-          )}
-          ItemSeparatorComponent={() => <Divider style={styles.Divider} />}
-        />
+        {this.renderComments()}
         <View style={styles.addComment}>
           <TextInput
             style={styles.textInput}
             mode="outlined"
-            placeholder="Comment"
+            placeholder={post.comment ? 'Comment' : 'Start a discussion'}
             maxLength={300}
             value={comment}
             dense={true}
