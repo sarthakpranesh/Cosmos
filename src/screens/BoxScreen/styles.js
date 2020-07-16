@@ -17,7 +17,7 @@ export default StyleSheet.create({
     marginBottom: 10,
   },
   card: {
-    paddingVertical: 10,
+    padding: 16,
     borderRadius: 0,
   },
   Divider: {

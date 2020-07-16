@@ -4,6 +4,7 @@ import {View, ToastAndroid, FlatList} from 'react-native';
 import {
   Card,
   Headline,
+  Subheading,
   Caption,
   Text,
   Divider,
@@ -191,7 +192,7 @@ class BoxScreen extends Component {
               <Card
                 style={styles.card}
                 onPress={() => this.handleUserClick(index)}>
-                <Card.Title title={item.name} />
+                <Subheading>{item.name}</Subheading>
               </Card>
             );
           }}
