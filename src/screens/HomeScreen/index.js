@@ -223,6 +223,15 @@ class Main extends Component {
       );
     }
 
+    if (posts.length === 0) {
+      return (
+        <View style={styles.listEmptyComponent}>
+          <BoxEmpty />
+          <Headline style={styles.noPostYetText}>Box is empty today</Headline>
+        </View>
+      );
+    }
+
     return (
       <FlatList
         data={posts}
@@ -239,16 +248,6 @@ class Main extends Component {
           );
         }}
         keyExtractor={(item) => item.name}
-        ListEmptyComponent={() => {
-          return (
-            <View style={styles.listEmptyComponent}>
-              <BoxEmpty />
-              <Headline style={styles.noPostYetText}>
-                Box is empty today
-              </Headline>
-            </View>
-          );
-        }}
         ItemSeparatorComponent={() => (
           <Divider style={{height: 1, backgroundColor: 'black'}} />
         )}
