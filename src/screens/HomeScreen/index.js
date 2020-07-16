@@ -8,6 +8,7 @@ import database from '@react-native-firebase/database';
 import firestore from '@react-native-firebase/firestore';
 
 // importing component
+import BoxEmpty from '../../components/icons/BoxEmpty/index.js';
 import Post from '../../components/Post/index.js';
 
 //importing Context
@@ -218,14 +219,6 @@ class Main extends Component {
       );
     }
 
-    if (posts.length === 0) {
-      return (
-        <Headline style={styles.noPostYetText}>
-          Waiting For Someone to Upload Something Interesting 🎨
-        </Headline>
-      );
-    }
-
     return (
       <FlatList
         data={posts}
@@ -242,6 +235,16 @@ class Main extends Component {
           );
         }}
         keyExtractor={(item) => item.name}
+        ListEmptyComponent={() => {
+          return (
+            <View style={styles.listEmptyComponent}>
+              <BoxEmpty />
+              <Headline style={styles.noPostYetText}>
+                Box is empty today
+              </Headline>
+            </View>
+          );
+        }}
         ItemSeparatorComponent={() => (
           <Divider style={{height: 1, backgroundColor: 'black'}} />
         )}
