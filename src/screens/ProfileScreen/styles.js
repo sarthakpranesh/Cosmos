@@ -43,6 +43,16 @@ export default StyleSheet.create({
   scrollBottomView: {
     height: (2 * height) / 3 - 60,
   },
+  emptyPostContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyPostText: {
+    flexWrap: 'wrap',
+    textAlign: 'center',
+    marginHorizontal: 10,
+    opacity: 0.6,
+  },
   postContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',

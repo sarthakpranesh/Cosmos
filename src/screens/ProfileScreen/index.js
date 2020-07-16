@@ -17,6 +17,7 @@ import firestore from '@react-native-firebase/firestore';
 
 // importing components
 import CacheImage from '../../components/CacheImage';
+import NoPosts from '../../components/icons/NoPosts/index.js';
 
 // importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -152,6 +153,14 @@ class ProfileScreen extends Component {
 
     if (isLoading) {
       return <ActivityIndicator />;
+    }
+
+    if (posts.length === 0) {
+      return (
+        <View style={styles.emptyPostContainer}>
+          <NoPosts />
+        </View>
+      );
     }
 
     return (
