@@ -297,6 +297,6 @@ const NoPosts = (props) => {
       </Defs>
     </Svg>
   );
-}
+};
 
 export default NoPosts;
