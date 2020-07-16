@@ -28,4 +28,16 @@ export default StyleSheet.create({
     height: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.4)',
   },
+  emptyComponentContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noBoxesYet: {
+    flexWrap: 'wrap',
+    textAlign: 'center',
+    marginHorizontal: 10,
+    opacity: 0.6,
+  },
 });

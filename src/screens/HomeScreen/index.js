@@ -72,6 +72,10 @@ class Main extends Component {
           .doc(state.box)
           .onSnapshot((docSnap) => {
             const boxData = docSnap.data();
+            if (boxData === undefined) {
+              currentBox('');
+              return;
+            }
             const checkMembership = boxData.enrolledBy.some(
               (user) => state.uid === user.uid,
             );

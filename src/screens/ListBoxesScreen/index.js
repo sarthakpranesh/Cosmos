@@ -1,9 +1,20 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, FlatList, ToastAndroid, Alert} from 'react-native';
-import {Text, Card, TextInput, Divider, Button} from 'react-native-paper';
+import {
+  Text,
+  Subheading,
+  Headline,
+  Card,
+  TextInput,
+  Divider,
+  Button,
+} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+
+// importing component
+import AddBox from '../../components/icons/AddBox/index.js';
 
 // importing firebase utils
 import {createBox} from '../../utils/firebase.js';
@@ -131,9 +142,10 @@ class ListBoxesScreen extends Component {
           ListHeaderComponentStyle={{margin: 10}}
           ListEmptyComponent={() => {
             return (
-              <Text style={{marginHorizontal: 10}}>
-                Please Ask a Friend to Enroll you in a Box or create a Box
-              </Text>
+              <View style={styles.emptyComponentContainer}>
+                <AddBox />
+                <Headline style={styles.noBoxesYet}>Add a Box</Headline>
+              </View>
             );
           }}
           style={styles.CardList}
@@ -144,7 +156,7 @@ class ListBoxesScreen extends Component {
               <Card
                 onPress={() => this.handleSelectBox(item)}
                 style={styles.card}>
-                <Card.Title title={item} />
+                <Subheading>{item}</Subheading>
               </Card>
             );
           }}
