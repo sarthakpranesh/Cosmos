@@ -8,6 +8,7 @@ import database from '@react-native-firebase/database';
 import firestore from '@react-native-firebase/firestore';
 
 // importing component
+import NoBox from '../../components/icons/NoBox/index.js';
 import BoxEmpty from '../../components/icons/BoxEmpty/index.js';
 import Post from '../../components/Post/index.js';
 
@@ -213,9 +214,12 @@ class Main extends Component {
 
     if (state.box === '') {
       return (
-        <Headline style={styles.noPostYetText}>
-          Please create or ask a friend to add you to a box!
-        </Headline>
+        <View style={styles.listEmptyComponent}>
+          <NoBox />
+          <Headline style={styles.noPostYetText}>
+            Create / ask a friend to add you to a box!
+          </Headline>
+        </View>
       );
     }
 

@@ -1,6 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
-
-const {height} = Dimensions.get('window');
+import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   mainContainer: {
@@ -10,7 +8,6 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   listEmptyComponent: {
-    marginTop: height / 5,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
