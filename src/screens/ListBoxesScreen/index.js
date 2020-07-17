@@ -146,7 +146,7 @@ class ListBoxesScreen extends Component {
             return (
               <View style={styles.emptyComponentContainer}>
                 <AddBox />
-                <Headline style={[Styles.fontSmall, styles.noBoxesYet]}>
+                <Headline style={[Styles.fontLarge, styles.noBoxesYet]}>
                   Add a Box
                 </Headline>
               </View>
