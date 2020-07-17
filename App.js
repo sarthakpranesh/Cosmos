@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {StatusBar} from 'react-native';
+import {StatusBar, Dimensions} from 'react-native';
 import {Appbar} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import SplashScreen from 'react-native-splash-screen';
@@ -41,6 +41,11 @@ import {getData} from './src/utils/asyncStorageHelper.js';
 // listen for notifications
 import startNotificationListening from './src/utils/Notifications/index.js';
 
+// importing Styles
+import Styles from './src/Styles.js';
+
+const {width} = Dimensions.get('window');
+
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
@@ -66,8 +71,10 @@ class PostViewProfileStack extends Component {
           options={{
             header: ({navigation}) => {
               return (
-                <Appbar.Header style={{flexDirection: 'row-reverse'}}>
+                <Appbar.Header
+                  style={{flexDirection: 'row-reverse', height: width * 0.14}}>
                   <Appbar.Action
+                    size={width * 0.06}
                     icon={({color, size}) => (
                       <Icon name="edit-2" size={size} color={color} />
                     )}
@@ -91,8 +98,9 @@ class PostViewProfileStack extends Component {
             },
             header: ({navigation}) => {
               return (
-                <Appbar.Header>
+                <Appbar.Header styles={{height: width * 0.14}}>
                   <Appbar.Action
+                    size={width * 0.06}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
@@ -116,8 +124,9 @@ class PostViewProfileStack extends Component {
             },
             header: ({navigation}) => {
               return (
-                <Appbar.Header>
+                <Appbar.Header style={{height: width * 0.14}}>
                   <Appbar.Action
+                    size={width * 0.06}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
@@ -141,8 +150,9 @@ class PostViewProfileStack extends Component {
             },
             header: ({navigation}) => {
               return (
-                <Appbar.Header>
+                <Appbar.Header styles={{height: width * 0.14}}>
                   <Appbar.Action
+                    size={width * 0.06}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
@@ -179,7 +189,7 @@ class PostViewStack extends Component {
           options={{
             header: ({navigation}) => {
               return (
-                <Appbar.Header>
+                <Appbar.Header style={{height: width * 0.14}}>
                   <Appbar.Content
                     onPress={() => {
                       if (state.box !== '') {
@@ -187,8 +197,10 @@ class PostViewStack extends Component {
                       }
                     }}
                     title={state.box === '' ? 'Cosmos' : state.box}
+                    titleStyle={Styles.fontMedium}
                   />
                   <Appbar.Action
+                    size={width * 0.06}
                     icon={({color, size}) => (
                       <Icon name="box" size={size} color={color} />
                     )}
@@ -212,15 +224,17 @@ class PostViewStack extends Component {
             },
             header: ({navigation}) => {
               return (
-                <Appbar.Header>
+                <Appbar.Header style={{height: width * 0.14}}>
                   <Appbar.Action
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
                     onPress={() => navigation.goBack()}
+                    size={width * 0.06}
                   />
                   <Appbar.Content
                     title={state.box === '' ? 'Cosmos' : state.box}
+                    titleStyle={Styles.fontMedium}
                   />
                 </Appbar.Header>
               );
@@ -240,8 +254,9 @@ class PostViewStack extends Component {
             },
             header: ({navigation}) => {
               return (
-                <Appbar.Header>
+                <Appbar.Header style={{height: width * 0.14}}>
                   <Appbar.Action
+                    size={width * 0.06}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
@@ -265,8 +280,9 @@ class PostViewStack extends Component {
             },
             header: ({navigation}) => {
               return (
-                <Appbar.Header>
+                <Appbar.Header style={{height: width * 0.14}}>
                   <Appbar.Action
+                    size={width * 0.06}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
@@ -290,8 +306,9 @@ class PostViewStack extends Component {
             },
             header: ({navigation}) => {
               return (
-                <Appbar.Header>
+                <Appbar.Header style={{height: width * 0.14}}>
                   <Appbar.Action
+                    size={width * 0.06}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
@@ -315,8 +332,9 @@ class PostViewStack extends Component {
             },
             header: ({navigation}) => {
               return (
-                <Appbar.Header>
+                <Appbar.Header style={{height: width * 0.14}}>
                   <Appbar.Action
+                    size={width * 0.06}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}

@@ -19,6 +19,9 @@ import {Context as UserContext} from '../../contexts/UserContext.js';
 // importing firebase utils
 import {reactToPost} from '../../utils/firebase.js';
 
+// importing styles
+import Styles from '../../Styles.js';
+
 const {width} = Dimensions.get('screen');
 
 const Post = ({
@@ -41,12 +44,13 @@ const Post = ({
     <Card style={styles.mainPostContainer}>
       <Card.Title
         style={styles.postTitleContainer}
+        titleStyle={Styles.fontMedium}
         title={item.createdBy ? item.createdBy : 'Name'}
-        left={({size}) => {
+        left={() => {
           if (handleOpenAccount === null) {
             return (
               <LeftContent
-                size={size}
+                size={width * 0.1}
                 src={item.createdByPhoto ? item.createdByPhoto : null}
               />
             );
@@ -54,19 +58,19 @@ const Post = ({
           return (
             <TouchableOpacity onPress={handleOpenAccount}>
               <LeftContent
-                size={size}
+                size={width * 0.1}
                 src={item.createdByPhoto ? item.createdByPhoto : null}
               />
             </TouchableOpacity>
           );
         }}
-        right={({size}) => {
+        right={() => {
           if (item.uid === uid) {
             return (
               <TouchableOpacity
                 style={styles.rightOptions}
                 onPress={postOptions}>
-                <Icon name="more-vertical" size={size} color="white" />
+                <Icon name="more-vertical" size={width * 0.06} color="white" />
               </TouchableOpacity>
             );
           }
@@ -81,9 +85,15 @@ const Post = ({
         </TouchableOpacity>
       )}
       <Card.Actions style={{marginVertical: 0, paddingVertical: 0, zIndex: 2}}>
-        <Caption>Love:{item.love ? item.love.length : 0} </Caption>
-        <Caption>Meh:{item.meh ? item.meh.length : 0} </Caption>
-        <Caption>Sad:{item.sad ? item.sad.length : 0}</Caption>
+        <Caption style={Styles.fontSmall}>
+          Love:{item.love ? item.love.length : 0}{' '}
+        </Caption>
+        <Caption style={Styles.fontSmall}>
+          Meh:{item.meh ? item.meh.length : 0}{' '}
+        </Caption>
+        <Caption style={Styles.fontSmall}>
+          Sad:{item.sad ? item.sad.length : 0}
+        </Caption>
       </Card.Actions>
       <Card.Actions style={{marginVertical: 0, paddingVertical: 0}}>
         <Button
@@ -93,7 +103,7 @@ const Post = ({
           }}>
           <Icon
             name="heart"
-            size={24}
+            size={width * 0.06}
             color={hasReacted('love') ? 'red' : 'white'}
           />
         </Button>
@@ -104,7 +114,7 @@ const Post = ({
           }}>
           <Icon
             name="meh"
-            size={24}
+            size={width * 0.06}
             color={hasReacted('meh') ? 'green' : 'white'}
           />
         </Button>
@@ -115,22 +125,22 @@ const Post = ({
           }}>
           <Icon
             name="frown"
-            size={24}
+            size={width * 0.06}
             color={hasReacted('sad') ? 'yellow' : 'white'}
           />
         </Button>
         <Button
           onPress={handleOpenComment}
           style={{alignSelf: 'flex-end', position: 'absolute', right: 10}}>
-          <Icon name="message-square" size={24} />
+          <Icon name="message-square" size={width * 0.06} />
         </Button>
       </Card.Actions>
       <Card.Content>
         {handleOpenPost === null ? (
           fullPost ? (
-            <Paragraph>{item.postCaption}</Paragraph>
+            <Paragraph style={Styles.fontMedium}>{item.postCaption}</Paragraph>
           ) : (
-            <Paragraph>
+            <Paragraph style={Styles.fontMedium}>
               {item.postCaption.length > 60
                 ? `${item.postCaption.slice(0, 60)}... See More`
                 : item.postCaption}
@@ -139,9 +149,11 @@ const Post = ({
         ) : (
           <TouchableOpacity onPress={handleOpenPost}>
             {fullPost ? (
-              <Paragraph>{item.postCaption}</Paragraph>
+              <Paragraph style={Styles.fontMedium}>
+                {item.postCaption}
+              </Paragraph>
             ) : (
-              <Paragraph>
+              <Paragraph style={Styles.fontMedium}>
                 {item.postCaption.length > 60
                   ? `${item.postCaption.slice(0, 60)}... See More`
                   : item.postCaption}
@@ -164,6 +176,7 @@ const styles = StyleSheet.create({
   postTitleContainer: {
     marginVertical: 0,
     paddingVertical: 0,
+    minHeight: width * 0.16,
   },
   rightOptions: {
     right: 10,

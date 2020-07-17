@@ -10,6 +10,7 @@ import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing styles
 import styles from './styles';
+import Styles from '../../Styles.js';
 
 // importing firebase utils
 import {updateDisplayName} from '../../utils/firebase';
@@ -133,30 +134,33 @@ class MainSettingsScreen extends Component {
             style={styles.userImage}
           />
           <View style={styles.inputChangeContainer}>
-            <Text style={styles.label}>Username</Text>
+            <Text style={Styles.fontSmall}>Username</Text>
             <TextInput
               mode="outlined"
               placeholder="Username"
               maxLength={40}
               value={username}
-              style={styles.inAppTextInput}
+              dense={true}
+              style={[Styles.fontMedium, styles.inAppTextInput]}
               onChangeText={(newUsername) => this.setUsername(newUsername)}
               onKeyPress={() => this.checkForChange()}
             />
           </View>
           <View style={styles.inputChangeContainer}>
-            <Text style={styles.label}>Email</Text>
+            <Text style={Styles.fontSmall}>Email</Text>
             <TextInput
               mode="outlined"
               disabled={true}
               placeholder="Email"
               value={user.email}
-              style={styles.inAppTextInput}
+              dense={true}
+              style={[Styles.fontMedium, styles.inAppTextInput]}
               editable={false}
             />
           </View>
           <View style={styles.btnWrapper}>
             <Button
+              labelStyle={Styles.fontSmall}
               loading={updating}
               mode="contained"
               icon="update"
@@ -165,6 +169,7 @@ class MainSettingsScreen extends Component {
               Update
             </Button>
             <Button
+              labelStyle={Styles.fontSmall}
               loading={loggingOut}
               icon="logout"
               mode="contained"

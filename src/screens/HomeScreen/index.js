@@ -21,6 +21,7 @@ import {firebaseReactionNotify} from '../../utils/Notifications/index.js';
 
 // importing styles
 import styles from './styles.js';
+import Styles from '../../Styles.js';
 
 class Main extends Component {
   static contextType = UserContext;
@@ -222,7 +223,7 @@ class Main extends Component {
       return (
         <View style={styles.listEmptyComponent}>
           <NoBox />
-          <Headline style={styles.noPostYetText}>
+          <Headline style={[Styles.fontExtraLarge, styles.noPostYetText]}>
             Create / ask a friend to add you to a box!
           </Headline>
         </View>
@@ -233,7 +234,9 @@ class Main extends Component {
       return (
         <View style={styles.listEmptyComponent}>
           <BoxEmpty />
-          <Headline style={styles.noPostYetText}>Box is empty today</Headline>
+          <Headline style={[Styles.fontExtraLarge, styles.noPostYetText]}>
+            Box is empty today
+          </Headline>
         </View>
       );
     }

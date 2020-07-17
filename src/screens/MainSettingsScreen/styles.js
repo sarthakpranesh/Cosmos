@@ -1,5 +1,7 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {DarkTheme} from 'react-native-paper';
+
+const {width, height} = Dimensions.get('window');
 
 export default StyleSheet.create({
   settingContainer: {
@@ -8,19 +10,17 @@ export default StyleSheet.create({
     paddingHorizontal: 16,
   },
   userImage: {
-    height: 100,
-    width: 100,
+    height: width * 0.25,
+    width: width * 0.25,
     borderRadius: 50,
     alignSelf: 'center',
-    marginVertical: 40,
+    marginVertical: height * 0.02,
   },
   inputChangeContainer: {
     marginVertical: 10,
   },
   inAppTextInput: {
-    height: 50,
     paddingHorizontal: 10,
-    marginVertical: 5,
     color: 'white',
     backgroundColor: DarkTheme.colors.background,
   },

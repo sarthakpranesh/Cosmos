@@ -16,13 +16,11 @@ export default StyleSheet.create({
   textInput: {
     marginBottom: 10,
   },
-  CardList: {
-    marginTop: 10,
-  },
   card: {
     borderRadius: 0,
     shadowOpacity: 0,
-    padding: 16,
+    padding: 8,
+    paddingLeft: 16,
   },
   Divider: {
     height: 1,

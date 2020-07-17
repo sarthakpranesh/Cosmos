@@ -30,6 +30,6 @@ export default StyleSheet.create({
     zIndex: 100,
   },
   commentBtn: {
-    marginVertical: 10,
+    marginVertical: 6,
   },
 });

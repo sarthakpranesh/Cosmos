@@ -6,6 +6,7 @@ import {
   ScrollView,
   Alert,
   ToastAndroid,
+  Dimensions,
 } from 'react-native';
 import {Text, ActivityIndicator, TextInput, Button} from 'react-native-paper';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -20,6 +21,9 @@ import {uploadImage, updatePosts} from '../../utils/firebase.js';
 
 // importing styles
 import styles from './styles';
+import Styles from '../../Styles.js';
+
+const {width} = Dimensions.get('window'); 
 
 class AddImageScreen extends Component {
   static contextType = UserContext;
@@ -214,8 +218,8 @@ class AddImageScreen extends Component {
               }
               this.openImagePicker();
             }}>
-            <Icon size={30} name="plus" color="white" />
-            <Text>Open Gallary</Text>
+            <Icon size={width * 0.06} name="plus" color="white" />
+            <Text style={Styles.fontMedium}>Open Gallary</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.optionContainer}
@@ -229,8 +233,8 @@ class AddImageScreen extends Component {
               }
               this.openImageCamera();
             }}>
-            <Icon size={30} name="camera" color="white" />
-            <Text>Open Camera</Text>
+            <Icon size={width * 0.06} name="camera" color="white" />
+            <Text style={Styles.fontMedium}>Open Camera</Text>
           </TouchableOpacity>
         </View>
       </View>

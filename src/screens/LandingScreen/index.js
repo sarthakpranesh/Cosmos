@@ -18,6 +18,7 @@ import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing common styles
 import styles from './styles.js';
+import Styles from '../../Styles.js';
 
 const {width} = Dimensions.get('screen');
 
@@ -124,7 +125,7 @@ class LandingScreen extends Component {
     });
     return (
       <View style={styles.innerView}>
-        <Headline>{item.header}</Headline>
+        <Headline style={Styles.fontLarge}>{item.header}</Headline>
         <Animated.Image
           source={item.image}
           style={[
@@ -132,10 +133,14 @@ class LandingScreen extends Component {
             {opacity, transform: [{rotate}, {scale}]},
           ]}
         />
-        <Caption>{item.madeBy}</Caption>
-        <Text style={{textAlign: 'justify', marginTop: 10}}>{item.body}</Text>
+        <Caption style={Styles.fontSmall}>{item.madeBy}</Caption>
+        <Text
+          style={[{textAlign: 'justify', marginTop: 10}, Styles.fontMedium]}>
+          {item.body}
+        </Text>
         <Button
           mode="contained"
+          labelStyle={Styles.fontMedium}
           style={styles.googleBtn}
           onPress={
             index === data.length - 1

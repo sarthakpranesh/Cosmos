@@ -15,6 +15,7 @@ import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing screen
 import styles from './styles.js';
+import Styles from '../../Styles.js';
 
 class CommentScreen extends Component {
   static contextType = UserContext;
@@ -153,7 +154,10 @@ class CommentScreen extends Component {
             <Card
               style={styles.card}
               onPress={() => this.handleCommentClick(index)}>
-              <Text>{`${item.name}: ${item.comment}`}</Text>
+              <Text
+                style={
+                  Styles.fontMedium
+                }>{`${item.name}: ${item.comment}`}</Text>
             </Card>
           );
         }}
@@ -170,7 +174,7 @@ class CommentScreen extends Component {
         {this.renderComments()}
         <View style={styles.addComment}>
           <TextInput
-            style={styles.textInput}
+            style={[Styles.fontMedium, styles.textInput]}
             mode="outlined"
             placeholder={post.comment ? 'Comment' : 'Start a discussion'}
             maxLength={300}
@@ -179,6 +183,7 @@ class CommentScreen extends Component {
             onChangeText={(c) => this.setComment(c)}
           />
           <Button
+            labelStyle={Styles.fontSmall}
             style={styles.commentBtn}
             loading={commenting}
             icon="send"

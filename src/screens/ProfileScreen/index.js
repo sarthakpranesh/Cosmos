@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
   Vibration,
+  Dimensions,
 } from 'react-native';
 import {Text, ActivityIndicator, Headline} from 'react-native-paper';
 import ActionSheet from 'react-native-actionsheet';
@@ -27,6 +28,9 @@ import {deletePosts} from '../../utils/firebase.js';
 
 // importing global styles
 import styles from './styles.js';
+import Styles from '../../Styles.js';
+
+const {width} = Dimensions.get('window');
 
 class ProfileScreen extends Component {
   static contextType = UserContext;
@@ -193,23 +197,23 @@ class ProfileScreen extends Component {
             alt="User Image"
             style={styles.userImage}
           />
-          <Headline>{name}</Headline>
+          <Headline style={Styles.fontLarge}>{name}</Headline>
           <View style={styles.fixedTopHeaderInnerSection}>
             <View style={styles.fixedTopHeaderCards}>
-              <Text>{posts.length}</Text>
-              <Text style={styles.postResp}>POSTS</Text>
+              <Text style={Styles.fontMedium}>{posts.length}</Text>
+              <Text style={Styles.fontMedium}>POSTS</Text>
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text style={{color: 'red'}}>{love}</Text>
-              <Icon name="heart" size={24} color="red" />
+              <Text style={[Styles.fontMedium, {color: 'red'}]}>{love}</Text>
+              <Icon name="heart" size={width * 0.06} color="red" />
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text style={{color: 'green'}}>{meh}</Text>
-              <Icon name="meh" size={24} color="green" />
+              <Text style={[Styles.fontMedium, {color: 'green'}]}>{meh}</Text>
+              <Icon name="meh" size={width * 0.06} color="green" />
             </View>
             <View style={styles.fixedTopHeaderCards}>
-              <Text style={{color: 'yellow'}}>{sad}</Text>
-              <Icon name="frown" size={24} color="yellow" />
+              <Text style={[Styles.fontMedium, {color: 'yellow'}]}>{sad}</Text>
+              <Icon name="frown" size={width * 0.06} color="yellow" />
             </View>
           </View>
         </View>

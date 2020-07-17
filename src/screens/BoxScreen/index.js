@@ -22,6 +22,7 @@ import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing styles
 import styles from './styles.js';
+import Styles from '../../Styles.js';
 
 class BoxScreen extends Component {
   static contextType = UserContext;
@@ -156,13 +157,14 @@ class BoxScreen extends Component {
     return (
       <View style={styles.boxScreenContainer}>
         <View style={styles.authorContainer}>
-          <Caption>Author of Box</Caption>
-          <Headline>{this.state.auth[0]}</Headline>
+          <Headline style={Styles.fontMedium}>
+            Author: {this.state.auth[0]}
+          </Headline>
         </View>
         <View style={styles.addPartConatiner}>
-          <Text>Add Participant</Text>
+          <Text style={Styles.fontSmall}>Add Participant</Text>
           <TextInput
-            style={styles.textInput}
+            style={[Styles.fontMedium, styles.textInput]}
             mode="outlined"
             placeholder="Email"
             maxLength={50}
@@ -171,6 +173,7 @@ class BoxScreen extends Component {
             onChangeText={(email) => this.setAddParticipant(email)}
           />
           <Button
+            labelStyle={Styles.fontSmall}
             loading={btnLoading}
             icon="plus"
             onPress={() => this.handleAddUser()}>
@@ -179,7 +182,11 @@ class BoxScreen extends Component {
         </View>
         <FlatList
           ListHeaderComponent={() => {
-            return <Text>Enrolled Users: {enrolledBy.length}</Text>;
+            return (
+              <Text style={Styles.fontSmall}>
+                Enrolled Users: {enrolledBy.length}
+              </Text>
+            );
           }}
           ListHeaderComponentStyle={{margin: 10}}
           ListEmptyComponent={() => {
@@ -192,7 +199,7 @@ class BoxScreen extends Component {
               <Card
                 style={styles.card}
                 onPress={() => this.handleUserClick(index)}>
-                <Subheading>{item.name}</Subheading>
+                <Subheading style={Styles.fontMedium}>{item.name}</Subheading>
               </Card>
             );
           }}

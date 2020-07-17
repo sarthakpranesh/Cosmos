@@ -6,18 +6,17 @@ export default StyleSheet.create({
     backgroundColor: 'black',
   },
   authorContainer: {
-    padding: 10,
-    paddingVertical: 20,
+    padding: 6,
   },
   addPartConatiner: {
-    marginBottom: 10,
     paddingHorizontal: 10,
   },
   textInput: {
     marginBottom: 10,
   },
   card: {
-    padding: 16,
+    padding: 8,
+    paddingLeft: 16,
     borderRadius: 0,
   },
   Divider: {

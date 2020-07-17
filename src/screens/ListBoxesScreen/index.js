@@ -24,6 +24,7 @@ import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing styles
 import styles from './styles.js';
+import Styles from '../../Styles.js';
 
 class ListBoxesScreen extends Component {
   static contextType = UserContext;
@@ -111,15 +112,15 @@ class ListBoxesScreen extends Component {
     const {enrolledBoxes, newBoxName, btnLoading} = this.state;
     return (
       <View style={styles.listCircleContainer}>
-        <Text style={styles.helpText}>
+        <Text style={[Styles.fontSmall, styles.helpText]}>
           Boxes are your personal Friend/Family/Work groups where you share
           relevant posts which interest a perticular group. You can either join
           an existing group or create a new group.
         </Text>
         <View style={styles.addPartConatiner}>
-          <Text>Create New Box</Text>
+          <Text style={Styles.fontSmall}>Create New Box</Text>
           <TextInput
-            style={styles.textInput}
+            style={[Styles.fontMedium, styles.textInput]}
             mode="outlined"
             placeholder="Box Name"
             maxLength={30}
@@ -128,6 +129,7 @@ class ListBoxesScreen extends Component {
             onChangeText={(nb) => this.setNewBoxName(nb)}
           />
           <Button
+            labelStyle={Styles.fontSmall}
             loading={btnLoading}
             icon="plus"
             onPress={() => this.handleCreateBox()}>
@@ -137,18 +139,19 @@ class ListBoxesScreen extends Component {
         <Divider />
         <FlatList
           ListHeaderComponent={() => {
-            return <Text>Your enrolled Boxes</Text>;
+            return <Text style={Styles.fontSmall}>Your enrolled Boxes</Text>;
           }}
           ListHeaderComponentStyle={{margin: 10}}
           ListEmptyComponent={() => {
             return (
               <View style={styles.emptyComponentContainer}>
                 <AddBox />
-                <Headline style={styles.noBoxesYet}>Add a Box</Headline>
+                <Headline style={[Styles.fontSmall, styles.noBoxesYet]}>
+                  Add a Box
+                </Headline>
               </View>
             );
           }}
-          style={styles.CardList}
           data={enrolledBoxes}
           keyExtractor={(item) => item}
           renderItem={({item, index}) => {
@@ -156,7 +159,7 @@ class ListBoxesScreen extends Component {
               <Card
                 onPress={() => this.handleSelectBox(item)}
                 style={styles.card}>
-                <Subheading>{item}</Subheading>
+                <Subheading styles={Styles.fontMedium}>{item}</Subheading>
               </Card>
             );
           }}
