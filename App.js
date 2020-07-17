@@ -38,6 +38,9 @@ import {
 // importing async utils
 import {getData} from './src/utils/asyncStorageHelper.js';
 
+// listen for notifications
+import startNotificationListening from './src/utils/Notifications/index.js';
+
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
@@ -45,6 +48,8 @@ class PostViewProfileStack extends Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
+
+    startNotificationListening();
   }
 
   render() {

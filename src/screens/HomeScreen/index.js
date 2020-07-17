@@ -17,9 +17,7 @@ import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing utils
 import {deletePosts, getUserDetails} from '../../utils/firebase.js';
-import startNotificationListening, {
-  firebaseReactionNotify,
-} from '../../utils/Notifications/index.js';
+import {firebaseReactionNotify} from '../../utils/Notifications/index.js';
 
 // importing styles
 import styles from './styles.js';
@@ -35,7 +33,6 @@ class Main extends Component {
       actionSheetIndex: -1,
     };
     this.ActionSheet = null;
-    startNotificationListening();
   }
 
   componentDidMount() {
@@ -70,37 +67,42 @@ class Main extends Component {
         firestore()
           .collection('Boxes')
           .doc(state.box)
-          .onSnapshot((docSnap) => {
-            const boxData = docSnap.data();
-            if (boxData === undefined) {
-              currentBox('');
-              return;
-            }
-            const checkMembership = boxData.enrolledBy.some(
-              (user) => state.uid === user.uid,
-            );
-            console.log('Is user a member: ', checkMembership);
-            if (!checkMembership) {
-              firestore()
-                .collection('Users')
-                .doc(state.uid)
-                .get()
-                .then((doc) => {
-                  const userData = doc.data();
-                  if (userData.enrolledBoxes.length !== 0) {
-                    currentBox(userData.enrolledBoxes[0]);
-                    Alert.alert(
-                      'Oops',
-                      'Looks like the admin removed you from the box!',
-                      [{text: 'ok'}],
-                      {cancelable: true},
-                    );
-                  } else {
-                    currentBox('');
-                  }
-                });
-            }
-          });
+          .onSnapshot(
+            (docSnap) => {
+              const boxData = docSnap.data();
+              if (boxData === undefined) {
+                currentBox('');
+                return;
+              }
+              const checkMembership = boxData.enrolledBy.some(
+                (user) => state.uid === user.uid,
+              );
+              console.log('Is user a member: ', checkMembership);
+              if (!checkMembership) {
+                firestore()
+                  .collection('Users')
+                  .doc(state.uid)
+                  .get()
+                  .then((doc) => {
+                    const userData = doc.data();
+                    if (userData.enrolledBoxes.length !== 0) {
+                      currentBox(userData.enrolledBoxes[0]);
+                      Alert.alert(
+                        'Oops',
+                        'Looks like the admin removed you from the box!',
+                        [{text: 'ok'}],
+                        {cancelable: true},
+                      );
+                    } else {
+                      currentBox('');
+                    }
+                  });
+              }
+            },
+            (err) => {
+              console.log(err.message);
+            },
+          );
       }
     }
   }

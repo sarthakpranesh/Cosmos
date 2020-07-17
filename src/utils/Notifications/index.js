@@ -9,7 +9,7 @@ const startNotificationListening = () => {
       console.log(
         `Notification received in foreground: ${notification.title} : ${notification.body}`,
       );
-      completion({alert: true, sound: true, badge: true});
+      completion({alert: false, sound: false, badge: false});
     },
   );
 
