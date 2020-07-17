@@ -5,7 +5,6 @@ import {
   Card,
   Headline,
   Subheading,
-  Caption,
   Text,
   Divider,
   Button,

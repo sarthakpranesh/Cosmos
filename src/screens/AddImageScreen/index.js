@@ -23,7 +23,7 @@ import {uploadImage, updatePosts} from '../../utils/firebase.js';
 import styles from './styles';
 import Styles from '../../Styles.js';
 
-const {width} = Dimensions.get('window'); 
+const {width} = Dimensions.get('window');
 
 class AddImageScreen extends Component {
   static contextType = UserContext;
