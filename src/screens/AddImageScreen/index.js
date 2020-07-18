@@ -182,6 +182,7 @@ class AddImageScreen extends Component {
               </View>
               <View style={styles.optionsContainer}>
                 <Button
+                  labelStyle={Styles.fontSmall}
                   mode="contained"
                   onPress={() => {
                     this.setState({
@@ -193,7 +194,10 @@ class AddImageScreen extends Component {
                   }}>
                   Cancel
                 </Button>
-                <Button mode="contained" onPress={this.onPostUpload}>
+                <Button
+                  labelStyle={Styles.fontSmall}
+                  mode="contained"
+                  onPress={this.onPostUpload}>
                   Share
                 </Button>
               </View>

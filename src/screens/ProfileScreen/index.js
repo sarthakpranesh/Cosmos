@@ -69,9 +69,6 @@ class ProfileScreen extends Component {
           this.setState({
             name: u.name,
             photoURL: u.photoURL,
-            love: u.love ? u.love : 0,
-            meh: u.meh ? u.meh : 0,
-            sad: u.sad ? u.sad : 0,
           });
         } catch (err) {
           console.log(err.message);
@@ -89,14 +86,33 @@ class ProfileScreen extends Component {
         try {
           const postsObj = snap.val();
           if (postsObj === null) {
-            throw new Error('No Posts here today!');
+            return this.setState({
+              posts: [],
+              love: 0,
+              meh: 0,
+              sad: 0,
+              isLoading: false,
+            });
           }
           const posts = Object.keys(postsObj).map((key) => {
             return postsObj[key];
           });
           const userPosts = posts.filter(({uid}) => uid === this.uid);
-          this.setPosts(userPosts);
-          this.setLoading(false);
+          let love = 0,
+            meh = 0,
+            sad = 0;
+          userPosts.forEach((post) => {
+            love += post.love ? post.love.length : 0;
+            meh += post.meh ? post.meh.length : 0;
+            sad += post.sad ? post.sad.length : 0;
+          });
+          this.setState({
+            posts: userPosts,
+            love,
+            meh,
+            sad,
+            isLoading: false,
+          });
         } catch (err) {
           console.log(err.message);
           this.setLoading(false);
@@ -131,9 +147,14 @@ class ProfileScreen extends Component {
 
   handleActionPress = async (index) => {
     const {actionSheetIndex, posts} = this.state;
+    const {state} = this.context;
     // if index is 0 - handle delete
     if (index === 0) {
-      await deletePosts(posts[actionSheetIndex].name);
+      database()
+        .ref(state.box)
+        .child(posts[actionSheetIndex].name.split('.')[0])
+        .off();
+      await deletePosts(state.box, posts[actionSheetIndex].name);
       ToastAndroid.showWithGravity(
         'Post Deleted Successfully',
         ToastAndroid.SHORT,

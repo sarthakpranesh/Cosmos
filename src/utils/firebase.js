@@ -29,9 +29,6 @@ export const setUpNewUser = (uid) => {
     uid,
     name: displayName,
     photoURL: photoURL,
-    love: 0,
-    meh: 0,
-    sad: 0,
     enrolledBoxes: [],
     email: email,
   });
@@ -131,29 +128,6 @@ export const setPost = (box, name, post) => {
   });
 };
 
-export const reactToUser = (uid, reactiontype, dif) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const user = await getUserDetails(uid);
-      if (Object.keys(user).includes(reactiontype)) {
-        user[reactiontype] = user[reactiontype] + dif;
-      } else {
-        user[reactiontype] = 1;
-      }
-      await setUserDetails(uid, user);
-      resolve();
-    } catch (err) {
-      console.log(err);
-      ToastAndroid.showWithGravity(
-        err.message,
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
-      );
-      reject(err);
-    }
-  });
-};
-
 export const reactToPost = (box, postName, reactiontype) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -171,18 +145,15 @@ export const reactToPost = (box, postName, reactiontype) => {
         if (alreadyReacted) {
           post[reactiontype] = post[reactiontype].filter((u) => u !== uid);
           await setPost(box, name, post);
-          await reactToUser(post.uid, reactiontype, -1);
           return resolve();
         } else {
           post[reactiontype] = [...post[reactiontype], uid];
           await setPost(box, name, post);
-          await reactToUser(post.uid, reactiontype, 1);
           return resolve();
         }
       } else {
         post[reactiontype] = [uid];
         await setPost(box, name, post);
-        await reactToUser(post.uid, reactiontype, 1);
         return resolve();
       }
     } catch (err) {
@@ -198,6 +169,7 @@ export const reactToPost = (box, postName, reactiontype) => {
 };
 
 export const deletePosts = (box, postName) => {
+  console.log(box);
   return new Promise((resolve, reject) => {
     const name = postName.split('.')[0];
     database()

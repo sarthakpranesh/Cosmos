@@ -46,6 +46,7 @@ class PostViewScreen extends Component {
           });
         } catch (err) {
           console.log(err);
+          database().ref(state.box).child(post.name.split('.')[0]).off();
           this.props.navigation.goBack();
         }
       });
@@ -67,8 +68,7 @@ class PostViewScreen extends Component {
     const {state} = this.context;
     // if index is 0 - handle delete
     if (index === 0) {
-      console.log(state);
-      console.log('post name: ', post.name);
+      database().ref(state.box).child(post.name.split('.')[0]).off();
       await deletePosts(state.box, post.name);
       ToastAndroid.showWithGravity(
         'Post Deleted Successfully',

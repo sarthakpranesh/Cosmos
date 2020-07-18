@@ -192,6 +192,10 @@ class Main extends Component {
     const {state} = this.context;
     // if index is 0 - handle delete
     if (index === 0) {
+      database()
+        .ref(state.box)
+        .child(posts[actionSheetIndex].name.split('.')[0])
+        .off();
       await deletePosts(state.box, posts[actionSheetIndex].name);
       ToastAndroid.showWithGravity(
         'Post Deleted Successfully',
