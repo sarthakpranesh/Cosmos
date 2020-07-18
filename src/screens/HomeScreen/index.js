@@ -97,6 +97,9 @@ class Main extends Component {
                     } else {
                       currentBox('');
                     }
+                  })
+                  .catch((err) => {
+                    console.log(err);
                   });
               }
             },

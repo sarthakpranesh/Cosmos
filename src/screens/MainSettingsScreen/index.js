@@ -108,7 +108,7 @@ class MainSettingsScreen extends Component {
         {
           text: 'Sign Out',
           onPress: async () => {
-            database().ref(state.box).off('value');
+            database().ref(state.box).off();
             await GoogleSignin.revokeAccess();
             await Promise.all([
               GoogleSignin.signOut(),

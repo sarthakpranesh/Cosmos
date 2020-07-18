@@ -60,20 +60,25 @@ class ProfileScreen extends Component {
     firestore()
       .collection('Users')
       .doc(this.uid)
-      .onSnapshot((snap) => {
-        try {
-          const u = snap.data();
-          if (u === undefined) {
-            throw new Error('User not found, Your account might be deleted!');
+      .onSnapshot(
+        (snap) => {
+          try {
+            const u = snap.data();
+            if (u === undefined) {
+              throw new Error('User not found, Your account might be deleted!');
+            }
+            this.setState({
+              name: u.name,
+              photoURL: u.photoURL,
+            });
+          } catch (err) {
+            console.log(err.message);
           }
-          this.setState({
-            name: u.name,
-            photoURL: u.photoURL,
-          });
-        } catch (err) {
-          console.log(err.message);
-        }
-      });
+        },
+        (err) => {
+          console.log(err);
+        },
+      );
 
     const {state} = this.context;
     if (state.box === '') {
