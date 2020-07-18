@@ -140,7 +140,7 @@ class LandingScreen extends Component {
         </Text>
         <Button
           mode="contained"
-          labelStyle={Styles.fontMedium}
+          labelStyle={Styles.fontSmall}
           style={styles.googleBtn}
           onPress={
             index === data.length - 1
