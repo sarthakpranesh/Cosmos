@@ -1,6 +1,8 @@
 <div align="center">
 
-# Cosmos React-Native client
+<img src="./SocialAssets/readmeHeader.png" alt="Cosmos Header Banner" />
+
+# Cosmos - Boxed Social Media Platform
 
 [![Build Status](https://travis-ci.com/sarthakpranesh/cosmos.ReactNative.svg?branch=master)](https://travis-ci.com/sarthakpranesh/cosmos.ReactNative)
 [![GitHub issues](https://img.shields.io/github/issues/sarthakpranesh/cosmos.ReactNative)](https://github.com/sarthakpranesh/cosmos.ReactNative/issues)
@@ -8,12 +10,6 @@
 [![GitHub](https://img.shields.io/github/license/sarthakpranesH/cosmos.ReactNative)](https://github.com/sarthakpranesh/cosmos.ReactNative/blob/master/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/sarthakpranesh/cosmos.ReactNative)](https://github.com/sarthakpranesh/cosmos.ReactNative/stargazers)
 [![GitHub All Releases](https://img.shields.io/github/downloads/sarthakpranesh/cosmos.ReactNative/total)](https://github.com/sarthakpranesh/cosmos.ReactNative/releases)
-
-|   |   |   |
-|---|---|---|
-| <img src="./SocialAssets/2.jpg" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/3.jpg" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/4.jpg" alt="Cosmos Splash Screen" width="300">  |
-| <img src="./SocialAssets/5.png" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/6.png" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/7.png" alt="Cosmos Splash Screen" width="300">  |
-| <img src="./SocialAssets/8.png" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/9.png" alt="Cosmos Splash Screen" width="300">  | <img src="./SocialAssets/1.png" alt="Cosmos Splash Screen" width="300">  |
 
 </div>
 
