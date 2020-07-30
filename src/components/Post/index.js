@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   Image,
   Vibration,
+  Animated,
 } from 'react-native';
-import {Button, Card, Paragraph, Caption} from 'react-native-paper';
+import {Card, Paragraph, Caption, DarkTheme} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 
 // importing components
@@ -23,6 +24,7 @@ import {reactToPost} from '../../utils/firebase.js';
 import Styles from '../../Styles.js';
 
 const {width} = Dimensions.get('screen');
+const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
 const Post = ({
   item,
@@ -33,6 +35,21 @@ const Post = ({
   handleOpenComment = () => {},
   fullPost = false,
 }) => {
+  const heartAnimation = new Animated.Value(1);
+  const mehAnimation = new Animated.Value(1);
+  const sadAnimation = new Animated.Value(1);
+  const heartOpacity = heartAnimation.interpolate({
+    inputRange: [0.5, 1],
+    outputRange: [0, 1],
+  });
+  const mehOpacity = mehAnimation.interpolate({
+    inputRange: [0.5, 1],
+    outputRange: [0, 1],
+  });
+  const sadOpacity = sadAnimation.interpolate({
+    inputRange: [0.5, 1],
+    outputRange: [0, 1],
+  });
   const {state} = useContext(UserContext);
   const hasReacted = (reactionType) => {
     if (Object.keys(item).includes(reactionType)) {
@@ -96,44 +113,94 @@ const Post = ({
         </Caption>
       </Card.Actions>
       <Card.Actions style={{marginVertical: 0, paddingVertical: 0}}>
-        <Button
+        <TouchableOpacity
+          style={styles.reactIcons}
           onPress={() => {
             Vibration.vibrate(50);
-            reactToPost(state.box, item.name, 'love');
+            Animated.timing(heartAnimation, {
+              toValue: 0.5,
+              duration: 200,
+              useNativeDriver: true,
+            }).start(() => {
+              Animated.timing(heartAnimation, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true,
+              }).start(() => reactToPost(state.box, item.name, 'love'));
+            });
           }}>
-          <Icon
+          <AnimatedIcon
+            style={{
+              opacity: heartOpacity,
+              transform: [{scale: heartAnimation}],
+            }}
             name="heart"
             size={width * 0.06}
             color={hasReacted('love') ? 'red' : 'white'}
           />
-        </Button>
-        <Button
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.reactIcons}
           onPress={() => {
             Vibration.vibrate(50);
-            reactToPost(state.box, item.name, 'meh');
+            Animated.timing(mehAnimation, {
+              toValue: 0.5,
+              duration: 200,
+              useNativeDriver: true,
+            }).start(() => {
+              Animated.timing(mehAnimation, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true,
+              }).start(() => reactToPost(state.box, item.name, 'meh'));
+            });
           }}>
-          <Icon
+          <AnimatedIcon
+            style={{opacity: mehOpacity, transform: [{scale: mehAnimation}]}}
             name="meh"
             size={width * 0.06}
             color={hasReacted('meh') ? 'green' : 'white'}
           />
-        </Button>
-        <Button
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.reactIcons}
           onPress={() => {
             Vibration.vibrate(50);
-            reactToPost(state.box, item.name, 'sad');
+            Animated.timing(sadAnimation, {
+              toValue: 0.5,
+              duration: 200,
+              useNativeDriver: true,
+            }).start(() => {
+              Animated.timing(sadAnimation, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true,
+              }).start(() => reactToPost(state.box, item.name, 'sad'));
+            });
           }}>
-          <Icon
+          <AnimatedIcon
+            style={{opacity: sadOpacity, transform: [{scale: sadAnimation}]}}
             name="frown"
             size={width * 0.06}
             color={hasReacted('sad') ? 'yellow' : 'white'}
           />
-        </Button>
-        <Button
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={handleOpenComment}
-          style={{alignSelf: 'flex-end', position: 'absolute', right: 10}}>
-          <Icon name="message-square" size={width * 0.06} />
-        </Button>
+          style={[
+            styles.reactIcons,
+            {
+              alignSelf: 'flex-end',
+              position: 'absolute',
+              right: 10,
+            },
+          ]}>
+          <Icon
+            color={DarkTheme.colors.primary}
+            name="message-square"
+            size={width * 0.06}
+          />
+        </TouchableOpacity>
       </Card.Actions>
       <Card.Content>
         {handleOpenPost === null ? (
@@ -186,6 +253,11 @@ const styles = StyleSheet.create({
     height: width,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     resizeMode: 'cover',
+  },
+  reactIcons: {
+    marginHorizontal: width * 0.02,
+    marginVertical: width * 0.01,
+    marginTop: 0,
   },
 });
 
