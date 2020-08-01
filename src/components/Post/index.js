@@ -213,7 +213,10 @@ const Post = ({
             },
           ]}>
           <AnimatedIcon
-            style={{opacity: commentOpacity, transform: [{scale: commentAnimation}]}}
+            style={{
+              opacity: commentOpacity,
+              transform: [{scale: commentAnimation}],
+            }}
             color={DarkTheme.colors.primary}
             name="message-square"
             size={width * 0.06}
