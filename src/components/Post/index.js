@@ -38,17 +38,22 @@ const Post = ({
   const heartAnimation = new Animated.Value(1);
   const mehAnimation = new Animated.Value(1);
   const sadAnimation = new Animated.Value(1);
+  const commentAnimation = new Animated.Value(1);
   const heartOpacity = heartAnimation.interpolate({
-    inputRange: [0.5, 1],
-    outputRange: [0, 1],
+    inputRange: [0.8, 1],
+    outputRange: [0.2, 1],
   });
   const mehOpacity = mehAnimation.interpolate({
-    inputRange: [0.5, 1],
-    outputRange: [0, 1],
+    inputRange: [0.8, 1],
+    outputRange: [0.2, 1],
   });
   const sadOpacity = sadAnimation.interpolate({
-    inputRange: [0.5, 1],
-    outputRange: [0, 1],
+    inputRange: [0.8, 1],
+    outputRange: [0.2, 1],
+  });
+  const commentOpacity = commentAnimation.interpolate({
+    inputRange: [0.8, 1],
+    outputRange: [0.2, 1],
   });
   const {state} = useContext(UserContext);
   const hasReacted = (reactionType) => {
@@ -118,7 +123,7 @@ const Post = ({
           onPress={() => {
             Vibration.vibrate(50);
             Animated.timing(heartAnimation, {
-              toValue: 0.5,
+              toValue: 0.8,
               duration: 200,
               useNativeDriver: true,
             }).start(() => {
@@ -144,7 +149,7 @@ const Post = ({
           onPress={() => {
             Vibration.vibrate(50);
             Animated.timing(mehAnimation, {
-              toValue: 0.5,
+              toValue: 0.8,
               duration: 200,
               useNativeDriver: true,
             }).start(() => {
@@ -167,7 +172,7 @@ const Post = ({
           onPress={() => {
             Vibration.vibrate(50);
             Animated.timing(sadAnimation, {
-              toValue: 0.5,
+              toValue: 0.8,
               duration: 200,
               useNativeDriver: true,
             }).start(() => {
@@ -186,7 +191,19 @@ const Post = ({
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={handleOpenComment}
+          onPress={() => {
+            Animated.timing(commentAnimation, {
+              toValue: 0.8,
+              duration: 200,
+              useNativeDriver: true,
+            }).start(() => {
+              Animated.timing(commentAnimation, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true,
+              }).start(() => handleOpenComment());
+            });
+          }}
           style={[
             styles.reactIcons,
             {
@@ -195,7 +212,8 @@ const Post = ({
               right: 10,
             },
           ]}>
-          <Icon
+          <AnimatedIcon
+            style={{opacity: commentOpacity, transform: [{scale: commentAnimation}]}}
             color={DarkTheme.colors.primary}
             name="message-square"
             size={width * 0.06}
