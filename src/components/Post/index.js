@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/Feather';
 
 // importing components
 import LeftContent from '../LeftContent/index.js';
+import ReactionIcon from './ReactionIcon.js';
 
 // importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -35,14 +36,9 @@ const Post = ({
   handleOpenComment = () => {},
   fullPost = false,
 }) => {
-  const heartAnimation = new Animated.Value(1);
   const mehAnimation = new Animated.Value(1);
   const sadAnimation = new Animated.Value(1);
   const commentAnimation = new Animated.Value(1);
-  const heartOpacity = heartAnimation.interpolate({
-    inputRange: [0.8, 1],
-    outputRange: [0.2, 1],
-  });
   const mehOpacity = mehAnimation.interpolate({
     inputRange: [0.8, 1],
     outputRange: [0.2, 1],
@@ -118,110 +114,31 @@ const Post = ({
         </Caption>
       </Card.Actions>
       <Card.Actions style={{marginVertical: 0, paddingVertical: 0}}>
-        <TouchableOpacity
-          style={styles.reactIcons}
-          onPress={() => {
-            Vibration.vibrate(50);
-            Animated.timing(heartAnimation, {
-              toValue: 0.8,
-              duration: 200,
-              useNativeDriver: true,
-            }).start(() => {
-              Animated.timing(heartAnimation, {
-                toValue: 1,
-                duration: 200,
-                useNativeDriver: true,
-              }).start(() => reactToPost(state.box, item.name, 'love'));
-            });
-          }}>
-          <AnimatedIcon
-            style={{
-              opacity: heartOpacity,
-              transform: [{scale: heartAnimation}],
-            }}
-            name="heart"
-            size={width * 0.06}
-            color={hasReacted('love') ? 'red' : 'white'}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.reactIcons}
-          onPress={() => {
-            Vibration.vibrate(50);
-            Animated.timing(mehAnimation, {
-              toValue: 0.8,
-              duration: 200,
-              useNativeDriver: true,
-            }).start(() => {
-              Animated.timing(mehAnimation, {
-                toValue: 1,
-                duration: 200,
-                useNativeDriver: true,
-              }).start(() => reactToPost(state.box, item.name, 'meh'));
-            });
-          }}>
-          <AnimatedIcon
-            style={{opacity: mehOpacity, transform: [{scale: mehAnimation}]}}
-            name="meh"
-            size={width * 0.06}
-            color={hasReacted('meh') ? 'green' : 'white'}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.reactIcons}
-          onPress={() => {
-            Vibration.vibrate(50);
-            Animated.timing(sadAnimation, {
-              toValue: 0.8,
-              duration: 200,
-              useNativeDriver: true,
-            }).start(() => {
-              Animated.timing(sadAnimation, {
-                toValue: 1,
-                duration: 200,
-                useNativeDriver: true,
-              }).start(() => reactToPost(state.box, item.name, 'sad'));
-            });
-          }}>
-          <AnimatedIcon
-            style={{opacity: sadOpacity, transform: [{scale: sadAnimation}]}}
-            name="frown"
-            size={width * 0.06}
-            color={hasReacted('sad') ? 'yellow' : 'white'}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            Animated.timing(commentAnimation, {
-              toValue: 0.8,
-              duration: 200,
-              useNativeDriver: true,
-            }).start(() => {
-              Animated.timing(commentAnimation, {
-                toValue: 1,
-                duration: 200,
-                useNativeDriver: true,
-              }).start(() => handleOpenComment());
-            });
+        <ReactionIcon
+          iconName="heart"
+          pressAction={() => reactToPost(state.box, item.name, 'love')}
+          reactColor={hasReacted('love') ? 'red' : 'white'}
+        />
+        <ReactionIcon
+          iconName="meh"
+          pressAction={() => reactToPost(state.box, item.name, 'meh')}
+          reactColor={hasReacted('meh') ? 'green' : 'white'}
+        />
+        <ReactionIcon
+          iconName="frown"
+          pressAction={() => reactToPost(state.box, item.name, 'sad')}
+          reactColor={hasReacted('sad') ? 'yellow' : 'white'}
+        />
+        <ReactionIcon
+          style={{
+            alignSelf: 'flex-end',
+            position: 'absolute',
+            right: 10,
           }}
-          style={[
-            styles.reactIcons,
-            {
-              alignSelf: 'flex-end',
-              position: 'absolute',
-              right: 10,
-            },
-          ]}>
-          <AnimatedIcon
-            style={{
-              opacity: commentOpacity,
-              transform: [{scale: commentAnimation}],
-            }}
-            color={DarkTheme.colors.primary}
-            name="message-square"
-            size={width * 0.06}
-          />
-        </TouchableOpacity>
+          iconName="message-square"
+          pressAction={() => handleOpenComment()}
+          reactColor={DarkTheme.colors.primary}
+        />
       </Card.Actions>
       <Card.Content>
         {handleOpenPost === null ? (
