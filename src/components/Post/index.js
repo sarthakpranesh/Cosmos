@@ -1,19 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  Image,
-  Vibration,
-  Animated,
-} from 'react-native';
+import {StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
 import {Card, Paragraph, Caption, DarkTheme} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 
 // importing components
 import LeftContent from '../LeftContent/index.js';
 import ReactionIcon from './ReactionIcon.js';
+import PostBox from './PostBox.js';
 
 // importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -25,7 +19,6 @@ import {reactToPost} from '../../utils/firebase.js';
 import Styles from '../../Styles.js';
 
 const {width} = Dimensions.get('screen');
-const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
 const Post = ({
   item,
@@ -36,21 +29,6 @@ const Post = ({
   handleOpenComment = () => {},
   fullPost = false,
 }) => {
-  const mehAnimation = new Animated.Value(1);
-  const sadAnimation = new Animated.Value(1);
-  const commentAnimation = new Animated.Value(1);
-  const mehOpacity = mehAnimation.interpolate({
-    inputRange: [0.8, 1],
-    outputRange: [0.2, 1],
-  });
-  const sadOpacity = sadAnimation.interpolate({
-    inputRange: [0.8, 1],
-    outputRange: [0.2, 1],
-  });
-  const commentOpacity = commentAnimation.interpolate({
-    inputRange: [0.8, 1],
-    outputRange: [0.2, 1],
-  });
   const {state} = useContext(UserContext);
   const hasReacted = (reactionType) => {
     if (Object.keys(item).includes(reactionType)) {
@@ -96,11 +74,26 @@ const Post = ({
         }}
       />
       {fullPost ? (
-        <Image style={[styles.postImage]} source={{uri: item.postURL}} />
-      ) : (
-        <TouchableOpacity onPress={handleOpenPost}>
+        <PostBox
+          onDoubleTap={() => {
+            if (hasReacted('love')) {
+              return null;
+            }
+            reactToPost(state.box, item.name, 'love');
+          }}>
           <Image style={[styles.postImage]} source={{uri: item.postURL}} />
-        </TouchableOpacity>
+        </PostBox>
+      ) : (
+        <PostBox
+          onSingleTap={handleOpenPost}
+          onDoubleTap={() => {
+            if (hasReacted('love')) {
+              return null;
+            }
+            reactToPost(state.box, item.name, 'love');
+          }}>
+          <Image style={[styles.postImage]} source={{uri: item.postURL}} />
+        </PostBox>
       )}
       <Card.Actions style={{marginVertical: 0, paddingVertical: 0, zIndex: 2}}>
         <Caption style={Styles.fontSmall}>
