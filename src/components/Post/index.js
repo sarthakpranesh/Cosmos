@@ -54,7 +54,7 @@ const Post = ({
   const {state} = useContext(UserContext);
   const hasReacted = (reactionType) => {
     if (Object.keys(item).includes(reactionType)) {
-      return item[reactionType].find((u) => u === uid);
+      return !!item[reactionType].find((u) => u === uid);
     }
     return false;
   };
@@ -117,17 +117,17 @@ const Post = ({
         <ReactionIcon
           iconName="heart"
           pressAction={() => reactToPost(state.box, item.name, 'love')}
-          reactColor={hasReacted('love') ? 'red' : 'white'}
+          hasReacted={hasReacted('love')}
         />
         <ReactionIcon
           iconName="meh"
           pressAction={() => reactToPost(state.box, item.name, 'meh')}
-          reactColor={hasReacted('meh') ? 'green' : 'white'}
+          hasReacted={hasReacted('meh')}
         />
         <ReactionIcon
           iconName="frown"
           pressAction={() => reactToPost(state.box, item.name, 'sad')}
-          reactColor={hasReacted('sad') ? 'yellow' : 'white'}
+          hasReacted={hasReacted('sad')}
         />
         <ReactionIcon
           style={{
@@ -135,7 +135,7 @@ const Post = ({
             position: 'absolute',
             right: 10,
           }}
-          iconName="message-square"
+          iconName="comment"
           pressAction={() => handleOpenComment()}
           reactColor={DarkTheme.colors.primary}
         />
