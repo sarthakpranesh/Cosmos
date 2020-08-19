@@ -13,6 +13,7 @@ const ReactionIcon = ({
   style,
   iconName,
   pressAction = () => {},
+  longPressAction = () => {},
   hasReacted,
 }) => {
   const [fill, setFill] = useState(false);
@@ -29,10 +30,10 @@ const ReactionIcon = ({
         Icon = require('../Svg/Icons/HeartIcon/index.js').default;
         return <Icon fill={fill} />;
       case 'meh':
-        Icon = require('../Svg/Icons/MehFaceIcons/MehFaceIcon.js').default;
+        Icon = require('../Svg/Icons/MehFaceIcons/index.js').default;
         return <Icon fill={fill} />;
       case 'frown':
-        Icon = require('../Svg/Icons/SadFaceIcon/SadFaceIcon.js').default;
+        Icon = require('../Svg/Icons/SadFaceIcon/index.js').default;
         return <Icon fill={fill} />;
       case 'comment':
         Icon = require('../Svg/Icons/CommentIcon/index.js').default;
@@ -49,6 +50,7 @@ const ReactionIcon = ({
 
   return (
     <TouchableWithoutFeedback
+      onLongPress={() => longPressAction()}
       onPress={() => {
         Vibration.vibrate(15);
         Animated.timing(iconAnimation, {

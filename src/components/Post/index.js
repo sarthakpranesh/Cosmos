@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
 import {Card, Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import LeftContent from '../LeftContent/index.js';
 import ReactionIcon from '../ReactionIcon/ReactionIcon.js';
 import PostBox from './PostBox.js';
+import Reactions from './Reactions.js';
 
 // importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -30,6 +31,7 @@ const Post = ({
   fullPost = false,
 }) => {
   const {state} = useContext(UserContext);
+  const [reactionsVisible, setReactionVisibility] = useState(false);
   const hasReacted = (reactionType) => {
     if (Object.keys(item).includes(reactionType)) {
       return !!item[reactionType].find((u) => u === uid);
@@ -99,16 +101,19 @@ const Post = ({
         <ReactionIcon
           iconName="heart"
           pressAction={() => reactToPost(state.box, item.name, 'love')}
+          longPressAction={() => setReactionVisibility(!reactionsVisible)}
           hasReacted={hasReacted('love')}
         />
         <ReactionIcon
           iconName="meh"
           pressAction={() => reactToPost(state.box, item.name, 'meh')}
+          longPressAction={() => setReactionVisibility(!reactionsVisible)}
           hasReacted={hasReacted('meh')}
         />
         <ReactionIcon
           iconName="frown"
           pressAction={() => reactToPost(state.box, item.name, 'sad')}
+          longPressAction={() => setReactionVisibility(!reactionsVisible)}
           hasReacted={hasReacted('sad')}
         />
         <ReactionIcon
@@ -151,6 +156,15 @@ const Post = ({
           </TouchableOpacity>
         )}
       </Card.Content>
+      <Reactions
+        isVisible={reactionsVisible}
+        hideModal={() => setReactionVisibility(false)}
+        data={[
+          item.love ? item.love.length : 0,
+          item.meh ? item.meh.length : 0,
+          item.sad ? item.sad.length : 0,
+        ]}
+      />
     </Card>
   );
 };
