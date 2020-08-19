@@ -1,6 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import {View, Text, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 
 // import components
@@ -23,9 +22,6 @@ const Reactions = ({data, isVisible, hideModal}) => {
       <View style={{flex: 1}}>
         <View style={styles.HeaderConatienr}>
           <Text style={styles.HeaderText}>Reactions</Text>
-          <TouchableWithoutFeedback onPress={hideModal}>
-            <Icon name="x" size={24} color="rgba(255, 255, 255, 0.8)" />
-          </TouchableWithoutFeedback>
         </View>
         <View style={styles.Divider} />
         <View style={styles.ReactionCard}>
@@ -64,11 +60,11 @@ const styles = StyleSheet.create({
   HeaderConatienr: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
   HeaderText: {
     fontWeight: '100',
-    ...Styles.fontMedium,
+    ...Styles.fontLarge,
     color: 'rgba(255, 255, 255, 0.8)',
   },
   Divider: {
