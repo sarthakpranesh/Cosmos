@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
 
-const MehIcon = ({fill}) => {
+const MehFaceIcon = ({fill}) => {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <Path
@@ -15,4 +15,4 @@ const MehIcon = ({fill}) => {
   );
 };
 
-export default MehIcon;
+export default MehFaceIcon;

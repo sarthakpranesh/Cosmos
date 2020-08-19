@@ -14,9 +14,9 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import {Provider as PaperProvider, DarkTheme} from 'react-native-paper';
 
 // importing icons
-import AddPictureIcon from './src/components/icons/AddPictureIcon/index.js';
-import HomeIcon from './src/components/icons/HomeIcon/index.js';
-import ProfileIcon from './src/components/icons/ProfileIcon/index.js';
+import AddPictureIcon from './src/components/Svg/Icons/AddPictureIcon/index.js';
+import HomeIcon from './src/components/Svg/Icons/HomeIcon/index.js';
+import ProfileIcon from './src/components/Svg/Icons/ProfileIcon/index.js';
 
 // importing Screens
 import LandingScreen from './src/screens/LandingScreen/index.js';

@@ -5,7 +5,7 @@ import database from '@react-native-firebase/database';
 import ActionSheet from 'react-native-actionsheet';
 
 // importing components
-import NoComment from '../../components/icons/NoComment';
+import NoComment from '../../components/Svg/Illustrations/NoComment';
 
 // importing firebase utils
 import {commentOnPost, deleteComment} from '../../utils/firebase.js';

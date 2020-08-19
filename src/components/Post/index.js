@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Feather';
 
 // importing components
 import LeftContent from '../LeftContent/index.js';
-import ReactionIcon from './ReactionIcon.js';
+import ReactionIcon from '../ReactionIcon/ReactionIcon.js';
 import PostBox from './PostBox.js';
 
 // importing Context

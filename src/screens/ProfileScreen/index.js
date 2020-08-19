@@ -18,7 +18,7 @@ import firestore from '@react-native-firebase/firestore';
 
 // importing components
 import CacheImage from '../../components/CacheImage';
-import NoPosts from '../../components/icons/NoPosts/index.js';
+import NoPosts from '../../components/Svg/Illustrations/NoPosts/index.js';
 
 // importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';

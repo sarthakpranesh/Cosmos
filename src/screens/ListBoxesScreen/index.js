@@ -14,7 +14,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 // importing component
-import AddBox from '../../components/icons/AddBox/index.js';
+import AddBox from '../../components/Svg/Illustrations/AddBox/index.js';
 
 // importing firebase utils
 import {createBox} from '../../utils/firebase.js';
