@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
 import {StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
-import {Card, Paragraph, Caption, DarkTheme} from 'react-native-paper';
+import {Card, Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 
 // importing components
@@ -18,7 +18,7 @@ import {reactToPost} from '../../utils/firebase.js';
 // importing styles
 import Styles from '../../Styles.js';
 
-const {width} = Dimensions.get('screen');
+const {width, scale} = Dimensions.get('screen');
 
 const Post = ({
   item,
@@ -95,18 +95,7 @@ const Post = ({
           <Image style={[styles.postImage]} source={{uri: item.postURL}} />
         </PostBox>
       )}
-      <Card.Actions style={{marginVertical: 0, paddingVertical: 0, zIndex: 2}}>
-        <Caption style={Styles.fontSmall}>
-          Love:{item.love ? item.love.length : 0}{' '}
-        </Caption>
-        <Caption style={Styles.fontSmall}>
-          Meh:{item.meh ? item.meh.length : 0}{' '}
-        </Caption>
-        <Caption style={Styles.fontSmall}>
-          Sad:{item.sad ? item.sad.length : 0}
-        </Caption>
-      </Card.Actions>
-      <Card.Actions style={{marginVertical: 0, paddingVertical: 0}}>
+      <Card.Actions style={styles.reactionIconContainer}>
         <ReactionIcon
           iconName="heart"
           pressAction={() => reactToPost(state.box, item.name, 'love')}
@@ -124,38 +113,40 @@ const Post = ({
         />
         <ReactionIcon
           style={{
-            alignSelf: 'flex-end',
+            alignSelf: 'flex-start',
             position: 'absolute',
-            right: 10,
+            right: 0,
           }}
           iconName="comment"
           pressAction={() => handleOpenComment()}
-          reactColor={DarkTheme.colors.primary}
         />
       </Card.Actions>
-      <Card.Content>
+      <Card.Actions style={{margin: 0, paddingVertical: 0}}>
+        <Text style={Styles.fontSmall}>
+          {item.love ? item.love.length : 0} Likes
+        </Text>
+      </Card.Actions>
+      <Card.Content style={{margin: 0, padding: 0}}>
         {handleOpenPost === null ? (
           fullPost ? (
-            <Paragraph style={Styles.fontMedium}>{item.postCaption}</Paragraph>
+            <Text style={Styles.fontMedium}>{item.postCaption}</Text>
           ) : (
-            <Paragraph style={Styles.fontMedium}>
+            <Text style={Styles.fontMedium}>
               {item.postCaption.length > 60
                 ? `${item.postCaption.slice(0, 60)}... See More`
                 : item.postCaption}
-            </Paragraph>
+            </Text>
           )
         ) : (
           <TouchableOpacity onPress={handleOpenPost}>
             {fullPost ? (
-              <Paragraph style={Styles.fontMedium}>
-                {item.postCaption}
-              </Paragraph>
+              <Text style={Styles.fontMedium}>{item.postCaption}</Text>
             ) : (
-              <Paragraph style={Styles.fontMedium}>
+              <Text style={Styles.fontMedium}>
                 {item.postCaption.length > 60
                   ? `${item.postCaption.slice(0, 60)}... See More`
                   : item.postCaption}
-              </Paragraph>
+              </Text>
             )}
           </TouchableOpacity>
         )}
@@ -185,10 +176,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     resizeMode: 'cover',
   },
-  reactIcons: {
-    marginHorizontal: width * 0.02,
-    marginVertical: width * 0.01,
-    marginTop: 0,
+  reactionIconContainer: {
+    marginHorizontal: 0,
+    marginTop: 4 * scale,
+    marginBottom: 0,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
   },
 });
 
