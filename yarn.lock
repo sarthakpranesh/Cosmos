@@ -5745,6 +5745,13 @@ react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-kawaii@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/react-kawaii/-/react-kawaii-0.16.0.tgz#6543f82a911269b9e7a470bf5316fe3976404636"
+  integrity sha512-ZD8QkK8pQbLdV391aJ4CAwuFq2rxVeRhYIsyj9d9q68aobFjcs3UwmGOFgSLWoI642ecXJD/4wBscYXMCcCWJw==
+  dependencies:
+    prop-types "^15.6.2"
+
 react-native-actionsheet@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/react-native-actionsheet/-/react-native-actionsheet-2.4.2.tgz#6a00dd51a75ef2c8974312130e405af73191500f"

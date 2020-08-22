@@ -15,10 +15,10 @@ import Icon from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import firestore from '@react-native-firebase/firestore';
+import {Ghost} from 'react-kawaii/lib/native/';
 
 // importing components
 import CacheImage from '../../components/CacheImage';
-import NoPosts from '../../components/Svg/Illustrations/NoPosts/index.js';
 
 // importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -188,7 +188,10 @@ class ProfileScreen extends Component {
     if (posts.length === 0) {
       return (
         <View style={styles.emptyPostContainer}>
-          <NoPosts />
+          <Ghost size={width / 2.5} mood="sad" color="#E0E4E8" />
+          <Headline style={[Styles.fontMedium, styles.noPostYetText]}>
+            You haven't shared anything today!
+          </Headline>
         </View>
       );
     }

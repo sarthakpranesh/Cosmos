@@ -1,15 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, FlatList, ToastAndroid, Alert} from 'react-native';
+import {View, FlatList, ToastAndroid, Alert, Dimensions} from 'react-native';
 import {ActivityIndicator, Divider, Headline} from 'react-native-paper';
 import ActionSheet from 'react-native-actionsheet';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import firestore from '@react-native-firebase/firestore';
+import {IceCream, Planet} from 'react-kawaii/lib/native/';
 
 // importing component
-import NoBox from '../../components/Svg/Illustrations/NoBox/index.js';
-import BoxEmpty from '../../components/Svg/Illustrations/BoxEmpty/index.js';
 import Post from '../../components/Post/index.js';
 
 //importing Context
@@ -22,6 +21,8 @@ import {firebaseReactionNotify} from '../../utils/Notifications/index.js';
 // importing styles
 import styles from './styles.js';
 import Styles from '../../Styles.js';
+
+const {width} = Dimensions.get('window');
 
 class Main extends Component {
   static contextType = UserContext;
@@ -49,7 +50,7 @@ class Main extends Component {
       getUserDetails(state.uid)
         .then(async (u) => {
           if (u.enrolledBoxes.length === 0) {
-            this.handleNoBoxSet();
+            this.setLoading(false);
           } else {
             currentBox(u.enrolledBoxes[0]);
           }
@@ -148,25 +149,6 @@ class Main extends Component {
     });
   };
 
-  handleNoBoxSet = () => {
-    this.setLoading(false);
-    Alert.alert(
-      'Join Box',
-      'To get started you need to join a Box or create your own Box',
-      [
-        {
-          text: 'Next',
-          onPress: () => {
-            this.props.navigation.navigate('ListCircle');
-          },
-        },
-      ],
-      {
-        cancelable: false,
-      },
-    );
-  };
-
   handleOpenPost = (index) => {
     const {posts} = this.state;
     return this.props.navigation.navigate('Postview', {post: posts[index]});
@@ -229,9 +211,11 @@ class Main extends Component {
     if (state.box === '') {
       return (
         <View style={styles.listEmptyComponent}>
-          <NoBox />
-          <Headline style={[Styles.fontExtraLarge, styles.noPostYetText]}>
-            Create / ask a friend to add you to a box!
+          <Planet size={width / 2.5} mood="excited" color="#FCCB7E" />
+          <Headline style={[Styles.fontMedium, styles.noPostYetText]}>
+            Hey! My names Planet and I'll be helping you get started. I am so
+            excited to show you around. Click the "Box" icon in the top right
+            corner to get started
           </Headline>
         </View>
       );
@@ -240,9 +224,11 @@ class Main extends Component {
     if (posts.length === 0) {
       return (
         <View style={styles.listEmptyComponent}>
-          <BoxEmpty />
-          <Headline style={[Styles.fontExtraLarge, styles.noPostYetText]}>
-            Box is empty today
+          <IceCream size={width / 2.5} mood="blissful" color="#FDA7DC" />
+          <Headline style={[Styles.fontMedium, styles.noPostYetText]}>
+            Hello! I am Ice Cream. I pay visits when everything looks dull.
+            Looks like no one shared anything today. Add more people to the box
+            and get ahead of the rest by posting an update.
           </Headline>
         </View>
       );

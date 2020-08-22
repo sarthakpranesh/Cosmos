@@ -32,4 +32,11 @@ export default StyleSheet.create({
   commentBtn: {
     marginVertical: 6,
   },
+  noPostYetText: {
+    flexWrap: 'wrap',
+    textAlign: 'justify',
+    marginTop: 40,
+    marginHorizontal: 40,
+    opacity: 0.6,
+  },
 });

@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
-import {View, FlatList, Alert, ToastAndroid} from 'react-native';
-import {TextInput, Button, Card, Divider, Text} from 'react-native-paper';
+import {View, FlatList, Alert, ToastAndroid, Dimensions} from 'react-native';
+import {
+  TextInput,
+  Button,
+  Card,
+  Divider,
+  Text,
+  Headline,
+} from 'react-native-paper';
 import database from '@react-native-firebase/database';
 import ActionSheet from 'react-native-actionsheet';
-
-// importing components
-import NoComment from '../../components/Svg/Illustrations/NoComment';
+import {SpeechBubble} from 'react-kawaii/lib/native/';
 
 // importing firebase utils
 import {commentOnPost, deleteComment} from '../../utils/firebase.js';
@@ -16,6 +21,8 @@ import {Context as UserContext} from '../../contexts/UserContext.js';
 // importing screen
 import styles from './styles.js';
 import Styles from '../../Styles.js';
+
+const {width} = Dimensions.get('window');
 
 class CommentScreen extends Component {
   static contextType = UserContext;
@@ -135,12 +142,20 @@ class CommentScreen extends Component {
   };
 
   renderComments = () => {
-    const {post} = this.state;
+    const {post, comment} = this.state;
 
     if ((post.comment ? post.comment.length : 0) === 0) {
       return (
         <View style={styles.emptyList}>
-          <NoComment />
+          <SpeechBubble
+            size={width / 2.5}
+            mood={comment.length !== 0 ? 'lovestruck' : 'sad'}
+            color="#83D1FB"
+          />
+          <Headline style={[Styles.fontMedium, styles.noPostYetText]}>
+            I am Comment and I like discussions. But no one is talking about
+            this post. I'll be so happy if someone starts a discussion here.
+          </Headline>
         </View>
       );
     }

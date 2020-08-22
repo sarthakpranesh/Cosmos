@@ -3,9 +3,9 @@ import {View, Text, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 
 // import components
-import HeartIcon from '../Svg/Icons/HeartIcon/index.js';
-import MehFaceIcon from '../Svg/Icons/MehFaceIcons/index.js';
-import SadFaceIcon from '../Svg/Icons/SadFaceIcon/index.js';
+import HeartIcon from '../Svg/HeartIcon/index.js';
+import MehFaceIcon from '../Svg/MehFaceIcons/index.js';
+import SadFaceIcon from '../Svg/SadFaceIcon/index.js';
 
 // importing styles
 import Styles from '../../Styles.js';

@@ -34,8 +34,9 @@ export default StyleSheet.create({
   },
   noBoxesYet: {
     flexWrap: 'wrap',
-    textAlign: 'center',
-    marginHorizontal: 10,
+    textAlign: 'justify',
+    marginTop: 10,
+    marginHorizontal: 40,
     opacity: 0.6,
   },
 });

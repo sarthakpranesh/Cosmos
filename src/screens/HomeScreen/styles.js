@@ -14,8 +14,9 @@ export default StyleSheet.create({
   },
   noPostYetText: {
     flexWrap: 'wrap',
-    textAlign: 'center',
-    marginHorizontal: 10,
+    textAlign: 'justify',
+    marginTop: 40,
+    marginHorizontal: 40,
     opacity: 0.6,
   },
 });

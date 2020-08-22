@@ -46,6 +46,7 @@ export default StyleSheet.create({
   emptyPostContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 40,
   },
   emptyPostText: {
     flexWrap: 'wrap',
@@ -63,5 +64,12 @@ export default StyleSheet.create({
     height: width / 3 - 0.8,
     borderColor: 'black',
     borderWidth: 0.4,
+  },
+  noPostYetText: {
+    flexWrap: 'wrap',
+    textAlign: 'justify',
+    marginTop: 10,
+    marginHorizontal: 40,
+    opacity: 0.6,
   },
 });

@@ -8,6 +8,7 @@ export default StyleSheet.create({
   },
   fontMedium: {
     fontSize: width * 0.04,
+    lineHeight: width * 0.048,
   },
   fontLarge: {
     fontSize: width * 0.06,

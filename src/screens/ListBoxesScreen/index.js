@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, FlatList, ToastAndroid, Alert} from 'react-native';
+import {View, FlatList, ToastAndroid, Alert, Dimensions} from 'react-native';
 import {
   Text,
   Subheading,
@@ -12,9 +12,7 @@ import {
 } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-
-// importing component
-import AddBox from '../../components/Svg/Illustrations/AddBox/index.js';
+import {Planet} from 'react-kawaii/lib/native/';
 
 // importing firebase utils
 import {createBox} from '../../utils/firebase.js';
@@ -25,6 +23,8 @@ import {Context as UserContext} from '../../contexts/UserContext.js';
 // importing styles
 import styles from './styles.js';
 import Styles from '../../Styles.js';
+
+const {width} = Dimensions.get('window');
 
 class ListBoxesScreen extends Component {
   static contextType = UserContext;
@@ -48,14 +48,6 @@ class ListBoxesScreen extends Component {
       .get()
       .then((snap) => {
         const u = snap.data();
-        if (u.enrolledBoxes.length === 0) {
-          Alert.alert(
-            'Join Box',
-            'Please start with either creating or asking a friend to add you in there box!',
-            [{text: 'Ok'}],
-            {cancelable: true},
-          );
-        }
         this.setState({
           enrolledBoxes: u.enrolledBoxes,
         });
@@ -139,15 +131,22 @@ class ListBoxesScreen extends Component {
         <Divider />
         <FlatList
           ListHeaderComponent={() => {
-            return <Text style={Styles.fontSmall}>Your enrolled Boxes</Text>;
+            return <Text style={Styles.fontSmall}>Enrolled Boxes</Text>;
           }}
           ListHeaderComponentStyle={{margin: 10}}
           ListEmptyComponent={() => {
             return (
               <View style={styles.emptyComponentContainer}>
-                <AddBox />
-                <Headline style={[Styles.fontLarge, styles.noBoxesYet]}>
-                  Add a Box
+                <Planet
+                  size={width / 2.5}
+                  mood={newBoxName.length !== 0 ? 'lovestruck' : 'blissful'}
+                  color="#FCCB7E"
+                />
+                <Headline style={[Styles.fontMedium, styles.noBoxesYet]}>
+                  Here you create new Boxes and see what boxes you are enrolled
+                  in. To switch boxes you just tap on them from the given list.
+                  To get started create a New Box, don't forget to give it
+                  exciting name.
                 </Headline>
               </View>
             );

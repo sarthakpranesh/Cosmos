@@ -27,19 +27,19 @@ const ReactionIcon = ({
     let Icon;
     switch (iconName) {
       case 'heart':
-        Icon = require('../Svg/Icons/HeartIcon/index.js').default;
+        Icon = require('../Svg/HeartIcon/index.js').default;
         return <Icon fill={fill} />;
       case 'meh':
-        Icon = require('../Svg/Icons/MehFaceIcons/index.js').default;
+        Icon = require('../Svg/MehFaceIcons/index.js').default;
         return <Icon fill={fill} />;
       case 'frown':
-        Icon = require('../Svg/Icons/SadFaceIcon/index.js').default;
+        Icon = require('../Svg/SadFaceIcon/index.js').default;
         return <Icon fill={fill} />;
       case 'comment':
-        Icon = require('../Svg/Icons/CommentIcon/index.js').default;
+        Icon = require('../Svg/CommentIcon/index.js').default;
         return <Icon fill={fill} />;
       default:
-        Icon = require('../Svg/Icons/CommentIcon/index.js').default;
+        Icon = require('../Svg/CommentIcon/index.js').default;
         return <Icon fill={fill} />;
     }
   };
