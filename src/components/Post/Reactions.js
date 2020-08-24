@@ -15,12 +15,12 @@ const Reactions = ({data, isVisible, hideModal}) => {
     <Modal
       backdropTransitionOutTiming={1000}
       isVisible={isVisible}
-      backdropOpacity={0.86}
+      backdropOpacity={0.9}
       useNativeDriver={true}
       onBackButtonPress={hideModal}
       onBackdropPress={hideModal}>
       <View style={{flex: 1}}>
-        <View style={styles.HeaderConatienr}>
+        <View style={styles.HeaderContainer}>
           <Text style={styles.HeaderText}>Reactions</Text>
         </View>
         <View style={styles.Divider} />
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
-  HeaderConatienr: {
+  HeaderContainer: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -70,12 +70,14 @@ const styles = StyleSheet.create({
   Divider: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     height: 1,
+    marginBottom: 10,
   },
   ReactionCard: {
-    marginTop: 20,
+    marginTop: 12,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   ReactionCardText: {
     fontWeight: '100',

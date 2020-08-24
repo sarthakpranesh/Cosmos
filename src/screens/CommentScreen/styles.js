@@ -13,7 +13,8 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    padding: 10,
+    paddingVertical: -10,
+    flexWrap: 'wrap',
     borderRadius: 0,
   },
   Divider: {
@@ -22,7 +23,6 @@ export default StyleSheet.create({
   },
   addComment: {
     backgroundColor: 'black',
-    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,

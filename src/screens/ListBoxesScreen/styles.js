@@ -20,7 +20,13 @@ export default StyleSheet.create({
     borderRadius: 0,
     shadowOpacity: 0,
     padding: 8,
-    paddingLeft: 16,
+    paddingVertical: 0,
+  },
+  cardContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   Divider: {
     height: 1,

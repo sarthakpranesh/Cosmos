@@ -22,8 +22,8 @@ export default StyleSheet.create({
     top: 10,
   },
   userImage: {
-    height: width / 5,
-    width: width / 5,
+    height: width / 4,
+    width: width / 4,
     borderRadius: 50,
   },
   fixedTopHeaderInnerSection: {

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, FlatList, ToastAndroid, Alert, Dimensions} from 'react-native';
+import {View, FlatList, ToastAndroid, Dimensions} from 'react-native';
 import {
   Text,
   Subheading,
@@ -9,10 +9,12 @@ import {
   TextInput,
   Divider,
   Button,
+  DarkTheme,
 } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {Planet} from 'react-kawaii/lib/native/';
+import Icons from 'react-native-vector-icons/Feather';
 
 // importing firebase utils
 import {createBox} from '../../utils/firebase.js';
@@ -101,6 +103,7 @@ class ListBoxesScreen extends Component {
   };
 
   render() {
+    const {state} = this.context;
     const {enrolledBoxes, newBoxName, btnLoading} = this.state;
     return (
       <View style={styles.listCircleContainer}>
@@ -153,12 +156,21 @@ class ListBoxesScreen extends Component {
           }}
           data={enrolledBoxes}
           keyExtractor={(item) => item}
-          renderItem={({item, index}) => {
+          renderItem={({item}) => {
             return (
               <Card
                 onPress={() => this.handleSelectBox(item)}
                 style={styles.card}>
-                <Subheading styles={Styles.fontMedium}>{item}</Subheading>
+                <Card.Content style={styles.cardContent}>
+                  <Subheading styles={Styles.fontMedium}>{item}</Subheading>
+                  {state.box === item ? (
+                    <Icons
+                      name="check"
+                      size={20}
+                      color={DarkTheme.colors.primary}
+                    />
+                  ) : null}
+                </Card.Content>
               </Card>
             );
           }}

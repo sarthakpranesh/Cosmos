@@ -198,7 +198,9 @@ class BoxScreen extends Component {
               <Card
                 style={styles.card}
                 onPress={() => this.handleUserClick(index)}>
-                <Subheading style={Styles.fontMedium}>{item.name}</Subheading>
+                <Card.Content>
+                  <Subheading style={Styles.fontMedium}>{item.name}</Subheading>
+                </Card.Content>
               </Card>
             );
           }}

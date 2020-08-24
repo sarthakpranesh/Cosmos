@@ -7,6 +7,7 @@ export default StyleSheet.create({
   },
   authorContainer: {
     padding: 6,
+    paddingHorizontal: 10,
   },
   addPartConatiner: {
     paddingHorizontal: 10,
@@ -16,8 +17,8 @@ export default StyleSheet.create({
   },
   card: {
     padding: 8,
-    paddingLeft: 16,
     borderRadius: 0,
+    paddingVertical: 0,
   },
   Divider: {
     color: 'white',

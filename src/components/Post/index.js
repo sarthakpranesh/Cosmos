@@ -126,12 +126,10 @@ const Post = ({
           pressAction={() => handleOpenComment()}
         />
       </Card.Actions>
-      <Card.Actions style={{margin: 0, paddingVertical: 0}}>
+      <Card.Content style={styles.cardComponent}>
         <Text style={Styles.fontSmall}>
           {item.love ? item.love.length : 0} Likes
         </Text>
-      </Card.Actions>
-      <Card.Content style={{margin: 0, padding: 0}}>
         {handleOpenPost === null ? (
           fullPost ? (
             <Text style={Styles.fontMedium}>{item.postCaption}</Text>
@@ -184,7 +182,7 @@ const styles = StyleSheet.create({
     minHeight: width * 0.16,
   },
   textHeaderContainer: {
-    marginLeft: -10,
+    marginLeft: -14,
   },
   rightOptions: {
     right: 10,

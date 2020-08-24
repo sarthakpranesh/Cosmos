@@ -3,9 +3,9 @@ import {View, FlatList, Alert, ToastAndroid, Dimensions} from 'react-native';
 import {
   TextInput,
   Button,
+  Text,
   Card,
   Divider,
-  Text,
   Headline,
 } from 'react-native-paper';
 import database from '@react-native-firebase/database';
@@ -166,13 +166,13 @@ class CommentScreen extends Component {
         keyExtractor={(_, index) => index}
         renderItem={({item, index}) => {
           return (
-            <Card
-              style={styles.card}
-              onPress={() => this.handleCommentClick(index)}>
-              <Text
-                style={
-                  Styles.fontMedium
-                }>{`${item.name}: ${item.comment}`}</Text>
+            <Card>
+              <Card.Actions>
+                <Text>{item.name}:</Text>
+              </Card.Actions>
+              <Card.Content>
+                <Text>{item.comment}</Text>
+              </Card.Content>
             </Card>
           );
         }}
