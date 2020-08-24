@@ -42,7 +42,7 @@ const Post = ({
     <Card style={styles.mainPostContainer}>
       <Card.Title
         style={styles.postTitleContainer}
-        titleStyle={Styles.fontMedium}
+        titleStyle={[styles.textHeaderContainer]}
         title={item.createdBy ? item.createdBy : 'Name'}
         left={() => {
           if (handleOpenAccount === null) {
@@ -120,7 +120,7 @@ const Post = ({
           style={{
             alignSelf: 'flex-start',
             position: 'absolute',
-            right: 0,
+            right: 6,
           }}
           iconName="comment"
           pressAction={() => handleOpenComment()}
@@ -175,11 +175,16 @@ const styles = StyleSheet.create({
     minHeight: width,
     borderRadius: 0,
     overflow: 'hidden',
+    paddingBottom: 10,
+    backgroundColor: 'black',
   },
   postTitleContainer: {
     marginVertical: 0,
     paddingVertical: 0,
     minHeight: width * 0.16,
+  },
+  textHeaderContainer: {
+    marginLeft: -10,
   },
   rightOptions: {
     right: 10,
@@ -195,7 +200,7 @@ const styles = StyleSheet.create({
     marginTop: 4 * scale,
     marginBottom: 0,
     paddingVertical: 0,
-    paddingHorizontal: 0,
+    paddingHorizontal: 6,
   },
 });
 
