@@ -6,8 +6,7 @@ export default StyleSheet.create({
     backgroundColor: 'black',
   },
   emptyList: {
-    ...StyleSheet.absoluteFill,
-    marginTop: -80,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -23,6 +22,7 @@ export default StyleSheet.create({
   },
   addComment: {
     backgroundColor: 'black',
+    // position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,

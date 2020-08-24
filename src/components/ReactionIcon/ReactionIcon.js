@@ -50,7 +50,10 @@ const ReactionIcon = ({
 
   return (
     <TouchableWithoutFeedback
-      onLongPress={() => longPressAction()}
+      onLongPress={() => {
+        Vibration.vibrate(30);
+        longPressAction();
+      }}
       onPress={() => {
         Vibration.vibrate(15);
         Animated.timing(iconAnimation, {
