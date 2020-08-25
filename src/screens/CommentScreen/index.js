@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, FlatList, Alert, ToastAndroid, Dimensions} from 'react-native';
+import {
+  View,
+  FlatList,
+  Alert,
+  ToastAndroid,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import {
   TextInput,
   Button,
@@ -166,14 +173,17 @@ class CommentScreen extends Component {
         keyExtractor={(_, index) => index}
         renderItem={({item, index}) => {
           return (
-            <Card>
-              <Card.Actions>
-                <Text>{item.name}:</Text>
-              </Card.Actions>
-              <Card.Content>
-                <Text>{item.comment}</Text>
-              </Card.Content>
-            </Card>
+            <TouchableOpacity
+              onLongPress={() => this.handleCommentClick(index)}>
+              <Card>
+                <Card.Actions>
+                  <Text>{item.name}:</Text>
+                </Card.Actions>
+                <Card.Content>
+                  <Text>{item.comment}</Text>
+                </Card.Content>
+              </Card>
+            </TouchableOpacity>
           );
         }}
         ItemSeparatorComponent={() => <Divider style={styles.Divider} />}
