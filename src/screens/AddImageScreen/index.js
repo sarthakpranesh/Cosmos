@@ -8,10 +8,17 @@ import {
   ToastAndroid,
   Dimensions,
 } from 'react-native';
-import {Text, ActivityIndicator, TextInput, Button} from 'react-native-paper';
+import {
+  Text,
+  ActivityIndicator,
+  TextInput,
+  Button,
+  Headline,
+} from 'react-native-paper';
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
+import {Backpack} from 'react-kawaii/lib/native/';
 
 //importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -149,6 +156,18 @@ class AddImageScreen extends Component {
     const {image, imageCaption, isLoading} = this.state;
     const {state} = this.context;
 
+    if (state.box.length === 0) {
+      return (
+        <View style={styles.addContainer}>
+          <Backpack size={width / 2.5} mood="sad" color="#FFD882" />
+          <Headline style={[Styles.fontMedium, styles.imgText]}>
+            Oops looks like you haven't created a group yet. Please go back to
+            the Home screen and take Sun's help to create one first
+          </Headline>
+        </View>
+      );
+    }
+
     if (isLoading) {
       return (
         <View style={styles.addContainer}>
@@ -180,9 +199,9 @@ class AddImageScreen extends Component {
                   defaultValue="No Caption"
                 />
               </View>
-              <View style={styles.optionsContainer}>
+              <View style={[styles.optionsContainer, styles.btnContainer]}>
                 <Button
-                  labelStyle={Styles.fontSmall}
+                  labelStyle={[Styles.fontSmall]}
                   mode="contained"
                   onPress={() => {
                     this.setState({
@@ -195,7 +214,7 @@ class AddImageScreen extends Component {
                   Cancel
                 </Button>
                 <Button
-                  labelStyle={Styles.fontSmall}
+                  labelStyle={[Styles.fontSmall]}
                   mode="contained"
                   onPress={this.onPostUpload}>
                   Share
@@ -209,6 +228,11 @@ class AddImageScreen extends Component {
 
     return (
       <View style={styles.addContainer}>
+        <Backpack size={width / 2.5} mood="excited" color="#FFD882" />
+        <Headline style={[Styles.fontMedium, styles.imgText]}>
+          Lets see what you got in your bag of pics, or I can help you get a
+          shot if you need help with that
+        </Headline>
         <View style={styles.optionsContainer}>
           <TouchableOpacity
             style={styles.optionContainer}
@@ -223,7 +247,7 @@ class AddImageScreen extends Component {
               this.openImagePicker();
             }}>
             <Icon size={width * 0.06} name="plus" color="white" />
-            <Text style={Styles.fontMedium}>Open Gallary</Text>
+            <Text style={Styles.fontMedium}>Open Bag</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.optionContainer}
@@ -238,7 +262,7 @@ class AddImageScreen extends Component {
               this.openImageCamera();
             }}>
             <Icon size={width * 0.06} name="camera" color="white" />
-            <Text style={Styles.fontMedium}>Open Camera</Text>
+            <Text style={Styles.fontMedium}>Start Camera</Text>
           </TouchableOpacity>
         </View>
       </View>

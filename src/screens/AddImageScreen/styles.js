@@ -10,18 +10,27 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  imgText: {
+    flexWrap: 'wrap',
+    textAlign: 'justify',
+    marginTop: 40,
+    marginHorizontal: 40,
+    opacity: 0.6,
+  },
   optionsContainer: {
     width: width,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
+    marginTop: 20,
   },
   optionContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginHorizontal: 20,
   },
   loadedImage: {
     width: width,
@@ -41,5 +50,8 @@ export default StyleSheet.create({
   textInputCaption: {
     width: width - 40,
     marginBottom: 20,
+  },
+  btnContainer: {
+    justifyContent: 'space-around',
   },
 });
