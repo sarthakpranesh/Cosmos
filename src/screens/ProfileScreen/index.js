@@ -8,6 +8,7 @@ import {
   ToastAndroid,
   Vibration,
   Dimensions,
+  Animated,
 } from 'react-native';
 import {Text, ActivityIndicator, Headline} from 'react-native-paper';
 import ActionSheet from 'react-native-actionsheet';
@@ -47,6 +48,13 @@ class ProfileScreen extends Component {
       isLoading: true,
       actionSheetIndex: -1,
     };
+
+    this.GhostAnimation = new Animated.Value(0);
+    this.translateGhost = this.GhostAnimation.interpolate({
+      inputRange: [0, 0.5, 1],
+      outputRange: [-5, 5, -5],
+      extrapolate: 'extend',
+    });
 
     if (params === undefined) {
       this.uid = auth().currentUser.uid;
@@ -186,9 +194,23 @@ class ProfileScreen extends Component {
     }
 
     if (posts.length === 0) {
+      Animated.loop(
+        Animated.timing(this.GhostAnimation, {
+          toValue: 1,
+          duration: 4000,
+          useNativeDriver: true,
+        }),
+        {
+          iterations: -1,
+          resetBeforeIteration: false,
+        },
+      ).start();
       return (
         <View style={styles.emptyPostContainer}>
-          <Ghost size={width / 2.5} mood="sad" color="#E0E4E8" />
+          <Animated.View
+            style={{transform: [{translateY: this.translateGhost}]}}>
+            <Ghost size={width / 2.5} mood="sad" color="#E0E4E8" />
+          </Animated.View>
           <Headline style={[Styles.fontMedium, styles.noPostYetText]}>
             You haven't shared anything today!
           </Headline>
