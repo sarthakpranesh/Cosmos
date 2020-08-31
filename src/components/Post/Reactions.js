@@ -3,6 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 
 // import components
+import Overlay from '../Overlay/index.js';
 import HeartIcon from '../Svg/HeartIcon/index.js';
 import MehFaceIcon from '../Svg/MehFaceIcons/index.js';
 import SadFaceIcon from '../Svg/SadFaceIcon/index.js';
@@ -12,41 +13,27 @@ import Styles from '../../Styles.js';
 
 const Reactions = ({data, isVisible, hideModal}) => {
   return (
-    <Modal
-      backdropTransitionOutTiming={1000}
-      isVisible={isVisible}
-      backdropOpacity={0.9}
-      useNativeDriver={true}
-      onBackButtonPress={hideModal}
-      onBackdropPress={hideModal}>
-      <View style={{flex: 1}}>
-        <View style={styles.HeaderContainer}>
-          <Text style={styles.HeaderText}>Reactions</Text>
-        </View>
-        <View style={styles.Divider} />
-        <View style={styles.ReactionCard}>
-          <HeartIcon fill={true} />
-          <Text
-            style={
-              styles.ReactionCardText
-            }>{`${data[0]} Liked this post`}</Text>
-        </View>
-        <View style={styles.ReactionCard}>
-          <MehFaceIcon fill={true} />
-          <Text
-            style={
-              styles.ReactionCardText
-            }>{`${data[1]} Showed meh face`}</Text>
-        </View>
-        <View style={styles.ReactionCard}>
-          <SadFaceIcon fill={true} />
-          <Text
-            style={
-              styles.ReactionCardText
-            }>{`${data[2]} Saddened to see`}</Text>
-        </View>
+    <Overlay isVisible={isVisible} hideModal={hideModal}>
+      <View style={styles.HeaderContainer}>
+        <Text style={styles.HeaderText}>Reactions</Text>
       </View>
-    </Modal>
+      <View style={styles.Divider} />
+      <View style={styles.ReactionCard}>
+        <HeartIcon fill={true} />
+        <Text
+          style={styles.ReactionCardText}>{`${data[0]} Liked this post`}</Text>
+      </View>
+      <View style={styles.ReactionCard}>
+        <MehFaceIcon fill={true} />
+        <Text
+          style={styles.ReactionCardText}>{`${data[1]} Showed meh face`}</Text>
+      </View>
+      <View style={styles.ReactionCard}>
+        <SadFaceIcon fill={true} />
+        <Text
+          style={styles.ReactionCardText}>{`${data[2]} Saddened to see`}</Text>
+      </View>
+    </Overlay>
   );
 };
 

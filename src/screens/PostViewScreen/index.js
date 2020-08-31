@@ -7,6 +7,7 @@ import database from '@react-native-firebase/database';
 
 // importing components
 import Post from '../../components/Post/index.js';
+import ErrorManager from '../../components/ErrorManager/index.js';
 
 // importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -25,6 +26,9 @@ class PostViewScreen extends Component {
     this.state = {
       post: props.route.params.post,
       user: auth().currentUser,
+
+      isErrorManagerVisible: false,
+      errorMessage: '',
     };
   }
 
@@ -45,12 +49,21 @@ class PostViewScreen extends Component {
             post: p,
           });
         } catch (err) {
-          console.log(err);
           database().ref(state.box).child(post.name.split('.')[0]).off();
-          this.props.navigation.goBack();
+          this.setErrorManager(
+            true,
+            'Oops! Meaw that post expired and was automatically removed after 24h, catch up with you later',
+          );
         }
       });
   }
+
+  setErrorManager = (isVisible, errorMessage) => {
+    this.setState({
+      isErrorManagerVisible: isVisible,
+      errorMessage,
+    });
+  };
 
   handlePostOptions = () => {
     this.ActionSheet.show();
@@ -90,7 +103,7 @@ class PostViewScreen extends Component {
   };
 
   render() {
-    const {user, post} = this.state;
+    const {user, post, isErrorManagerVisible, errorMessage} = this.state;
 
     return (
       <View style={styles.postContainer}>
@@ -103,6 +116,14 @@ class PostViewScreen extends Component {
             fullPost={true}
           />
         </ScrollView>
+        <ErrorManager
+          hideModal={() => {
+            this.setErrorManager(false, '');
+            this.props.navigation.goBack();
+          }}
+          isVisible={isErrorManagerVisible}
+          message={errorMessage}
+        />
         <ActionSheet
           ref={(o) => (this.ActionSheet = o)}
           title={'What do you wanna do?'}
