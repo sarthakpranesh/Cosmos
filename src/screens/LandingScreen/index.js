@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import {Text, Headline, Button, Caption} from 'react-native-paper';
+import LottieView from 'lottie-react-native';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
 
@@ -29,25 +30,32 @@ GoogleSignin.configure({
 
 const data = [
   {
-    image: require('../../../assets/newBorn.png'),
-    madeBy: 'Illustration by Olga Nesnova from Icons8',
+    source: require('../../components/LottieComponents/Animations/welcome.json'),
+    madeBy: 'Animation by Abdul Latif from lottiefiles',
     header: 'Welcome to Cosmos',
     body:
       'We are a Young Open Source project made and maintained by the community. Our focus is to provide you a professional social media 😉',
   },
   {
-    image: require('../../../assets/boxes.png'),
-    madeBy: 'Illustration by  Anna Golde from  Icons8',
+    source: require('../../components/LottieComponents/Animations/groups.json'),
+    madeBy: 'Animation by Usama Razzaq from lottiefiles',
     header: 'Its All About Boxes',
     body:
       'Control what you share and where you share. Boxes allows you to group people of similar interests, organizations and niche 📦',
   },
   {
-    image: require('../../../assets/box.png'),
-    madeBy: 'Illustration by  Icons 8 from  Icons8',
+    source: require('../../components/LottieComponents/Animations/box.json'),
+    madeBy: 'Animation by John Romeio Icons 8 from lottiefiles',
     header: 'Here is a Box',
     body:
-      'You can add your friends by their emails and have full control on your box. So why wait come join us!',
+      "You can add your friends by their emails and have full control on your box. Each box is a separate private space for it's members to share content with each other",
+  },
+  {
+    source: require('../../components/LottieComponents/Animations/clock.json'),
+    madeBy: 'Animation by Auttapon Nakharaj Icons 8 from lottiefiles',
+    header: 'Clean slate each day',
+    body:
+      'Each post has a count down clock set for 24 hours before it is removed. Hence we aim to give you a clean slate each day to work with. So why wait, Come Join Us!',
   },
 ];
 
@@ -108,32 +116,13 @@ class LandingScreen extends Component {
   }
 
   renderScreen(item, index) {
-    const opacity = this.index.interpolate({
-      inputRange: [index - 1, index, index + 1],
-      outputRange: [0, 1, 0],
-      extrapolate: 'clamp',
-    });
-    const rotate = this.index.interpolate({
-      inputRange: [index - 1, index, index + 1],
-      outputRange: ['-30deg', '0deg', '30deg'],
-      extrapolate: 'clamp',
-    });
-    const scale = this.index.interpolate({
-      inputRange: [index - 1, index, index + 1],
-      outputRange: [0.5, 1, 0.5],
-      extrapolate: 'clamp',
-    });
     return (
       <View style={styles.innerView}>
-        <Headline style={Styles.fontLarge}>{item.header}</Headline>
-        <Animated.Image
-          source={item.image}
-          style={[
-            styles.illustration,
-            {opacity, transform: [{rotate}, {scale}]},
-          ]}
-        />
+        <View style={{width: width, height: width / 1.5}}>
+          <LottieView source={item.source} autoPlay />
+        </View>
         <Caption style={Styles.fontSmall}>{item.madeBy}</Caption>
+        <Headline style={Styles.fontLarge}>{item.header}</Headline>
         <Text
           style={[{textAlign: 'justify', marginTop: 10}, Styles.fontMedium]}>
           {item.body}
