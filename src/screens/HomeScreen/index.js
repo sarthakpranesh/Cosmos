@@ -10,7 +10,7 @@ import {IceCream, Planet} from 'react-kawaii/lib/native/';
 
 // importing component
 import Post from '../../components/Post/index.js';
-import ErrorManager from '../../components/ErrorManager/index.js';
+import BoxLoading from '../../components/LottieComponents/BoxLoading/index.js';
 
 //importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -206,7 +206,7 @@ class Main extends Component {
     const {state} = this.context;
 
     if (isLoading) {
-      return <ActivityIndicator />;
+      return <BoxLoading />;
     }
 
     if (state.box === '') {

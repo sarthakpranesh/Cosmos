@@ -8,17 +8,14 @@ import {
   ToastAndroid,
   Dimensions,
 } from 'react-native';
-import {
-  Text,
-  ActivityIndicator,
-  TextInput,
-  Button,
-  Headline,
-} from 'react-native-paper';
+import {Text, TextInput, Button, Headline} from 'react-native-paper';
 import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
 import {Backpack} from 'react-kawaii/lib/native/';
+
+// importing components
+import BoxLoading from '../../components/LottieComponents/BoxLoading/index.js';
 
 //importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -171,7 +168,8 @@ class AddImageScreen extends Component {
     if (isLoading) {
       return (
         <View style={styles.addContainer}>
-          <ActivityIndicator />
+          <BoxLoading />
+          <Text style={Styles.fontMedium}>Please wait uploading</Text>
         </View>
       );
     }
