@@ -5,7 +5,7 @@ import {
   Alert,
   ToastAndroid,
   Dimensions,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {
   TextInput,
@@ -16,8 +16,10 @@ import {
   Headline,
 } from 'react-native-paper';
 import database from '@react-native-firebase/database';
-import ActionSheet from 'react-native-actionsheet';
 import {SpeechBubble} from 'react-kawaii/lib/native/';
+
+// importing components
+import BottomSheet from '../../components/BottomSheet/index.js';
 
 // importing firebase utils
 import {commentOnPost, deleteComment} from '../../utils/firebase.js';
@@ -41,6 +43,7 @@ class CommentScreen extends Component {
       comment: '',
       commenting: false,
       actionSheetIndex: -1,
+      isBottomSheetOpen: false,
     };
   }
 
@@ -80,6 +83,13 @@ class CommentScreen extends Component {
     });
   }
 
+  setBottomSheet = (bool, postIndex) => {
+    this.setState({
+      isBottomSheetOpen: bool,
+      actionSheetIndex: postIndex,
+    });
+  };
+
   comment() {
     const {comment, post} = this.state;
     const {state} = this.context;
@@ -106,46 +116,31 @@ class CommentScreen extends Component {
       });
   }
 
-  handleCommentClick = (commentIndex) => {
-    this.setState({
-      actionSheetIndex: commentIndex,
-    });
-    this.ActionSheet.show();
+  handleOptions = (postIndex) => {
+    this.setBottomSheet(true, postIndex);
   };
 
-  handleActionPress = async (index) => {
+  handleCommentDelete = () => {
     const {actionSheetIndex, post} = this.state;
     const {state} = this.context;
-    // if index is 0 - handle remove comment from box
-    if (index === 0) {
-      if (post.uid === state.uid) {
-        // author can delete all comments
-        deleteComment(state.box, post.name, actionSheetIndex).catch((err) =>
-          console.log(err.message),
-        );
-      } else if (post.comment[actionSheetIndex].uid === state.uid) {
-        // comment author can delete his/her comment only
-        deleteComment(state.box, post.name, actionSheetIndex).catch((err) =>
-          console.log(err.message),
-        );
-      } else {
-        ToastAndroid.showWithGravity(
-          'Only author of post and comment can delete comments',
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
-      }
+    if (post.uid === state.uid) {
+      // author can delete all comments
+      deleteComment(state.box, post.name, actionSheetIndex).catch((err) =>
+        console.log(err.message),
+      );
+    } else if (post.comment[actionSheetIndex].uid === state.uid) {
+      // comment author can delete his/her comment only
+      deleteComment(state.box, post.name, actionSheetIndex).catch((err) =>
+        console.log(err.message),
+      );
+    } else {
+      ToastAndroid.showWithGravity(
+        'Only author of post and comment can delete comments',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
     }
-
-    // if index is 1 - handle cancel
-    if (index === 1) {
-      console.log('Cancelling the Action Sheet');
-    }
-
-    this.setState({
-      actionSheetIndex: -1,
-    });
-    return;
+    this.setBottomSheet(false, -1);
   };
 
   renderComments = () => {
@@ -173,8 +168,8 @@ class CommentScreen extends Component {
         keyExtractor={(_, index) => index}
         renderItem={({item, index}) => {
           return (
-            <TouchableOpacity
-              onLongPress={() => this.handleCommentClick(index)}>
+            <TouchableWithoutFeedback
+              onLongPress={() => this.handleOptions(index)}>
               <Card>
                 <Card.Actions>
                   <Text>{item.name}:</Text>
@@ -183,7 +178,7 @@ class CommentScreen extends Component {
                   <Text>{item.comment}</Text>
                 </Card.Content>
               </Card>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
           );
         }}
         ItemSeparatorComponent={() => <Divider style={styles.Divider} />}
@@ -192,7 +187,7 @@ class CommentScreen extends Component {
   };
 
   render() {
-    const {commenting, comment, post} = this.state;
+    const {commenting, comment, post, isBottomSheetOpen} = this.state;
 
     return (
       <View style={styles.commentScreen}>
@@ -216,13 +211,12 @@ class CommentScreen extends Component {
             Comment
           </Button>
         </View>
-        <ActionSheet
-          ref={(o) => (this.ActionSheet = o)}
-          title={'What do you wanna do?'}
-          options={['Remove Comment', 'Cancel']}
-          cancelButtonIndex={1}
-          destructiveButtonIndex={1}
-          onPress={(index) => this.handleActionPress(index)}
+        <BottomSheet
+          isOpen={isBottomSheetOpen}
+          closeBottomSheet={() => this.setBottomSheet(false)}
+          options={[
+            {text: 'Remove Comment', onPress: this.handleCommentDelete},
+          ]}
         />
       </View>
     );

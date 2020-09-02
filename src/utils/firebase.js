@@ -169,7 +169,6 @@ export const reactToPost = (box, postName, reactiontype) => {
 };
 
 export const deletePosts = (box, postName) => {
-  console.log(box);
   return new Promise((resolve, reject) => {
     const name = postName.split('.')[0];
     database()

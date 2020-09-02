@@ -11,7 +11,6 @@ import {
   Animated,
 } from 'react-native';
 import {Text, ActivityIndicator, Headline} from 'react-native-paper';
-import ActionSheet from 'react-native-actionsheet';
 import Icon from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
@@ -20,6 +19,7 @@ import {Ghost} from 'react-kawaii/lib/native/';
 
 // importing components
 import CacheImage from '../../components/CacheImage';
+import BottomSheet from '../../components/BottomSheet/index.js';
 
 // importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -47,6 +47,7 @@ class ProfileScreen extends Component {
       sad: 0,
       isLoading: true,
       actionSheetIndex: -1,
+      isBottomSheetOpen: false,
     };
 
     this.GhostAnimation = new Animated.Value(0);
@@ -145,45 +146,37 @@ class ProfileScreen extends Component {
     });
   };
 
+  setBottomSheet = (bool, postIndex) => {
+    this.setState({
+      isBottomSheetOpen: bool,
+      actionSheetIndex: postIndex,
+    });
+  };
+
   handleOpenPost = (index) => {
     const {posts} = this.state;
     return this.props.navigation.navigate('Postview', {post: posts[index]});
   };
 
-  handleCardLongPress = (cardIndex) => {
-    this.setState({
-      actionSheetIndex: cardIndex,
-    });
+  handlePostOptions = (postIndex) => {
+    this.setBottomSheet(true, postIndex);
     Vibration.vibrate(50);
-    this.ActionSheet.show();
   };
 
-  handleActionPress = async (index) => {
+  handleDeletePost = () => {
     const {actionSheetIndex, posts} = this.state;
     const {state} = this.context;
-    // if index is 0 - handle delete
-    if (index === 0) {
-      database()
-        .ref(state.box)
-        .child(posts[actionSheetIndex].name.split('.')[0])
-        .off();
-      await deletePosts(state.box, posts[actionSheetIndex].name);
-      ToastAndroid.showWithGravity(
-        'Post Deleted Successfully',
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
-      );
-    }
-
-    // if index is 1 - handle cancel
-    if (index === 1) {
-      console.log('Cancelling the Action Sheet');
-    }
-
-    this.setState({
-      actionSheetIndex: -1,
-    });
-    return;
+    database()
+      .ref(state.box)
+      .child(posts[actionSheetIndex].name.split('.')[0])
+      .off();
+    deletePosts(state.box, posts[actionSheetIndex].name);
+    ToastAndroid.showWithGravity(
+      'Post Deleted Successfully',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+    this.setBottomSheet(false, -1);
   };
 
   renderPosts = () => {
@@ -225,7 +218,7 @@ class ProfileScreen extends Component {
             <TouchableOpacity
               key={index}
               onPress={() => this.handleOpenPost(index)}
-              onLongPress={() => this.handleCardLongPress(index)}>
+              onLongPress={() => this.handlePostOptions(index)}>
               <CacheImage
                 key={i.name}
                 uri={i.postURL}
@@ -239,9 +232,24 @@ class ProfileScreen extends Component {
   };
 
   render() {
-    const {name, posts, photoURL, love, meh, sad} = this.state;
+    const {
+      name,
+      posts,
+      photoURL,
+      love,
+      meh,
+      sad,
+      isBottomSheetOpen,
+    } = this.state;
     return (
       <View style={styles.profileContainer}>
+        <BottomSheet
+          isOpen={isBottomSheetOpen}
+          closeBottomSheet={() => this.setBottomSheet(false)}
+          options={[
+            {text: 'Delete Post', onPress: () => this.handleDeletePost()},
+          ]}
+        />
         <View style={styles.fixedTopHeader}>
           <Image
             source={{uri: photoURL}}
@@ -271,14 +279,6 @@ class ProfileScreen extends Component {
         <ScrollView style={styles.scrollBottomView} onScrollAnimationEnd>
           {this.renderPosts()}
         </ScrollView>
-        <ActionSheet
-          ref={(o) => (this.ActionSheet = o)}
-          title={'What do you wanna do?'}
-          options={['Delete', 'Cancel']}
-          cancelButtonIndex={1}
-          destructiveButtonIndex={1}
-          onPress={(index) => this.handleActionPress(index)}
-        />
       </View>
     );
   }

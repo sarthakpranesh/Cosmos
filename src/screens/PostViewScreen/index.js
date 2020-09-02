@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {View, ToastAndroid} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import ActionSheet from 'react-native-actionsheet';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
 // importing components
 import Post from '../../components/Post/index.js';
 import ErrorManager from '../../components/ErrorManager/index.js';
+import BottomSheet from '../../components/BottomSheet/index.js';
 
 // importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -29,6 +29,7 @@ class PostViewScreen extends Component {
 
       isErrorManagerVisible: false,
       errorMessage: '',
+      isBottomSheetOpen: false,
     };
   }
 
@@ -65,8 +66,29 @@ class PostViewScreen extends Component {
     });
   };
 
-  handlePostOptions = () => {
-    this.ActionSheet.show();
+  setBottomSheet = (bool, postIndex) => {
+    this.setState({
+      isBottomSheetOpen: bool,
+      actionSheetIndex: postIndex,
+    });
+  };
+
+  handlePostOptions = (postIndex) => {
+    this.setBottomSheet(true, postIndex);
+  };
+
+  handleDeletePost = () => {
+    const {post} = this.state;
+    const {state} = this.context;
+    database().ref(state.box).child(post.name.split('.')[0]).off();
+    deletePosts(state.box, post.name);
+    ToastAndroid.showWithGravity(
+      'Post Deleted Successfully',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+    this.setBottomSheet(false, -1);
+    this.props.navigation.goBack();
   };
 
   handleOpenComment = () => {
@@ -76,34 +98,14 @@ class PostViewScreen extends Component {
     });
   };
 
-  handleActionPress = async (index) => {
-    const {post} = this.state;
-    const {state} = this.context;
-    // if index is 0 - handle delete
-    if (index === 0) {
-      database().ref(state.box).child(post.name.split('.')[0]).off();
-      await deletePosts(state.box, post.name);
-      ToastAndroid.showWithGravity(
-        'Post Deleted Successfully',
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
-      );
-      this.props.navigation.goBack();
-    }
-
-    // if index is 1 - handle cancel
-    if (index === 1) {
-      console.log('Cancelling the Action Sheet');
-    }
-
-    this.setState({
-      actionSheetIndex: -1,
-    });
-    return;
-  };
-
   render() {
-    const {user, post, isErrorManagerVisible, errorMessage} = this.state;
+    const {
+      user,
+      post,
+      isErrorManagerVisible,
+      errorMessage,
+      isBottomSheetOpen,
+    } = this.state;
 
     return (
       <View style={styles.postContainer}>
@@ -124,13 +126,12 @@ class PostViewScreen extends Component {
           isVisible={isErrorManagerVisible}
           message={errorMessage}
         />
-        <ActionSheet
-          ref={(o) => (this.ActionSheet = o)}
-          title={'What do you wanna do?'}
-          options={['Delete', 'Cancel']}
-          cancelButtonIndex={1}
-          destructiveButtonIndex={1}
-          onPress={(index) => this.handleActionPress(index)}
+        <BottomSheet
+          isOpen={isBottomSheetOpen}
+          closeBottomSheet={() => this.setBottomSheet(false)}
+          options={[
+            {text: 'Delete Post', onPress: () => this.handleDeletePost()},
+          ]}
         />
       </View>
     );

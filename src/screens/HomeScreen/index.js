@@ -1,8 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {View, FlatList, ToastAndroid, Alert, Dimensions} from 'react-native';
-import {ActivityIndicator, Divider, Headline} from 'react-native-paper';
-import ActionSheet from 'react-native-actionsheet';
+import {Divider, Headline} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import firestore from '@react-native-firebase/firestore';
@@ -11,6 +10,7 @@ import {IceCream, Planet} from 'react-kawaii/lib/native/';
 // importing component
 import Post from '../../components/Post/index.js';
 import BoxLoading from '../../components/LottieComponents/BoxLoading/index.js';
+import BottomSheet from '../../components/BottomSheet/index.js';
 
 //importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -34,6 +34,7 @@ class Main extends Component {
       user: auth().currentUser,
       posts: [],
       actionSheetIndex: -1,
+      isBottomSheetOpen: false,
     };
     this.ActionSheet = null;
   }
@@ -150,6 +151,13 @@ class Main extends Component {
     });
   };
 
+  setBottomSheet = (bool, postIndex) => {
+    this.setState({
+      isBottomSheetOpen: bool,
+      actionSheetIndex: postIndex,
+    });
+  };
+
   handleOpenPost = (index) => {
     const {posts} = this.state;
     return this.props.navigation.navigate('Postview', {post: posts[index]});
@@ -167,38 +175,23 @@ class Main extends Component {
   };
 
   handlePostOptions = (postIndex) => {
-    this.setState({
-      actionSheetIndex: postIndex,
-    });
-    this.ActionSheet.show();
+    this.setBottomSheet(true, postIndex);
   };
 
-  handleActionPress = async (index) => {
+  handleDeletePost = () => {
     const {actionSheetIndex, posts} = this.state;
     const {state} = this.context;
-    // if index is 0 - handle delete
-    if (index === 0) {
-      database()
-        .ref(state.box)
-        .child(posts[actionSheetIndex].name.split('.')[0])
-        .off();
-      await deletePosts(state.box, posts[actionSheetIndex].name);
-      ToastAndroid.showWithGravity(
-        'Post Deleted Successfully',
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
-      );
-    }
-
-    // if index is 1 - handle cancel
-    if (index === 1) {
-      console.log('Cancelling the Action Sheet');
-    }
-
-    this.setState({
-      actionSheetIndex: -1,
-    });
-    return;
+    database()
+      .ref(state.box)
+      .child(posts[actionSheetIndex].name.split('.')[0])
+      .off();
+    deletePosts(state.box, posts[actionSheetIndex].name);
+    ToastAndroid.showWithGravity(
+      'Post Deleted Successfully',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+    this.setBottomSheet(false, -1);
   };
 
   renderPosts = () => {
@@ -259,16 +252,16 @@ class Main extends Component {
   };
 
   render() {
+    const {isBottomSheetOpen} = this.state;
     return (
       <View style={styles.mainContainer}>
         {this.renderPosts()}
-        <ActionSheet
-          ref={(o) => (this.ActionSheet = o)}
-          title={'What do you wanna do?'}
-          options={['Delete Post', 'Cancel']}
-          cancelButtonIndex={1}
-          destructiveButtonIndex={1}
-          onPress={(index) => this.handleActionPress(index)}
+        <BottomSheet
+          isOpen={isBottomSheetOpen}
+          closeBottomSheet={() => this.setBottomSheet(false)}
+          options={[
+            {text: 'Delete Post', onPress: () => this.handleDeletePost()},
+          ]}
         />
       </View>
     );

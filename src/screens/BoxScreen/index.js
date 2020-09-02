@@ -11,7 +11,9 @@ import {
   TextInput,
   ActivityIndicator,
 } from 'react-native-paper';
-import ActionSheet from 'react-native-actionsheet';
+
+// importing components
+import BottomSheet from '../../components/BottomSheet/index.js';
 
 // importing firebase utils
 import {getBox, addUserToBox, removeUserFromBox} from '../../utils/firebase.js';
@@ -33,6 +35,7 @@ class BoxScreen extends Component {
       email: '',
       actionSheetIndex: -1,
       btnLoading: false,
+      isBottomSheetOpen: false,
     };
   }
 
@@ -61,6 +64,13 @@ class BoxScreen extends Component {
   setBtnLoading = (bool) => {
     this.setState({
       btnLoading: bool,
+    });
+  };
+
+  setBottomSheet = (bool, postIndex) => {
+    this.setState({
+      isBottomSheetOpen: bool,
+      actionSheetIndex: postIndex,
     });
   };
 
@@ -102,56 +112,42 @@ class BoxScreen extends Component {
       });
   };
 
-  handleUserClick = (userIndex) => {
-    this.setState({
-      actionSheetIndex: userIndex,
-    });
-    this.ActionSheet.show();
+  handleOptions = (postIndex) => {
+    this.setBottomSheet(true, postIndex);
   };
 
-  handleActionPress = async (index) => {
+  handleRemoveUser = () => {
     const {actionSheetIndex, enrolledBy, auth} = this.state;
     const {state} = this.context;
-    // if index is 0 - handle remove user from box
-    if (index === 0) {
-      if (enrolledBy[actionSheetIndex].uid === auth[1]) {
-        return ToastAndroid.showWithGravity(
-          "You serious? Author can't leave group 😬",
-          ToastAndroid.LONG,
+    if (enrolledBy[actionSheetIndex].uid === auth[1]) {
+      return ToastAndroid.showWithGravity(
+        "You serious? Author can't leave group 😬",
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+      );
+    }
+    removeUserFromBox(enrolledBy[actionSheetIndex].uid, state.box)
+      .then(() => {
+        this.fetchEnrolledUsers();
+        ToastAndroid.showWithGravity(
+          'User removed from the box 😖',
+          ToastAndroid.SHORT,
           ToastAndroid.CENTER,
         );
-      }
-      removeUserFromBox(enrolledBy[actionSheetIndex].uid, state.box)
-        .then(() => {
-          this.fetchEnrolledUsers();
-          ToastAndroid.showWithGravity(
-            'User removed from the box 😖',
-            ToastAndroid.SHORT,
-            ToastAndroid.CENTER,
-          );
-        })
-        .catch((err) => {
-          ToastAndroid.showWithGravity(
-            err.message,
-            ToastAndroid.SHORT,
-            ToastAndroid.CENTER,
-          );
-        });
-    }
-
-    // if index is 1 - handle cancel
-    if (index === 1) {
-      console.log('Cancelling the Action Sheet');
-    }
-
-    this.setState({
-      actionSheetIndex: -1,
-    });
-    return;
+      })
+      .catch((err) => {
+        ToastAndroid.showWithGravity(
+          err.message,
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER,
+        );
+      })
+      .finally(() => this.fetchEnrolledUsers());
+    this.setBottomSheet(false, -1);
   };
 
   render() {
-    const {enrolledBy, btnLoading} = this.state;
+    const {enrolledBy, btnLoading, isBottomSheetOpen} = this.state;
 
     return (
       <View style={styles.boxScreenContainer}>
@@ -197,7 +193,7 @@ class BoxScreen extends Component {
             return (
               <Card
                 style={styles.card}
-                onPress={() => this.handleUserClick(index)}>
+                onPress={() => this.handleOptions(index)}>
                 <Card.Content>
                   <Subheading style={Styles.fontMedium}>{item.name}</Subheading>
                 </Card.Content>
@@ -206,13 +202,10 @@ class BoxScreen extends Component {
           }}
           ItemSeparatorComponent={() => <Divider style={styles.Divider} />}
         />
-        <ActionSheet
-          ref={(o) => (this.ActionSheet = o)}
-          title={'What do you wanna do?'}
-          options={['Remove User', 'Cancel']}
-          cancelButtonIndex={1}
-          destructiveButtonIndex={1}
-          onPress={(index) => this.handleActionPress(index)}
+        <BottomSheet
+          isOpen={isBottomSheetOpen}
+          closeBottomSheet={() => this.setBottomSheet(false)}
+          options={[{text: 'Remove User', onPress: this.handleRemoveUser}]}
         />
       </View>
     );
