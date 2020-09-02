@@ -32,7 +32,9 @@ Latest Release: [Cosmos](https://github.com/sarthakpranesh/cosmos.ReactNative/re
 |---	|---	|---	|
 |Box |Created separate boxes filled with people who are interested in a common topic |As the main aim of the project is to try to provide a more professional social platform, it is necessary we take steps that lets a common audience see a particular set of content.  |
 |Reactions |React to posts by clicking icons as per your wish |Lets the users react to posts to showcase their agreement or disagreement from the post, currently there are three types of reaction a user can give (Like, Meh, Sad) |
+|Double tap to like |Click on a post image two time in a short duration to like the post |Users get a quick like feature which they can use more easily to like posts. Adds on to the user experience |
 |Comments |Click the message/comment icon on the right of the post and start a discussion |Reactions sometime aren't able to disclose what an individual might have to share with others on the topic, hence they can leave a comment let other know what they feel or want to share |
+|Cartoon Friends |They help the user get started with the app and provide valuable information in a cute and innovative manner |Error, inactivity or onboarding information might get very boring for the end user at times. Cartoon friends help the user stay involved and pass this required message to the user. |
 |Minimal Notification |You get notifications from default |All new posts in a current box give notifications  |
 
 <br/>
