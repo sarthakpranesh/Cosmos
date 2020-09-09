@@ -4,7 +4,7 @@ import LottieView from 'lottie-react-native';
 
 const {width} = Dimensions.get('window');
 
-export default class BasicExample extends React.Component {
+export default class BoxLoading extends React.Component {
   render() {
     return (
       <View style={styles.BoxLoadingContainer}>
@@ -20,7 +20,7 @@ export default class BasicExample extends React.Component {
 
 const styles = StyleSheet.create({
   BoxLoadingContainer: {
-    width: width / 4,
-    height: width / 4,
+    width: width / 10,
+    height: width / 10,
   },
 });

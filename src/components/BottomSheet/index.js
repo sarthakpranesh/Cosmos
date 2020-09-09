@@ -32,7 +32,7 @@ const BottomSheet = ({isOpen, closeBottomSheet, options}) => {
           key="cancel"
           mode="text"
           color={DarkTheme.colors.error}
-          labelStyle={styles.contentCancel}
+          labelStyle={styles.contentOptions}
           onPress={closeBottomSheet}>
           Cancel
         </Button>
@@ -55,17 +55,13 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   contentTitle: {
-    ...Styles.fontMedium,
+    ...Styles.fontLarge,
     marginBottom: 12,
     color: 'white',
   },
   contentOptions: {
     ...Styles.fontMedium,
-    marginVertical: 4,
-  },
-  contentCancel: {
-    ...Styles.fontMedium,
-    marginTop: 10,
+    marginVertical: 8,
   },
 });
 

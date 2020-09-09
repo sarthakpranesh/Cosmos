@@ -193,7 +193,6 @@ class LandingScreen extends Component {
           renderItem={({item, index}) => this.renderScreen(item, index)}
           onScroll={({nativeEvent}) => {
             this.index.setValue(nativeEvent.contentOffset.x / width);
-            Vibration.vibrate(6);
           }}
         />
       </View>
