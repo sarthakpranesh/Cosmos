@@ -44,6 +44,9 @@ import startNotificationListening from './src/utils/Notifications/index.js';
 // importing Styles
 import Styles from './src/Styles.js';
 
+// importing constants
+import {IconSize} from './src/Constants.js';
+
 const {width} = Dimensions.get('window');
 
 const Stack = createStackNavigator();
@@ -74,7 +77,7 @@ class PostViewProfileStack extends Component {
                 <Appbar.Header
                   style={{flexDirection: 'row-reverse', height: width * 0.14}}>
                   <Appbar.Action
-                    size={width * 0.06}
+                    size={IconSize}
                     icon={({color, size}) => (
                       <Icon name="edit-2" size={size} color={color} />
                     )}
@@ -100,7 +103,7 @@ class PostViewProfileStack extends Component {
               return (
                 <Appbar.Header styles={{height: width * 0.14}}>
                   <Appbar.Action
-                    size={width * 0.06}
+                    size={IconSize}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
@@ -126,7 +129,7 @@ class PostViewProfileStack extends Component {
               return (
                 <Appbar.Header style={{height: width * 0.14}}>
                   <Appbar.Action
-                    size={width * 0.06}
+                    size={IconSize}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
@@ -152,7 +155,7 @@ class PostViewProfileStack extends Component {
               return (
                 <Appbar.Header styles={{height: width * 0.14}}>
                   <Appbar.Action
-                    size={width * 0.06}
+                    size={IconSize}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
@@ -197,10 +200,10 @@ class PostViewStack extends Component {
                       }
                     }}
                     title={state.box === '' ? 'Cosmos' : state.box}
-                    titleStyle={Styles.fontMedium}
+                    titleStyle={Styles.fontLarge}
                   />
                   <Appbar.Action
-                    size={width * 0.06}
+                    size={IconSize}
                     icon={({color, size}) => (
                       <Icon name="box" size={size} color={color} />
                     )}
@@ -230,11 +233,11 @@ class PostViewStack extends Component {
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
                     onPress={() => navigation.goBack()}
-                    size={width * 0.06}
+                    size={IconSize}
                   />
                   <Appbar.Content
                     title={state.box === '' ? 'Cosmos' : state.box}
-                    titleStyle={Styles.fontMedium}
+                    titleStyle={Styles.fontLarge}
                   />
                 </Appbar.Header>
               );
@@ -256,7 +259,7 @@ class PostViewStack extends Component {
               return (
                 <Appbar.Header style={{height: width * 0.14}}>
                   <Appbar.Action
-                    size={width * 0.06}
+                    size={IconSize}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
@@ -282,7 +285,7 @@ class PostViewStack extends Component {
               return (
                 <Appbar.Header style={{height: width * 0.14}}>
                   <Appbar.Action
-                    size={width * 0.06}
+                    size={IconSize}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
@@ -308,7 +311,7 @@ class PostViewStack extends Component {
               return (
                 <Appbar.Header style={{height: width * 0.14}}>
                   <Appbar.Action
-                    size={width * 0.06}
+                    size={IconSize}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
@@ -334,7 +337,7 @@ class PostViewStack extends Component {
               return (
                 <Appbar.Header style={{height: width * 0.14}}>
                   <Appbar.Action
-                    size={width * 0.06}
+                    size={IconSize}
                     icon={({color, size}) => (
                       <Icon name="arrow-left" size={size} color={color} />
                     )}
