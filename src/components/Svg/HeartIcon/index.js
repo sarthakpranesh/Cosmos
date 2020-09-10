@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
 
-const HeartIcon = ({fill}) => {
+const HeartIcon = ({fill, width = 24, height = 24}) => {
   return (
     <Svg
-      width={24}
-      height={24}
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill={fill ? 'red' : 'none'}>
       <Path

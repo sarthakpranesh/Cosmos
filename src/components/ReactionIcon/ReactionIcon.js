@@ -4,10 +4,10 @@ import {
   Animated,
   Vibration,
   StyleSheet,
-  Dimensions,
 } from 'react-native';
 
-const {width} = Dimensions.get('screen');
+// importing constants
+import {IconSize} from '../../Constants.js';
 
 const ReactionIcon = ({
   style,
@@ -28,19 +28,19 @@ const ReactionIcon = ({
     switch (iconName) {
       case 'heart':
         Icon = require('../Svg/HeartIcon/index.js').default;
-        return <Icon fill={fill} />;
+        return <Icon width={IconSize} height={IconSize} fill={fill} />;
       case 'meh':
         Icon = require('../Svg/MehFaceIcons/index.js').default;
-        return <Icon fill={fill} />;
+        return <Icon width={IconSize} height={IconSize} fill={fill} />;
       case 'frown':
         Icon = require('../Svg/SadFaceIcon/index.js').default;
-        return <Icon fill={fill} />;
+        return <Icon width={IconSize} height={IconSize} fill={fill} />;
       case 'comment':
         Icon = require('../Svg/CommentIcon/index.js').default;
-        return <Icon fill={fill} />;
+        return <Icon width={IconSize} height={IconSize} fill={fill} />;
       default:
         Icon = require('../Svg/CommentIcon/index.js').default;
-        return <Icon fill={fill} />;
+        return <Icon width={IconSize} height={IconSize} fill={fill} />;
     }
   };
 
@@ -86,8 +86,8 @@ const ReactionIcon = ({
 
 const styles = StyleSheet.create({
   reactIcons: {
-    marginHorizontal: width * 0.02,
-    marginVertical: width * 0.01,
+    marginHorizontal: IconSize * 0.2,
+    marginVertical: IconSize * 0.2,
     marginTop: 0,
   },
 });
