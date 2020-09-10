@@ -169,7 +169,6 @@ class AddImageScreen extends Component {
       return (
         <View style={styles.addContainer}>
           <BoxLoading />
-          <Text style={Styles.fontMedium}>Please wait uploading</Text>
         </View>
       );
     }
@@ -180,13 +179,12 @@ class AddImageScreen extends Component {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View>
               <Image style={styles.loadedImage} source={image} />
-              <View style={styles.captionContaier}>
-                <Text style={styles.captionHeaderText}>Write a caption</Text>
+              <View style={styles.captionContainer}>
                 <TextInput
                   value={imageCaption}
                   style={styles.textInputCaption}
                   onChangeText={(caption) => this.setImageCaption(caption)}
-                  placeholder="Type a caption here"
+                  placeholder="Write a caption"
                   placeholderTextColor="white"
                   autoCapitalize="sentences"
                   autoFocus={true}

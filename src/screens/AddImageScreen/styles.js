@@ -37,21 +37,15 @@ export default StyleSheet.create({
     height: width,
     resizeMode: 'cover',
   },
-  captionContaier: {
+  captionContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 16,
-  },
-  captionHeaderText: {
-    alignSelf: 'flex-start',
-    marginVertical: 20,
   },
   textInputCaption: {
-    width: width - 40,
-    marginBottom: 20,
+    width: width,
   },
   btnContainer: {
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
   },
 });
