@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import {Card, Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -9,6 +9,7 @@ import LeftContent from '../LeftContent/index.js';
 import ReactionIcon from '../ReactionIcon/ReactionIcon.js';
 import PostBox from './PostBox.js';
 import Reactions from './Reactions.js';
+import ActiveImage from '../ActiveImage/index.js';
 
 // importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -75,28 +76,21 @@ const Post = ({
           return null;
         }}
       />
-      {fullPost ? (
-        <PostBox
-          onDoubleTap={() => {
-            if (hasReacted('love')) {
-              return null;
-            }
-            reactToPost(state.box, item.name, 'love');
-          }}>
-          <Image style={[styles.postImage]} source={{uri: item.postURL}} />
-        </PostBox>
-      ) : (
-        <PostBox
-          onSingleTap={handleOpenPost}
-          onDoubleTap={() => {
-            if (hasReacted('love')) {
-              return null;
-            }
-            reactToPost(state.box, item.name, 'love');
-          }}>
-          <Image style={[styles.postImage]} source={{uri: item.postURL}} />
-        </PostBox>
-      )}
+      <PostBox
+        onSingleTap={() => {
+          if (fullPost) {
+            return;
+          }
+          handleOpenPost();
+        }}
+        onDoubleTap={() => {
+          if (hasReacted('love')) {
+            return null;
+          }
+          reactToPost(state.box, item.name, 'love');
+        }}>
+        <ActiveImage size={width} uri={item.postURL} />
+      </PostBox>
       <Card.Actions style={styles.reactionIconContainer}>
         <ReactionIcon
           iconName="heart"
@@ -130,8 +124,14 @@ const Post = ({
         <Text style={Styles.fontSmall}>
           {item.love ? item.love.length : 0} Likes
         </Text>
-        {handleOpenPost === null ? (
-          fullPost ? (
+        <TouchableOpacity
+          onPress={() => {
+            if (handleOpenPost === null) {
+              return;
+            }
+            handleOpenPost();
+          }}>
+          {fullPost ? (
             <Text style={Styles.fontMedium}>{item.postCaption}</Text>
           ) : (
             <Text style={Styles.fontMedium}>
@@ -139,20 +139,8 @@ const Post = ({
                 ? `${item.postCaption.slice(0, 60)}... See More`
                 : item.postCaption}
             </Text>
-          )
-        ) : (
-          <TouchableOpacity onPress={handleOpenPost}>
-            {fullPost ? (
-              <Text style={Styles.fontMedium}>{item.postCaption}</Text>
-            ) : (
-              <Text style={Styles.fontMedium}>
-                {item.postCaption.length > 60
-                  ? `${item.postCaption.slice(0, 60)}... See More`
-                  : item.postCaption}
-              </Text>
-            )}
-          </TouchableOpacity>
-        )}
+          )}
+        </TouchableOpacity>
       </Card.Content>
       <Reactions
         isVisible={reactionsVisible}
@@ -186,12 +174,6 @@ const styles = StyleSheet.create({
   },
   rightOptions: {
     right: 10,
-  },
-  postImage: {
-    width: width,
-    height: width,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    resizeMode: 'cover',
   },
   reactionIconContainer: {
     marginHorizontal: 0,

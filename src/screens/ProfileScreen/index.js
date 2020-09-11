@@ -2,7 +2,6 @@
 import React, {Component} from 'react';
 import {
   View,
-  Image,
   ScrollView,
   TouchableOpacity,
   ToastAndroid,
@@ -18,8 +17,8 @@ import firestore from '@react-native-firebase/firestore';
 import {Ghost} from 'react-kawaii/lib/native/';
 
 // importing components
-import CacheImage from '../../components/CacheImage';
 import BottomSheet from '../../components/BottomSheet/index.js';
+import ActiveImage from '../../components/ActiveImage/index.js';
 
 // importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -219,9 +218,10 @@ class ProfileScreen extends Component {
               key={index}
               onPress={() => this.handleOpenPost(index)}
               onLongPress={() => this.handlePostOptions(index)}>
-              <CacheImage
+              <ActiveImage
                 key={i.name}
                 uri={i.postURL}
+                size={width / 3 - 0.8}
                 style={styles.postImageCard}
               />
             </TouchableOpacity>
@@ -251,10 +251,10 @@ class ProfileScreen extends Component {
           ]}
         />
         <View style={styles.fixedTopHeader}>
-          <Image
-            source={{uri: photoURL}}
-            alt="User Image"
+          <ActiveImage
+            uri={photoURL}
             style={styles.userImage}
+            size={width / 4}
           />
           <Headline style={Styles.fontLarge}>{name}</Headline>
           <View style={styles.fixedTopHeaderInnerSection}>

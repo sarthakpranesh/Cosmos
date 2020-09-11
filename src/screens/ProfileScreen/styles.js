@@ -22,8 +22,6 @@ export default StyleSheet.create({
     top: 10,
   },
   userImage: {
-    height: width / 4,
-    width: width / 4,
     borderRadius: 50,
   },
   fixedTopHeaderInnerSection: {
@@ -59,9 +57,6 @@ export default StyleSheet.create({
     flexWrap: 'wrap',
   },
   postImageCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    width: width / 3 - 0.8,
-    height: width / 3 - 0.8,
     borderColor: 'black',
     borderWidth: 0.4,
   },
