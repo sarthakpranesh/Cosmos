@@ -24,7 +24,14 @@ const PostBox = ({
       }}>
       <View>
         {children}
-        <View style={[styles.Overlay]}>
+        <View
+          style={[
+            styles.Overlay,
+            // eslint-disable-next-line react-native/no-inline-styles
+            {
+              backgroundColor: showHeart ? 'rgba(0, 0, 0, 0.5)' : null,
+            },
+          ]}>
           <Svg
             width={width / 2}
             height={width / 2}

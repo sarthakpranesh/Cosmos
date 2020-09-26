@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {Button, Divider, DarkTheme} from 'react-native-paper';
+import {Button, DarkTheme} from 'react-native-paper';
 import Modal from 'react-native-modal';
 
 // importing Styles
@@ -12,6 +12,8 @@ const BottomSheet = ({isOpen, closeBottomSheet, options}) => {
       testID={'modal'}
       isVisible={isOpen}
       onSwipeComplete={closeBottomSheet}
+      onBackButtonPress={closeBottomSheet}
+      onBackdropPress={closeBottomSheet}
       swipeDirection={['down']}
       style={styles.view}>
       <View style={styles.content}>
