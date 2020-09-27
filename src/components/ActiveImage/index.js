@@ -17,7 +17,6 @@ const ActiveImage = ({size, uri, style}) => {
         uri: uri,
         priority: FastImage.priority.high,
       }}
-      onProgress={(c) => console.log(c)}
     />
   );
 };
