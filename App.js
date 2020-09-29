@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StatusBar} from 'react-native';
+import {StatusBar, Text} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import {
@@ -351,6 +351,10 @@ class MainAppStack extends Component {
   }
 }
 
+const linking = {
+  prefixes: ['https://CormosRN.com/', 'CosmosRN://'],
+};
+
 export default function App() {
   return (
     <PaperProvider theme={DarkTheme}>
@@ -358,7 +362,9 @@ export default function App() {
         <UserContext.Consumer>
           {(value) => {
             return (
-              <NavigationContainer>
+              <NavigationContainer
+                linking={linking}
+                fallback={<Text>Loading...</Text>}>
                 <StatusBar
                   backgroundColor={DarkTheme.colors.background}
                   barStyle="light-content"

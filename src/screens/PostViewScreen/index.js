@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, ToastAndroid} from 'react-native';
+import {View, ToastAndroid, Text} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
@@ -22,24 +22,36 @@ class PostViewScreen extends Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
-
     this.state = {
-      post: props.route.params.post,
       user: auth().currentUser,
-
       isErrorManagerVisible: false,
       errorMessage: '',
       isBottomSheetOpen: false,
     };
+    const params = props.route.params;
+    if (params.id) {
+      this.state = {
+        ...this.state,
+        name: params.id.split('@@@')[1],
+        box: params.id.split('@@@')[0],
+        dp: true,
+      };
+    } else {
+      this.state = {
+        ...this.state,
+        post: props.route.params.post,
+        dp: false,
+      };
+    }
   }
 
   componentDidMount() {
-    const {post} = this.state;
+    const {post, name, box, dp} = this.state;
     const {state} = this.context;
 
     database()
-      .ref(state.box)
-      .child(post.name.split('.')[0])
+      .ref(dp ? box : state.box)
+      .child(dp ? name : post.name.split('.')[0])
       .on('value', async (snap) => {
         try {
           const p = await snap.val();
@@ -110,13 +122,17 @@ class PostViewScreen extends Component {
     return (
       <View style={styles.postContainer}>
         <ScrollView>
-          <Post
-            item={post}
-            uid={user.uid}
-            postOptions={this.handlePostOptions}
-            handleOpenComment={this.handleOpenComment}
-            fullPost={true}
-          />
+          {post ? (
+            <Post
+              item={post}
+              uid={user.uid}
+              postOptions={this.handlePostOptions}
+              handleOpenComment={this.handleOpenComment}
+              fullPost={true}
+            />
+          ) : (
+            <Text>loading</Text>
+          )}
         </ScrollView>
         <ErrorManager
           hideModal={() => {
