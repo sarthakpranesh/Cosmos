@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, ToastAndroid, Text} from 'react-native';
+import {View, ToastAndroid, Share} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
@@ -13,7 +13,7 @@ import BottomSheet from '../../components/BottomSheet/index.js';
 import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing firebase utils
-import {deletePosts} from '../../utils/firebase.js';
+import {deletePosts, getUserDetails} from '../../utils/firebase.js';
 
 // importing styles
 import styles from './styles';
@@ -46,9 +46,35 @@ class PostViewScreen extends Component {
   }
 
   componentDidMount() {
+    const {box, dp, user} = this.state;
+
+    if (dp) {
+      getUserDetails(user.uid)
+        .then((u) => {
+          if (!u.enrolledBoxes.includes(box)) {
+            this.setErrorManager(
+              true,
+              "Unfortunately you are not a member of this box hence we can't display the post. All Boxes are private by nature. This helps us make sure only box members can see their box posts.",
+            );
+          } else {
+            this.setPostListener();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.setErrorManager(
+            true,
+            'OOPs... Looks like some internal error occurred!',
+          );
+        });
+    } else {
+      this.setPostListener();
+    }
+  }
+
+  setPostListener = () => {
     const {post, name, box, dp} = this.state;
     const {state} = this.context;
-
     database()
       .ref(dp ? box : state.box)
       .child(dp ? name : post.name.split('.')[0])
@@ -69,7 +95,7 @@ class PostViewScreen extends Component {
           );
         }
       });
-  }
+  };
 
   setErrorManager = (isVisible, errorMessage) => {
     this.setState({
@@ -103,6 +129,22 @@ class PostViewScreen extends Component {
     this.props.navigation.goBack();
   };
 
+  handleSharePost = () => {
+    const {state} = this.context;
+    const {post} = this.state;
+    Share.share({
+      message: `CosmosRN://Postview?id=${state.box}@@@${
+        post.name.split('.')[0]
+      }`,
+    }).catch((err) => {
+      console.log(err);
+      this.setErrorManager(
+        true,
+        'Oops... Error occured while we where trying to share the post!',
+      );
+    });
+  };
+
   handleOpenComment = () => {
     const {post} = this.state;
     return this.props.navigation.navigate('CommentScreen', {
@@ -130,9 +172,7 @@ class PostViewScreen extends Component {
               handleOpenComment={this.handleOpenComment}
               fullPost={true}
             />
-          ) : (
-            <Text>loading</Text>
-          )}
+          ) : null}
         </ScrollView>
         <ErrorManager
           hideModal={() => {
@@ -146,7 +186,8 @@ class PostViewScreen extends Component {
           isOpen={isBottomSheetOpen}
           closeBottomSheet={() => this.setBottomSheet(false)}
           options={[
-            {text: 'Delete Post', onPress: () => this.handleDeletePost()},
+            {text: 'Delete', onPress: () => this.handleDeletePost()},
+            {text: 'Share', onPress: () => this.handleSharePost()},
           ]}
         />
       </View>

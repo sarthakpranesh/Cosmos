@@ -1,6 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {View, FlatList, ToastAndroid, Alert, Dimensions} from 'react-native';
+import {
+  View,
+  FlatList,
+  ToastAndroid,
+  Alert,
+  Dimensions,
+  Share,
+} from 'react-native';
 import {Divider, Headline} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
@@ -194,6 +201,22 @@ class Main extends Component {
     this.setBottomSheet(false, -1);
   };
 
+  handleSharePost = () => {
+    const {state} = this.context;
+    const {actionSheetIndex, posts} = this.state;
+    Share.share({
+      message: `CosmosRN://Postview?id=${state.box}@@@${
+        posts[actionSheetIndex].name.split('.')[0]
+      }`,
+    }).catch((err) => {
+      console.log(err);
+      this.setErrorManager(
+        true,
+        'Oops... Error occured while we where trying to share the post!',
+      );
+    });
+  };
+
   renderPosts = () => {
     const {isLoading, posts, user} = this.state;
     const {state} = this.context;
@@ -261,6 +284,7 @@ class Main extends Component {
           closeBottomSheet={() => this.setBottomSheet(false)}
           options={[
             {text: 'Delete Post', onPress: () => this.handleDeletePost()},
+            {text: 'Share', onPress: () => this.handleSharePost()},
           ]}
         />
       </View>
