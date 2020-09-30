@@ -8,14 +8,12 @@ import database from '@react-native-firebase/database';
 import Post from '../../components/Post/index.js';
 import PostOptions from '../../components/Post/PostOptions';
 import ErrorManager from '../../components/ErrorManager/index.js';
-import BottomSheet from '../../components/BottomSheet/index.js';
 
 // importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
 
 // importing utils
 import {getUserDetails} from '../../utils/firebase.js';
-import {onShare, onDelete} from '../../utils/Handlers/PostHandlers.js';
 
 // importing styles
 import styles from './styles';
@@ -50,6 +48,7 @@ class PostViewScreen extends Component {
 
   componentDidMount() {
     const {box, dp, user} = this.state;
+    const {currentBox} = this.context;
 
     if (dp) {
       getUserDetails(user.uid)
@@ -60,6 +59,7 @@ class PostViewScreen extends Component {
               "Unfortunately you are not a member of this box hence we can't display the post. All Boxes are private by nature. This helps us make sure only box members can see their box posts.",
             );
           } else {
+            currentBox(box);
             this.setPostListener();
           }
         })
@@ -127,6 +127,8 @@ class PostViewScreen extends Component {
 
   render() {
     const {
+      dp,
+      box,
       user,
       post,
       isErrorManagerVisible,
@@ -160,8 +162,8 @@ class PostViewScreen extends Component {
           isOpen={isBottomSheetOpen}
           closeSheet={() => this.setBottomSheet(false)}
           goBack={() => this.props.navigation.goBack()}
-          box={state.box}
-          postName={post.name}
+          box={dp ? box : state.box}
+          postName={post?.name}
         />
       </View>
     );
