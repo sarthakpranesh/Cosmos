@@ -27,6 +27,19 @@ Latest Release: [Cosmos](https://github.com/sarthakpranesh/cosmos.ReactNative/re
 
 <br/>
 
+## For Developers
+Make sure you have React Native and Android Studio development environment setup, if not then you can follow this [guide](https://reactnative.dev/docs/environment-setup) to do so ( make sure you setup `React Native CLI` )
+
+To build the app locally for development
+1. Fork this repo and clone it locally
+2. `yarn install`
+3. `yarn start` - starts metro bundler
+4. `yarn android` - will build and open app on emulator or any attached android device.
+
+For contributing to this project make sure you read the [Contribution Guide](https://github.com/sarthakpranesh/Cosmos/blob/master/CONTRIBUTING.md)
+
+<br />
+
 ## Features Implemented
 |Feature Gist           |How to!            |Helps With         | 
 |---	|---	|---	|
