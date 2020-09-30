@@ -45,7 +45,4 @@ export default StyleSheet.create({
   textInputCaption: {
     width: width,
   },
-  btnContainer: {
-    justifyContent: 'space-evenly',
-  },
 });

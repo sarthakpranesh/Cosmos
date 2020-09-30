@@ -36,6 +36,8 @@ Latest Release: [Cosmos](https://github.com/sarthakpranesh/cosmos.ReactNative/re
 |Comments |Click the message/comment icon on the right of the post and start a discussion |Reactions sometime aren't able to disclose what an individual might have to share with others on the topic, hence they can leave a comment let other know what they feel or want to share |
 |Cartoon Friends |They help the user get started with the app and provide valuable information in a cute and innovative manner |Error, inactivity or onboarding information might get very boring for the end user at times. Cartoon friends help the user stay involved and pass this required message to the user. |
 |Minimal Notification |You get notifications from default |All new posts in a current box give notifications  |
+|Sharing Api   |Click the share button on posts    |Showcases multiple options to the user for sharing their post links with different platforms or people   |
+|Deep linking   |Share Cosmos post links on your other social media handles     |It allows the user to share links to posts on Cosmos to other platforms, and these links when pressed are handled by the Cosmos app   |
 
 <br/>
 
@@ -44,9 +46,7 @@ Review the `Latest Build` and let us know where we can improve, see future plans
 
 |Feature Gist           |How to!            |Helps With         | 
 |---	|---	|---	|
-|Minimal Notifications   |The app would trigger notifications on specific events    |Lets the user know about the updates related to there posts (add notifications for different events)   |
-|Deep linking   |The app will allow to open links shared through other platforms    |Would allow the users to share links to posts on other platforms as well, and these links will be handled in the Cosmos app   |
-|Sharing Api   |Call the standard share api provided by react native    |Will showcase multiple options to the user for sharing there posts on different platforms   |
+|Minimal Notifications   |The app would trigger notifications on specific events    |Lets the user know about the updates related to there posts (add notifications for more events)   |
 
 <br/>
 

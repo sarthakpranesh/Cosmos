@@ -16,6 +16,7 @@ import {Backpack} from 'react-kawaii/lib/native/';
 
 // importing components
 import BoxLoading from '../../components/LottieComponents/BoxLoading/index.js';
+import AppHeader from '../../components/AppHeader/index';
 
 //importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
@@ -176,6 +177,34 @@ class AddImageScreen extends Component {
     if (image !== null) {
       return (
         <View style={styles.addContainer}>
+          <AppHeader
+            iconLeft="x"
+            onPressLeft={() => {
+              Alert.alert(
+                'Discard Post',
+                'Do you want to discard your post, all changes will be lost?',
+                [
+                  {
+                    text: 'Discard',
+                    onPress: () =>
+                      this.setState({
+                        isLoading: false,
+                        fileBlog: null,
+                        image: null,
+                        imageCaption: '',
+                      }),
+                  },
+                  {
+                    text: 'Cancel',
+                    onPress: () => {},
+                  },
+                ],
+                {cancelable: true},
+              );
+            }}
+            iconRight="send"
+            onPressRight={this.onPostUpload}
+          />
           <ScrollView showsVerticalScrollIndicator={false}>
             <View>
               <Image style={styles.loadedImage} source={image} />
@@ -190,31 +219,10 @@ class AddImageScreen extends Component {
                   autoFocus={true}
                   maxLength={300}
                   multiline={true}
-                  numberOfLines={4}
+                  numberOfLines={6}
                   textAlignVertical="top"
                   defaultValue="No Caption"
                 />
-              </View>
-              <View style={[styles.optionsContainer, styles.btnContainer]}>
-                <Button
-                  labelStyle={[Styles.fontSmall]}
-                  mode="contained"
-                  onPress={() => {
-                    this.setState({
-                      isLoading: false,
-                      fileBlog: null,
-                      image: null,
-                      imageCaption: '',
-                    });
-                  }}>
-                  Cancel
-                </Button>
-                <Button
-                  labelStyle={[Styles.fontSmall]}
-                  mode="contained"
-                  onPress={this.onPostUpload}>
-                  Share
-                </Button>
               </View>
             </View>
           </ScrollView>

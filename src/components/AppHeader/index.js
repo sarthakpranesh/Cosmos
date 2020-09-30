@@ -15,6 +15,7 @@ const AppHeader = ({title, onPressRight, iconRight, onPressLeft, iconLeft}) => {
   return (
     <Appbar.Header
       style={{
+        width: width,
         height: width * 0.14,
         display: 'flex',
         flexDirection: 'row',
