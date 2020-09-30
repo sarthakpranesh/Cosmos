@@ -22,6 +22,7 @@ class PostViewScreen extends Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
+
     this.state = {
       user: auth().currentUser,
       isErrorManagerVisible: false,
@@ -133,9 +134,10 @@ class PostViewScreen extends Component {
     const {state} = this.context;
     const {post} = this.state;
     Share.share({
-      message: `CosmosRN://Postview?id=${state.box}@@@${
-        post.name.split('.')[0]
-      }`,
+      title: 'Cosmos Post',
+      message: `Cosmos link:- https://cosmosrn.now.sh/link/post?id=${
+        state.box
+      }@@@${post.name.split('.')[0]}`,
     }).catch((err) => {
       console.log(err);
       this.setErrorManager(

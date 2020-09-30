@@ -352,7 +352,14 @@ class MainAppStack extends Component {
 }
 
 const linking = {
-  prefixes: ['https://CormosRN.com/', 'CosmosRN://'],
+  prefixes: ['https://cosmosrn.now.sh'],
+  enabled: true,
+  config: {
+    initialRouteName: 'HomeScreen',
+    Postview: {
+      path: 'link/post',
+    },
+  },
 };
 
 export default function App() {
