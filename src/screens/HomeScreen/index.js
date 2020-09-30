@@ -1,13 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {
-  View,
-  FlatList,
-  ToastAndroid,
-  Alert,
-  Dimensions,
-  Share,
-} from 'react-native';
+import {View, FlatList, ToastAndroid, Alert, Dimensions} from 'react-native';
 import {Divider, Headline} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
@@ -16,6 +9,7 @@ import {IceCream, Planet} from 'react-kawaii/lib/native/';
 
 // importing component
 import Post from '../../components/Post/index.js';
+import PostOptions from '../../components/Post/PostOptions.js';
 import BoxLoading from '../../components/LottieComponents/BoxLoading/index.js';
 import BottomSheet from '../../components/BottomSheet/index.js';
 
@@ -25,6 +19,7 @@ import {Context as UserContext} from '../../contexts/UserContext.js';
 // importing utils
 import {deletePosts, getUserDetails} from '../../utils/firebase.js';
 import {firebaseReactionNotify} from '../../utils/Notifications/index.js';
+import {onShare, onDelete} from '../../utils/Handlers/PostHandlers.js';
 
 // importing styles
 import styles from './styles.js';
@@ -185,38 +180,6 @@ class Main extends Component {
     this.setBottomSheet(true, postIndex);
   };
 
-  handleDeletePost = () => {
-    const {actionSheetIndex, posts} = this.state;
-    const {state} = this.context;
-    database()
-      .ref(state.box)
-      .child(posts[actionSheetIndex].name.split('.')[0])
-      .off();
-    deletePosts(state.box, posts[actionSheetIndex].name);
-    ToastAndroid.showWithGravity(
-      'Post Deleted Successfully',
-      ToastAndroid.SHORT,
-      ToastAndroid.CENTER,
-    );
-    this.setBottomSheet(false, -1);
-  };
-
-  handleSharePost = () => {
-    const {state} = this.context;
-    const {actionSheetIndex, posts} = this.state;
-    Share.share({
-      message: `CosmosRN://Postview?id=${state.box}@@@${
-        posts[actionSheetIndex].name.split('.')[0]
-      }`,
-    }).catch((err) => {
-      console.log(err);
-      this.setErrorManager(
-        true,
-        'Oops... Error occured while we where trying to share the post!',
-      );
-    });
-  };
-
   renderPosts = () => {
     const {isLoading, posts, user} = this.state;
     const {state} = this.context;
@@ -275,17 +238,16 @@ class Main extends Component {
   };
 
   render() {
-    const {isBottomSheetOpen} = this.state;
+    const {isBottomSheetOpen, posts, actionSheetIndex} = this.state;
+    const {state} = this.context;
     return (
       <View style={styles.mainContainer}>
         {this.renderPosts()}
-        <BottomSheet
+        <PostOptions
           isOpen={isBottomSheetOpen}
-          closeBottomSheet={() => this.setBottomSheet(false)}
-          options={[
-            {text: 'Delete Post', onPress: () => this.handleDeletePost()},
-            {text: 'Share', onPress: () => this.handleSharePost()},
-          ]}
+          closeSheet={() => this.setBottomSheet(false, -1)}
+          box={state.box}
+          postName={posts[actionSheetIndex]?.name}
         />
       </View>
     );

@@ -1,19 +1,21 @@
 import React, {Component} from 'react';
-import {View, ToastAndroid, Share} from 'react-native';
+import {View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
 // importing components
 import Post from '../../components/Post/index.js';
+import PostOptions from '../../components/Post/PostOptions';
 import ErrorManager from '../../components/ErrorManager/index.js';
 import BottomSheet from '../../components/BottomSheet/index.js';
 
 // importing Context
 import {Context as UserContext} from '../../contexts/UserContext.js';
 
-// importing firebase utils
-import {deletePosts, getUserDetails} from '../../utils/firebase.js';
+// importing utils
+import {getUserDetails} from '../../utils/firebase.js';
+import {onShare, onDelete} from '../../utils/Handlers/PostHandlers.js';
 
 // importing styles
 import styles from './styles';
@@ -116,37 +118,6 @@ class PostViewScreen extends Component {
     this.setBottomSheet(true, postIndex);
   };
 
-  handleDeletePost = () => {
-    const {post} = this.state;
-    const {state} = this.context;
-    database().ref(state.box).child(post.name.split('.')[0]).off();
-    deletePosts(state.box, post.name);
-    ToastAndroid.showWithGravity(
-      'Post Deleted Successfully',
-      ToastAndroid.SHORT,
-      ToastAndroid.CENTER,
-    );
-    this.setBottomSheet(false, -1);
-    this.props.navigation.goBack();
-  };
-
-  handleSharePost = () => {
-    const {state} = this.context;
-    const {post} = this.state;
-    Share.share({
-      title: 'Cosmos Post',
-      message: `Cosmos link:- https://cosmosrn.now.sh/link/post?id=${
-        state.box
-      }@@@${post.name.split('.')[0]}`,
-    }).catch((err) => {
-      console.log(err);
-      this.setErrorManager(
-        true,
-        'Oops... Error occured while we where trying to share the post!',
-      );
-    });
-  };
-
   handleOpenComment = () => {
     const {post} = this.state;
     return this.props.navigation.navigate('CommentScreen', {
@@ -162,6 +133,7 @@ class PostViewScreen extends Component {
       errorMessage,
       isBottomSheetOpen,
     } = this.state;
+    const {state} = this.context;
 
     return (
       <View style={styles.postContainer}>
@@ -184,13 +156,12 @@ class PostViewScreen extends Component {
           isVisible={isErrorManagerVisible}
           message={errorMessage}
         />
-        <BottomSheet
+        <PostOptions
           isOpen={isBottomSheetOpen}
-          closeBottomSheet={() => this.setBottomSheet(false)}
-          options={[
-            {text: 'Delete', onPress: () => this.handleDeletePost()},
-            {text: 'Share', onPress: () => this.handleSharePost()},
-          ]}
+          closeSheet={() => this.setBottomSheet(false)}
+          goBack={() => this.props.navigation.goBack()}
+          box={state.box}
+          postName={post.name}
         />
       </View>
     );
