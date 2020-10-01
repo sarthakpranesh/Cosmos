@@ -4,7 +4,7 @@
 
 # Cosmos - Boxed Social Media Platform
 
-[![Build Status](https://travis-ci.com/sarthakpranesh/cosmos.ReactNative.svg?branch=master)](https://travis-ci.com/sarthakpranesh/cosmos.ReactNative)
+[![Build Status](https://travis-ci.com/sarthakpranesh/Cosmos.svg?branch=master)](https://travis-ci.com/sarthakpranesh/Cosmos)
 [![GitHub issues](https://img.shields.io/github/issues/sarthakpranesh/cosmos.ReactNative)](https://github.com/sarthakpranesh/cosmos.ReactNative/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/sarthakpranesh/cosmos.ReactNative)](https://github.com/sarthakpranesh/cosmos.ReactNative/pulls)
 [![GitHub](https://img.shields.io/github/license/sarthakpranesh/cosmos.ReactNative)](https://github.com/sarthakpranesh/cosmos.ReactNative/blob/master/LICENSE)
